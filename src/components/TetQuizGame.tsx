@@ -45,7 +45,7 @@ const TetQuizGame = () => {
         const newScore = score + 1;
         setScore(newScore);
         // setPlayerPosition(newScore);
-        setPlayerPosition((prev) => Math.min(newScore, 5));
+        setPlayerPosition(Math.min(newScore, 5));
 
         // Bots advance slower (random 0.3-0.7 of player step, but never exceed player)
         setBot1Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.3, newScore - 0.3));
