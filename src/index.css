@@ -153,6 +153,36 @@
     @apply opacity-100;
     filter: drop-shadow(0 0 8px hsl(110 45% 50% / 0.6));
   }
+
+  .answer-btn {
+    @apply relative overflow-hidden transition-all duration-200;
+  }
+
+  .answer-btn-default {
+    background-color: hsl(var(--answer-default));
+    border: 3px solid hsl(var(--answer-default-border));
+  }
+
+  .answer-btn-selected {
+    background-color: hsl(var(--answer-default));
+    border: 3px solid hsl(var(--answer-selected-border));
+    box-shadow: 0 0 12px hsl(var(--answer-selected-border) / 0.5);
+  }
+
+  .answer-btn-correct {
+    background-color: #cefdd5;
+    border: 3px solid #2acb42;
+  }
+
+  .answer-btn-wrong {
+    background-color: #ffcfcc;
+    border: 3px solid #ff3b30;
+  }
+
+  .game-button {
+    @apply font-bold text-lg uppercase tracking-wide;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
 }
 
 @layer utilities {
