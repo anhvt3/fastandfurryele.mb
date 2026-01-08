@@ -1,13 +1,13 @@
 import { useState, useCallback } from "react";
 import background from "@/assets/background.png";
+import submitButton from "@/assets/submit-button.png";
+import continueButton from "@/assets/continue-button.png";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
 import AnswerButton from "./AnswerButton";
 import RaceTrack from "./RaceTrack";
 import WinScreen from "./WinScreen";
 import { questions } from "@/data/questions";
-
-type AnswerState = "normal" | "correct" | "incorrect";
 
 const TetQuizGame = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -16,85 +16,66 @@ const TetQuizGame = () => {
   const [bot1Position, setBot1Position] = useState(0);
   const [bot2Position, setBot2Position] = useState(0);
   const [isJumping, setIsJumping] = useState({ player: false, bot1: false, bot2: false });
-  const [answerStates, setAnswerStates] = useState<AnswerState[]>(["normal", "normal", "normal", "normal"]);
-  const [isAnswering, setIsAnswering] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  const handleAnswer = useCallback(
-    (selectedIndex: number) => {
-      if (isAnswering || gameOver) return;
+  const handleSelectAnswer = (index: number) => {
+    if (isAnswered) return;
+    setSelectedAnswer(index);
+  };
 
-      setSelectedAnswer(selectedIndex);
+  const handleSubmitAnswer = useCallback(() => {
+    if (selectedAnswer === null || isAnswered || gameOver) return;
 
-      setIsAnswering(true);
-      const isCorrect = selectedIndex === currentQuestion.correctIndex;
+    setIsAnswered(true);
+    const isCorrect = selectedAnswer === currentQuestion.correctIndex;
 
-      // Update answer states to show correct/incorrect
-      const newStates: AnswerState[] = answerStates.map((_, idx) => {
-        if (idx === currentQuestion.correctIndex) return "correct";
-        if (idx === selectedIndex && !isCorrect) return "incorrect";
-        return "normal";
-      });
-      setAnswerStates(newStates);
+    // Xác định di chuyển
+    const playerWillMove = isCorrect;
+    const bot1WillMove = Math.random() < 0.5;
+    const bot2WillMove = Math.random() < 0.5;
 
-      // --- LOGIC MỚI BẮT ĐẦU TỪ ĐÂY ---
+    // Kích hoạt animation nhảy
+    setIsJumping({
+      player: playerWillMove,
+      bot1: bot1WillMove,
+      bot2: bot2WillMove,
+    });
 
-      // 1. Xác định Player có được đi không? (Đúng mới được đi 1 bước)
-      const playerWillMove = isCorrect;
+    // Cập nhật vị trí và điểm số
+    if (playerWillMove) {
+      setScore((prev) => prev + 1);
+      setPlayerPosition((prev) => Math.min(prev + 1, 5));
+    }
+    if (bot1WillMove) {
+      setBot1Position((prev) => Math.min(prev + 1, 5));
+    }
+    if (bot2WillMove) {
+      setBot2Position((prev) => Math.min(prev + 1, 5));
+    }
 
-      // 2. Xác định Bots có đi không? (Random 50/50: đi 1 bước hoặc đứng im)
-      const bot1WillMove = Math.random() < 0.5;
-      const bot2WillMove = Math.random() < 0.5;
+    // Reset jumping after animation
+    setTimeout(() => {
+      setIsJumping({ player: false, bot1: false, bot2: false });
+    }, 500);
+  }, [selectedAnswer, isAnswered, gameOver, currentQuestion.correctIndex]);
 
-      // 3. Kích hoạt animation nhảy cho những nhân vật CÓ di chuyển
-      setIsJumping({
-        player: playerWillMove,
-        bot1: bot1WillMove,
-        bot2: bot2WillMove,
-      });
+  const handleContinue = useCallback(() => {
+    const currentScore = score;
 
-      // 4. Cập nhật vị trí và điểm số
-      if (playerWillMove) {
-        setScore((prev) => prev + 1);
-        setPlayerPosition((prev) => Math.min(prev + 1, 5)); // Tăng 1 bước, tối đa là 5
-      }
+    if (currentQuestionIndex >= questions.length - 1 || currentScore >= 5) {
+      setGameOver(true);
+    } else {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
 
-      // Bot di chuyển độc lập, mỗi lần bước 1 bước, tối đa là 5
-      if (bot1WillMove) {
-        setBot1Position((prev) => Math.min(prev + 1, 5));
-      }
-      if (bot2WillMove) {
-        setBot2Position((prev) => Math.min(prev + 1, 5));
-      }
-
-      // --- KẾT THÚC LOGIC MỚI ---
-
-      // Reset jumping after animation (giữ nguyên)
-      setTimeout(() => {
-        setIsJumping({ player: false, bot1: false, bot2: false });
-      }, 500);
-
-      // Move to next question or end game (giữ nguyên logic nhưng bỏ dòng tính score thừa)
-      setTimeout(() => {
-        setAnswerStates(["normal", "normal", "normal", "normal"]);
-
-        // Check điều kiện thắng thua (đã update score ở trên nên dùng score + 1 nếu đúng để check ngay lập tức)
-        const currentScore = score + (isCorrect ? 1 : 0);
-
-        if (currentQuestionIndex >= questions.length - 1 || currentScore >= 5) {
-          setGameOver(true);
-        } else {
-          setCurrentQuestionIndex((prev) => prev + 1);
-        }
-        setIsAnswering(false);
-      }, 1200);
-    },
-    [currentQuestionIndex, currentQuestion, score, isAnswering, gameOver, playerPosition, answerStates],
-  );
+    // Reset for next question
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+  }, [currentQuestionIndex, score]);
 
   const handleRestart = () => {
     setCurrentQuestionIndex(0);
@@ -103,13 +84,10 @@ const TetQuizGame = () => {
     setBot1Position(0);
     setBot2Position(0);
     setIsJumping({ player: false, bot1: false, bot2: false });
-    setAnswerStates(["normal", "normal", "normal", "normal"]);
-    setIsAnswering(false);
-    setGameOver(false);
     setSelectedAnswer(null);
+    setIsAnswered(false);
+    setGameOver(false);
   };
-
-  const answerLabels = ["A", "B", "C", "D"];
 
   return (
     <div className="game-container flex flex-col" style={{ backgroundImage: `url(${background})` }}>
@@ -124,16 +102,46 @@ const TetQuizGame = () => {
       </div>
 
       {/* Answer Buttons */}
-      <div className="flex flex-col gap-2 px-4 py-2 flex-1">
+      <div className="flex flex-col gap-2 px-4 py-2">
         {currentQuestion.answers.map((answer, index) => (
           <AnswerButton
             key={index}
             answer={answer}
             index={index}
             correctIndex={currentQuestion.correctIndex}
-            onClick={() => handleAnswer(index)}
+            isSelected={selectedAnswer === index}
+            isCorrect={selectedAnswer === index ? selectedAnswer === currentQuestion.correctIndex : null}
+            isDisabled={isAnswered}
+            isAnswered={isAnswered}
+            onClick={() => handleSelectAnswer(index)}
           />
         ))}
+      </div>
+
+      {/* Answer/Continue Button - Same position, overlapping */}
+      <div className="flex justify-center px-4 py-2">
+        <div className="relative w-32 h-12">
+          {/* Answer Button (TRẢ LỜI) */}
+          <button
+            onClick={handleSubmitAnswer}
+            disabled={selectedAnswer === null || isAnswered}
+            className={`absolute inset-0 transition-opacity duration-200 ${
+              isAnswered ? "opacity-0 pointer-events-none" : "opacity-100"
+            } ${selectedAnswer === null ? "opacity-50 cursor-not-allowed" : "cursor-pointer active:scale-95"}`}
+          >
+            <img src={submitButton} alt="Trả lời" className="w-full h-full object-contain" />
+          </button>
+
+          {/* Continue Button (TIẾP TỤC) */}
+          <button
+            onClick={handleContinue}
+            className={`absolute inset-0 transition-opacity duration-200 ${
+              isAnswered ? "opacity-100 cursor-pointer active:scale-95" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <img src={continueButton} alt="Tiếp tục" className="w-full h-full object-contain" />
+          </button>
+        </div>
       </div>
 
       {/* Race Track - Bottom */}
