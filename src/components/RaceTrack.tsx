@@ -86,7 +86,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Player */}
       <div
-        className={`mascot ${isJumping.player ? "jumping" : ""}`}
+        className={`mascot ${isJumping.player && playerPosition < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(playerPosition)}%`,
           // transform: "translateX(-50%)",  <-- XÓA dòng này ở style inline vì đã đưa vào keyframes/class
@@ -100,7 +100,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Bot 1 */}
       <div
-        className={`mascot ${isJumping.bot1 ? "jumping" : ""}`}
+        className={`mascot ${isJumping.bot1 && bot1Position < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(bot1Position) + 6}%`,
           bottom: "20px",
@@ -113,7 +113,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Bot 2 */}
       <div
-        className={`mascot ${isJumping.bot2 ? "jumping" : ""}`}
+        className={`mascot ${isJumping.bot2 && bot2Position < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(bot2Position) + 12}%`,
           bottom: "40px",
