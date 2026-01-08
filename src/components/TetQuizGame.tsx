@@ -22,60 +22,117 @@ const TetQuizGame = () => {
 
   const currentQuestion = questions[currentQuestionIndex];
 
+  const MAX_SCORE = 5;
+
   const handleAnswer = useCallback(
     (selectedIndex: number) => {
       if (isAnswering || gameOver) return;
 
       setIsAnswering(true);
+
       const isCorrect = selectedIndex === currentQuestion.correctIndex;
+      const nextScore = isCorrect ? score + 1 : score;
 
-      // Update answer states to show correct/incorrect
-      const newStates: AnswerState[] = answerStates.map((_, idx) => {
-        if (idx === currentQuestion.correctIndex) return "correct";
-        if (idx === selectedIndex && !isCorrect) return "incorrect";
-        return "normal";
-      });
-      setAnswerStates(newStates);
+      // Update answer states
+      setAnswerStates(
+        answerStates.map((_, idx) => {
+          if (idx === currentQuestion.correctIndex) return "correct";
+          if (idx === selectedIndex && !isCorrect) return "incorrect";
+          return "normal";
+        }),
+      );
 
-      // Trigger jumping animations
+      // ===== MOVE LOGIC =====
       if (isCorrect) {
-        // Player always advances on correct answer
         setIsJumping({ player: true, bot1: true, bot2: true });
 
-        const newScore = score + 1;
-        setScore(newScore);
-        // setPlayerPosition(newScore);
-        setPlayerPosition(Math.min(newScore, 5));
+        setScore(nextScore);
+        setPlayerPosition(Math.min(nextScore, MAX_SCORE));
 
-        // Bots advance slower (random 0.3-0.7 of player step, but never exceed player)
-        setBot1Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.3, newScore - 0.3));
-        setBot2Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.2, newScore - 0.5));
+        setBot1Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.3, nextScore - 0.3));
+        setBot2Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.2, nextScore - 0.5));
       } else {
-        // Player doesn't advance, bots advance slightly
         setIsJumping({ player: false, bot1: true, bot2: true });
+
         setBot1Position((prev) => Math.min(prev + Math.random() * 0.2 + 0.1, playerPosition - 0.2));
         setBot2Position((prev) => Math.min(prev + Math.random() * 0.15 + 0.05, playerPosition - 0.4));
       }
 
-      // Reset jumping after animation
+      // ===== RESET JUMP =====
       setTimeout(() => {
         setIsJumping({ player: false, bot1: false, bot2: false });
       }, 500);
 
-      // Move to next question or end game
+      // ===== NEXT STEP / GAME OVER =====
       setTimeout(() => {
         setAnswerStates(["normal", "normal", "normal", "normal"]);
 
-        if (currentQuestionIndex >= questions.length - 1 || score + (isCorrect ? 1 : 0) >= 5) {
+        if (nextScore >= MAX_SCORE || currentQuestionIndex >= questions.length - 1) {
           setGameOver(true);
         } else {
-          setCurrentQuestionIndex((prev) => prev + 1);
+          setCurrentQuestionIndex((i) => i + 1);
         }
+
         setIsAnswering(false);
       }, 1200);
     },
-    [currentQuestionIndex, currentQuestion, score, isAnswering, gameOver, playerPosition, answerStates],
+    [isAnswering, gameOver, score, playerPosition, currentQuestionIndex, currentQuestion.correctIndex, answerStates],
   );
+
+  // const handleAnswer = useCallback(
+  //   (selectedIndex: number) => {
+  //     if (isAnswering || gameOver) return;
+
+  //     setIsAnswering(true);
+  //     const isCorrect = selectedIndex === currentQuestion.correctIndex;
+
+  //     // Update answer states to show correct/incorrect
+  //     const newStates: AnswerState[] = answerStates.map((_, idx) => {
+  //       if (idx === currentQuestion.correctIndex) return "correct";
+  //       if (idx === selectedIndex && !isCorrect) return "incorrect";
+  //       return "normal";
+  //     });
+  //     setAnswerStates(newStates);
+
+  //     // Trigger jumping animations
+  //     if (isCorrect) {
+  //       // Player always advances on correct answer
+  //       setIsJumping({ player: true, bot1: true, bot2: true });
+
+  //       const newScore = score + 1;
+  //       setScore(newScore);
+  //       // setPlayerPosition(newScore);
+  //       setPlayerPosition(Math.min(newScore, 5));
+
+  //       // Bots advance slower (random 0.3-0.7 of player step, but never exceed player)
+  //       setBot1Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.3, newScore - 0.3));
+  //       setBot2Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.2, newScore - 0.5));
+  //     } else {
+  //       // Player doesn't advance, bots advance slightly
+  //       setIsJumping({ player: false, bot1: true, bot2: true });
+  //       setBot1Position((prev) => Math.min(prev + Math.random() * 0.2 + 0.1, playerPosition - 0.2));
+  //       setBot2Position((prev) => Math.min(prev + Math.random() * 0.15 + 0.05, playerPosition - 0.4));
+  //     }
+
+  //     // Reset jumping after animation
+  //     setTimeout(() => {
+  //       setIsJumping({ player: false, bot1: false, bot2: false });
+  //     }, 500);
+
+  //     // Move to next question or end game
+  //     setTimeout(() => {
+  //       setAnswerStates(["normal", "normal", "normal", "normal"]);
+
+  //       if (currentQuestionIndex >= questions.length - 1 || score + (isCorrect ? 1 : 0) >= 5) {
+  //         setGameOver(true);
+  //       } else {
+  //         setCurrentQuestionIndex((prev) => prev + 1);
+  //       }
+  //       setIsAnswering(false);
+  //     }, 1200);
+  //   },
+  //   [currentQuestionIndex, currentQuestion, score, isAnswering, gameOver, playerPosition, answerStates],
+  // );
 
   const handleRestart = () => {
     setCurrentQuestionIndex(0);
