@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap");
 
 @layer base {
   :root {
@@ -47,7 +47,7 @@
     --tet-green: 110 45% 50%;
     --tet-orange: 25 90% 55%;
     --tet-brown: 25 40% 35%;
-    
+
     /* Shadows */
     --shadow-soft: 0 4px 20px -4px hsl(25 40% 30% / 0.3);
     --shadow-button: 0 4px 0 hsl(8 70% 35%);
@@ -102,7 +102,9 @@
     @apply bg-background text-foreground font-fredoka;
   }
 
-  html, body, #root {
+  html,
+  body,
+  #root {
     height: 100%;
     overflow: hidden;
   }
@@ -139,10 +141,6 @@
     @apply absolute bottom-0 transition-all duration-500 ease-out;
   }
 
-  // .mascot.jumping {
-  //   animation: hop 0.5s ease-out;
-  // }
-
   .banh-chung {
     @apply transition-all duration-300;
   }
@@ -159,7 +157,7 @@
 
 @layer utilities {
   .font-fredoka {
-    font-family: 'Fredoka', sans-serif;
+    font-family: "Fredoka", sans-serif;
   }
 }
 
@@ -191,13 +189,16 @@
 }
 
 @keyframes incorrect-shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
-  20%, 60% {
+  20%,
+  60% {
     transform: translateX(-8px);
   }
-  40%, 80% {
+  40%,
+  80% {
     transform: translateX(8px);
   }
 }
