@@ -1,6 +1,8 @@
 import mascotRed from "@/assets/mascot-red.png";
 import mascotGreen from "@/assets/mascot-green.png";
 import mascotBlue from "@/assets/mascot-blue.png";
+import startLineImg from "@/assets/start-line.png";
+import finishLineImg from "@/assets/finish-line.png";
 
 interface RaceTrackProps {
   playerPosition: number;
@@ -74,10 +76,26 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         }
       `}</style>
 
-      {/* Finish flag giữ nguyên */}
+      {/* Start Line */}
+      <div
+        className="absolute"
+        style={{ left: `${startLine}%`, transform: "translateX(-50%) rotate(45deg)", bottom: "20px", zIndex: 5 }}
+      >
+        <img src={startLineImg} alt="Start Line" className="w-20 h-auto opacity-80" />
+      </div>
+
+      {/* Finish Line */}
+      <div
+        className="absolute"
+        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "10px", zIndex: 25 }}
+      >
+        <img src={finishLineImg} alt="Finish Line" className="w-16 h-auto" />
+      </div>
+
+      {/* Finish flag */}
       <div
         className="absolute text-3xl z-30"
-        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "40px" }}
+        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "100px" }}
       >
         🏁
       </div>
