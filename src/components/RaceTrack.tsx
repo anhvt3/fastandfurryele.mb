@@ -67,7 +67,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           }
           50% {
             /* Nhảy lên nhưng vẫn giữ trục X là -50% */
-            transform: translate(-50%, -80px) scale(1.1);
+            transform: translate(-50%, -20px) scale(1.1);
           }
           100% {
             /* Đáp xuống và vẫn giữ trục X là -50% */
