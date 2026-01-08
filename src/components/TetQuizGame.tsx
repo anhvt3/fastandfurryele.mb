@@ -19,12 +19,16 @@ const TetQuizGame = () => {
   const [answerStates, setAnswerStates] = useState<AnswerState[]>(["normal", "normal", "normal", "normal"]);
   const [isAnswering, setIsAnswering] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [isAnswered, setIsAnswered] = useState(false);
 
   const currentQuestion = questions[currentQuestionIndex];
 
   const handleAnswer = useCallback(
     (selectedIndex: number) => {
       if (isAnswering || gameOver) return;
+
+      setSelectedAnswer(selectedIndex);
 
       setIsAnswering(true);
       const isCorrect = selectedIndex === currentQuestion.correctIndex;
@@ -138,6 +142,7 @@ const TetQuizGame = () => {
     setAnswerStates(["normal", "normal", "normal", "normal"]);
     setIsAnswering(false);
     setGameOver(false);
+    setSelectedAnswer(null);
   };
 
   const answerLabels = ["A", "B", "C", "D"];
