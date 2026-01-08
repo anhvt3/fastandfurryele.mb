@@ -37,36 +37,87 @@ const TetQuizGame = () => {
       });
       setAnswerStates(newStates);
 
-      // Trigger jumping animations
-      if (isCorrect) {
-        // Player always advances on correct answer
-        setIsJumping({ player: true, bot1: true, bot2: true });
+      // // Trigger jumping animations
+      // if (isCorrect) {
+      //   // Player always advances on correct answer
+      //   setIsJumping({ player: true, bot1: true, bot2: true });
 
-        const newScore = score + 1;
-        setScore(newScore);
-        // setPlayerPosition(newScore);
-        setPlayerPosition(Math.min(newScore, 5));
+      //   const newScore = score + 1;
+      //   setScore(newScore);
+      //   // setPlayerPosition(newScore);
+      //   setPlayerPosition(Math.min(newScore, 5));
 
-        // Bots advance slower (random 0.3-0.7 of player step, but never exceed player)
-        setBot1Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.3, newScore - 0.3));
-        setBot2Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.2, newScore - 0.5));
-      } else {
-        // Player doesn't advance, bots advance slightly
-        setIsJumping({ player: false, bot1: true, bot2: true });
-        setBot1Position((prev) => Math.min(prev + Math.random() * 0.2 + 0.1, playerPosition - 0.2));
-        setBot2Position((prev) => Math.min(prev + Math.random() * 0.15 + 0.05, playerPosition - 0.4));
+      //   // Bots advance slower (random 0.3-0.7 of player step, but never exceed player)
+      //   setBot1Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.3, newScore - 0.3));
+      //   setBot2Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.2, newScore - 0.5));
+      // } else {
+      //   // Player doesn't advance, bots advance slightly
+      //   setIsJumping({ player: false, bot1: true, bot2: true });
+      //   setBot1Position((prev) => Math.min(prev + Math.random() * 0.2 + 0.1, playerPosition - 0.2));
+      //   setBot2Position((prev) => Math.min(prev + Math.random() * 0.15 + 0.05, playerPosition - 0.4));
+      // }
+
+      // // Reset jumping after animation
+      // setTimeout(() => {
+      //   setIsJumping({ player: false, bot1: false, bot2: false });
+      // }, 500);
+
+      // // Move to next question or end game
+      // setTimeout(() => {
+      //   setAnswerStates(["normal", "normal", "normal", "normal"]);
+
+      //   if (currentQuestionIndex >= questions.length - 1 || score + (isCorrect ? 1 : 0) >= 5) {
+      //     setGameOver(true);
+      //   } else {
+      //     setCurrentQuestionIndex((prev) => prev + 1);
+      //   }
+      //   setIsAnswering(false);
+      // }, 1200);
+      // --- LOGIC MỚI BẮT ĐẦU TỪ ĐÂY ---
+
+      // 1. Xác định Player có được đi không? (Đúng mới được đi 1 bước)
+      const playerWillMove = isCorrect;
+
+      // 2. Xác định Bots có đi không? (Random 50/50: đi 1 bước hoặc đứng im)
+      const bot1WillMove = Math.random() < 0.5;
+      const bot2WillMove = Math.random() < 0.5;
+
+      // 3. Kích hoạt animation nhảy cho những nhân vật CÓ di chuyển
+      setIsJumping({
+        player: playerWillMove,
+        bot1: bot1WillMove,
+        bot2: bot2WillMove,
+      });
+
+      // 4. Cập nhật vị trí và điểm số
+      if (playerWillMove) {
+        setScore((prev) => prev + 1);
+        setPlayerPosition((prev) => Math.min(prev + 1, 5)); // Tăng 1 bước, tối đa là 5
       }
 
-      // Reset jumping after animation
+      // Bot di chuyển độc lập, mỗi lần bước 1 bước, tối đa là 5
+      if (bot1WillMove) {
+        setBot1Position((prev) => Math.min(prev + 1, 5));
+      }
+      if (bot2WillMove) {
+        setBot2Position((prev) => Math.min(prev + 1, 5));
+      }
+
+      // --- KẾT THÚC LOGIC MỚI ---
+
+      // Reset jumping after animation (giữ nguyên)
       setTimeout(() => {
         setIsJumping({ player: false, bot1: false, bot2: false });
       }, 500);
 
-      // Move to next question or end game
+      // Move to next question or end game (giữ nguyên logic nhưng bỏ dòng tính score thừa)
       setTimeout(() => {
         setAnswerStates(["normal", "normal", "normal", "normal"]);
 
-        if (currentQuestionIndex >= questions.length - 1 || score + (isCorrect ? 1 : 0) >= 5) {
+        // Check điều kiện thắng thua (đã update score ở trên nên dùng score + 1 nếu đúng để check ngay lập tức)
+        const currentScore = score + (isCorrect ? 1 : 0);
+
+        if (currentQuestionIndex >= questions.length - 1 || currentScore >= 5) {
           setGameOver(true);
         } else {
           setCurrentQuestionIndex((prev) => prev + 1);
