@@ -19,6 +19,8 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
     return startLine + (progress / 5) * range;
   };
 
+  console.log("cal", calculatePosition(playerPosition));
+
   return (
     <div className="relative w-full h-40 mt-auto">
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
