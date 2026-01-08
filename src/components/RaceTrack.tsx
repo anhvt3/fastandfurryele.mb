@@ -100,7 +100,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)", // Vẫn cần cái này để căn giữa, nhưng keyframes sẽ override khi nhảy
         }}
       >
-        <img src={mascotRed} alt="Player" className="min-w-24 h-auto drop-shadow-lg" />
+        <img src={mascotRed} alt="Player" className="min-w-24 w-24 h-auto drop-shadow-lg" />
       </div>
 
       {/* Bot 1 */}
@@ -113,7 +113,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)",
         }}
       >
-        <img src={mascotGreen} alt="Bot 1" className="min-w-20 h-auto" />
+        <img src={mascotGreen} alt="Bot 1" className="min-w-20 w-20 h-auto" />
       </div>
 
       {/* Bot 2 */}
@@ -126,7 +126,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)",
         }}
       >
-        <img src={mascotBlue} alt="Bot 2" className="min-w-16 h-auto" />
+        <img src={mascotBlue} alt="Bot 2" className="min-w-16 w-16 h-auto" />
       </div>
       {/* <div 
         className="absolute text-3xl z-30"
