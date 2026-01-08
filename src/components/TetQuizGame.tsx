@@ -93,7 +93,7 @@ const TetQuizGame = () => {
     <div className="game-container flex flex-col" style={{ backgroundImage: `url(${background})` }}>
       {/* Score Display - Top */}
       <div className="pt-4 pb-2">
-        <ScoreDisplay score={score} total={5} />
+        <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} />
       </div>
 
       {/* Question Box */}
@@ -120,7 +120,7 @@ const TetQuizGame = () => {
 
       {/* Answer/Continue Button - Same position, overlapping */}
       <div className="flex justify-center px-4 py-2">
-        <div className="relative w-28 h-10">
+        <div className="relative w-32 h-12">
           {/* Answer Button (TRẢ LỜI) */}
           <button
             onClick={handleSubmitAnswer}
