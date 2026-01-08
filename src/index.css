@@ -2,87 +2,86 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Tet Festival Color Palette */
+    --background: 45 100% 96%;
+    --foreground: 20 60% 20%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 45 80% 94%;
+    --card-foreground: 20 60% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 45 80% 94%;
+    --popover-foreground: 20 60% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Tet Red - Primary */
+    --primary: 8 70% 52%;
+    --primary-foreground: 45 100% 96%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Cream/Gold - Secondary */
+    --secondary: 45 80% 90%;
+    --secondary-foreground: 20 60% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Bánh Chưng Green */
+    --accent: 110 45% 50%;
+    --accent-foreground: 45 100% 96%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 45 40% 85%;
+    --muted-foreground: 20 30% 40%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 25 50% 75%;
+    --input: 25 50% 75%;
+    --ring: 8 70% 52%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    /* Custom Tet Colors */
+    --tet-red: 8 70% 52%;
+    --tet-gold: 45 90% 60%;
+    --tet-cream: 45 80% 92%;
+    --tet-green: 110 45% 50%;
+    --tet-orange: 25 90% 55%;
+    --tet-brown: 25 40% 35%;
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(25 40% 30% / 0.3);
+    --shadow-button: 0 4px 0 hsl(8 70% 35%);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --background: 20 30% 10%;
+    --foreground: 45 80% 95%;
+    --card: 20 30% 15%;
+    --card-foreground: 45 80% 95%;
+    --popover: 20 30% 15%;
+    --popover-foreground: 45 80% 95%;
+    --primary: 8 70% 55%;
+    --primary-foreground: 20 30% 10%;
+    --secondary: 25 40% 25%;
+    --secondary-foreground: 45 80% 95%;
+    --muted: 25 30% 20%;
+    --muted-foreground: 45 40% 70%;
+    --accent: 110 45% 45%;
+    --accent-foreground: 45 100% 96%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 25 30% 25%;
+    --input: 25 30% 25%;
+    --ring: 8 70% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +99,127 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-fredoka;
   }
+
+  html, body, #root {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  .game-container {
+    @apply relative w-full h-full overflow-hidden;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .question-box {
+    @apply relative flex items-center justify-center;
+  }
+
+  .answer-btn {
+    @apply relative cursor-pointer transition-transform duration-150 active:scale-95;
+  }
+
+  .answer-btn:hover {
+    transform: scale(1.02);
+  }
+
+  .answer-btn.correct {
+    animation: correct-pulse 0.5s ease-out;
+  }
+
+  .answer-btn.incorrect {
+    animation: incorrect-shake 0.5s ease-out;
+  }
+
+  .mascot {
+    @apply absolute bottom-0 transition-all duration-500 ease-out;
+  }
+
+  .mascot.jumping {
+    animation: hop 0.5s ease-out;
+  }
+
+  .banh-chung {
+    @apply transition-all duration-300;
+  }
+
+  .banh-chung.dim {
+    @apply opacity-30 grayscale;
+  }
+
+  .banh-chung.lit {
+    @apply opacity-100;
+    filter: drop-shadow(0 0 8px hsl(110 45% 50% / 0.6));
+  }
+}
+
+@layer utilities {
+  .font-fredoka {
+    font-family: 'Fredoka', sans-serif;
+  }
+}
+
+@keyframes hop {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes correct-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 hsl(110 45% 50% / 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px 10px hsl(110 45% 50% / 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 hsl(110 45% 50% / 0);
+  }
+}
+
+@keyframes incorrect-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-8px);
+  }
+  40%, 80% {
+    transform: translateX(8px);
+  }
+}
+
+@keyframes celebrate {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+  }
+  75% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.celebrating {
+  animation: celebrate 0.8s ease-in-out infinite;
 }
