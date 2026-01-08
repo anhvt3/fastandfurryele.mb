@@ -97,12 +97,12 @@ const TetQuizGame = () => {
       </div>
 
       {/* Question Box */}
-      <div className="px-2 py-2">
+      <div className="px-2 py-0">
         <QuestionBox question={currentQuestion.question} questionNumber={currentQuestionIndex + 1} />
       </div>
 
       {/* Answer Buttons */}
-      <div className="flex flex-col gap-2 px-4 py-2">
+      <div className="flex flex-col gap-1 px-4 py-0">
         {currentQuestion.answers.map((answer, index) => (
           <AnswerButton
             key={index}
@@ -119,7 +119,7 @@ const TetQuizGame = () => {
       </div>
 
       {/* Answer/Continue Button - Same position, overlapping */}
-      <div className="flex justify-center px-4 py-2">
+      <div className="flex justify-center px-4 py-0">
         <div className="relative w-32 h-[35px]">
           {/* Answer Button (TRẢ LỜI) */}
           <button
