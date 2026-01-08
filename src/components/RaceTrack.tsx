@@ -87,7 +87,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Finish Line */}
       <div
         className="absolute"
-        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "-25px", zIndex: 25 }}
+        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "-30px", zIndex: 25 }}
       >
         <img src={finishLineImg} alt="Finish Line" className="w-16 h-auto" />
       </div>
