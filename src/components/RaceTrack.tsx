@@ -19,8 +19,6 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
     return startLine + (progress / 5) * range;
   };
 
-  console.log("cal", calculatePosition(playerPosition));
-
   return (
     <div className="relative w-full h-40 mt-auto">
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
@@ -66,7 +64,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Player */}
       <div
-        className={`mascot ${isJumping.player ? "jumping" : ""}`}
+        className={`mascot ${isJumping.player ? "jumping1" : ""}`}
         style={{
           left: `${calculatePosition(playerPosition)}%`,
           // transform: "translateX(-50%)",  <-- XÓA dòng này ở style inline vì đã đưa vào keyframes/class
@@ -80,7 +78,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Bot 1 */}
       <div
-        className={`mascot ${isJumping.bot1 ? "jumping" : ""}`}
+        className={`mascot ${isJumping.bot1 ? "jumping1" : ""}`}
         style={{
           left: `${calculatePosition(bot1Position) + 6}%`,
           bottom: "20px",
@@ -93,7 +91,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Bot 2 */}
       <div
-        className={`mascot ${isJumping.bot2 ? "jumping" : ""}`}
+        className={`mascot ${isJumping.bot2 ? "jumping1" : ""}`}
         style={{
           left: `${calculatePosition(bot2Position) + 12}%`,
           bottom: "40px",
