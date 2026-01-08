@@ -121,22 +121,6 @@
     @apply relative flex items-center justify-center;
   }
 
-  // .answer-btn {
-  //   @apply relative cursor-pointer transition-transform duration-150 active:scale-95;
-  // }
-
-  // .answer-btn:hover {
-  //   transform: scale(1.02);
-  // }
-
-  // .answer-btn.correct {
-  //   animation: correct-pulse 0.5s ease-out;
-  // }
-
-  // .answer-btn.incorrect {
-  //   animation: incorrect-shake 0.5s ease-out;
-  // }
-
   .mascot {
     @apply absolute bottom-0 transition-all duration-500 ease-out;
   }
