@@ -52,13 +52,6 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
             transform: translate(-50%, 0) scale(1); 
           }
         }
-
-        // .mascot {
-        //   position: absolute;
-        //   transition: left 0.5s linear; /* Dùng linear hoặc ease-in-out cho mượt */
-        //   /* Mặc định luôn căn giữa */
-        //   transform: translateX(-50%);
-        // }
         
         .jumping {
           /* Khi có class này, animation sẽ chiếm quyền điều khiển transform */
@@ -100,7 +93,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)", // Vẫn cần cái này để căn giữa, nhưng keyframes sẽ override khi nhảy
         }}
       >
-        <img src={mascotRed} alt="Player" className="min-w-24 w-24 h-auto drop-shadow-lg" />
+        <img src={mascotRed} alt="Player" className="min-w-24 w-24 drop-shadow-lg" />
       </div>
 
       {/* Bot 1 */}
@@ -113,7 +106,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)",
         }}
       >
-        <img src={mascotGreen} alt="Bot 1" className="min-w-20 w-20 h-auto" />
+        <img src={mascotGreen} alt="Bot 1" className="min-w-20 w-20" />
       </div>
 
       {/* Bot 2 */}
@@ -126,7 +119,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)",
         }}
       >
-        <img src={mascotBlue} alt="Bot 2" className="min-w-16 w-16 h-auto" />
+        <img src={mascotBlue} alt="Bot 2" className="min-w-16 w-16" />
       </div>
       {/* <div 
         className="absolute text-3xl z-30"
