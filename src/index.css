@@ -139,9 +139,9 @@
     @apply absolute bottom-0 transition-all duration-500 ease-out;
   }
 
-  .mascot.jumping {
-    animation: hop 0.5s ease-out;
-  }
+  // .mascot.jumping {
+  //   animation: hop 0.5s ease-out;
+  // }
 
   .banh-chung {
     @apply transition-all duration-300;
