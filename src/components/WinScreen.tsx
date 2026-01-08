@@ -29,7 +29,7 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
         </p>
         
         <p className="text-tet-brown font-semibold">
-          Điểm số: {score}/{totalQuestions} câu đúng
+          Điểm số: {score}/5 câu đúng
         </p>
       </div>
     </div>
