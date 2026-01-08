@@ -21,15 +21,78 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
   return (
     <div className="relative w-full h-40 mt-auto">
-      {/* Finish flag */}
-      <div 
+      {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
+      <style>{`
+        .mascot {
+          position: absolute;
+          transition: left 0.5s ease-in-out; /* QUAN TRỌNG: Giúp nhân vật trượt tới thay vì nhảy cóc */
+        }
+        
+        .jumping {
+          animation: jump-up-down 0.5s ease-in-out;
+        }
+
+        @keyframes jump-up-down {
+          0% { transform: translate(-50%, 0) scale(1); }
+          50% { transform: translate(-50%, -60px) scale(1.1); } /* Chỉ chỉnh Y, không chỉnh X */
+          100% { transform: translate(-50%, 0) scale(1); }
+        }
+      `}</style>
+
+      {/* Finish flag giữ nguyên */}
+      <div
         className="absolute text-3xl z-30"
         style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "90px" }}
       >
         🏁
       </div>
 
-      {/* Player - Red (front row - largest, positioned at bottom-left of the group) */}
+      {/* Player */}
+      <div
+        className={`mascot ${isJumping.player ? "jumping" : ""}`}
+        style={{
+          left: `${calculatePosition(playerPosition)}%`,
+          // transform: "translateX(-50%)",  <-- XÓA dòng này ở style inline vì đã đưa vào keyframes/class
+          bottom: "0px",
+          zIndex: 30,
+          transform: "translateX(-50%)", // Vẫn cần cái này để căn giữa, nhưng keyframes sẽ override khi nhảy
+        }}
+      >
+        <img src={mascotRed} alt="Player" className="w-24 h-auto drop-shadow-lg" />
+      </div>
+
+      {/* Bot 1 */}
+      <div
+        className={`mascot ${isJumping.bot1 ? "jumping" : ""}`}
+        style={{
+          left: `${calculatePosition(bot1Position) + 6}%`,
+          bottom: "20px",
+          zIndex: 20,
+          transform: "translateX(-50%)",
+        }}
+      >
+        <img src={mascotGreen} alt="Bot 1" className="w-20 h-auto" />
+      </div>
+
+      {/* Bot 2 */}
+      <div
+        className={`mascot ${isJumping.bot2 ? "jumping" : ""}`}
+        style={{
+          left: `${calculatePosition(bot2Position) + 12}%`,
+          bottom: "40px",
+          zIndex: 10,
+          transform: "translateX(-50%)",
+        }}
+      >
+        <img src={mascotBlue} alt="Bot 2" className="w-16 h-auto" />
+      </div>
+      {/* <div 
+        className="absolute text-3xl z-30"
+        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "90px" }}
+      >
+        🏁
+      </div>
+
       <div
         className={`mascot ${isJumping.player ? "jumping" : ""}`}
         style={{ 
@@ -42,7 +105,6 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         <img src={mascotRed} alt="Player" className="w-24 h-auto drop-shadow-lg" />
       </div>
 
-      {/* Bot 1 - Green (middle row - behind and to the right) */}
       <div
         className={`mascot ${isJumping.bot1 ? "jumping" : ""}`}
         style={{ 
@@ -55,7 +117,6 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         <img src={mascotGreen} alt="Bot 1" className="w-20 h-auto" />
       </div>
 
-      {/* Bot 2 - Blue (back row - further behind and to the right) */}
       <div
         className={`mascot ${isJumping.bot2 ? "jumping" : ""}`}
         style={{ 
@@ -66,7 +127,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         }}
       >
         <img src={mascotBlue} alt="Bot 2" className="w-16 h-auto" />
-      </div>
+      </div> */}
     </div>
   );
 };
