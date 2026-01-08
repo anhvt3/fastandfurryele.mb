@@ -97,12 +97,12 @@ const TetQuizGame = () => {
       </div>
 
       {/* Question Box */}
-      <div className="px-2 py-0">
+      <div className="px-2 py-0 mb-1">
         <QuestionBox question={currentQuestion.question} questionNumber={currentQuestionIndex + 1} />
       </div>
 
       {/* Answer Buttons */}
-      <div className="flex flex-col gap-1 px-4 py-0">
+      <div className="flex flex-col gap-1 px-4 py-0 mb-1">
         {currentQuestion.answers.map((answer, index) => (
           <AnswerButton
             key={index}
