@@ -124,7 +124,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)",
         }}
       >
-        <img src={mascotGreen} alt="Bot 1" className="min-w-20 w-20" />
+        <img src={mascotGreen} alt="Bot 1" className="min-w-22 w-22" />
       </div>
 
       {/* Bot 2 */}
@@ -137,7 +137,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           // transform: "translateX(-50%)",
         }}
       >
-        <img src={mascotBlue} alt="Bot 2" className="min-w-16 w-16" />
+        <img src={mascotBlue} alt="Bot 2" className="min-w-19 w-19" />
       </div>
       {/* <div 
         className="absolute text-3xl z-30"
