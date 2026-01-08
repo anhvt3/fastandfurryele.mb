@@ -20,7 +20,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   };
 
   return (
-    <div className="relative w-full h-[100px] mt-0 overflow-hidden flex-shrink-0">
+    <div className="relative w-full h-[150px] mt-[-50px] overflow-hidden flex-shrink-0">
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
       <style>{`
         .mascot {
@@ -75,12 +75,12 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       `}</style>
 
       {/* Finish flag giữ nguyên */}
-      <div
+      {/* <div
         className="absolute text-3xl z-30"
         style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "40px" }}
       >
         🏁
-      </div>
+      </div> */}
 
       {/* Player */}
       <div
