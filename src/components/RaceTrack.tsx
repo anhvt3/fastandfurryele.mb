@@ -24,19 +24,34 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
       <style>{`
         .mascot {
-          position: absolute;
-          transition: left 0.5s ease-in-out; /* QUAN TRỌNG: Giúp nhân vật trượt tới thay vì nhảy cóc */
-        }
-        
-        .jumping {
-          animation: jump-up-down 0.5s ease-in-out;
-        }
+          position: absolute;
+          /* Dòng này QUAN TRỌNG: nó giúp nhân vật trượt ngang mượt mà */
+          transition: left 0.5s ease-in-out; 
+          /* Đảm bảo nhân vật luôn được căn giữa dựa trên điểm neo left */
+          transform: translateX(-50%); 
+        }
+        
+        .mascot.jumping {
+          /* Khi có class jumping, áp dụng animation hop */
+          animation: hop 0.5s ease-in-out;
+        }
 
-        @keyframes jump-up-down {
-          0% { transform: translate(-50%, 0) scale(1); }
-          50% { transform: translate(-50%, -60px) scale(1.1); } /* Chỉ chỉnh Y, không chỉnh X */
-          100% { transform: translate(-50%, 0) scale(1); }
-        }
+        /* Định nghĩa keyframes hop CHỈ NHẢY LÊN XUỐNG */
+        @keyframes hop {
+          0% { 
+            /* Bắt đầu ở vị trí bình thường (đang căn giữa -50%) */
+            transform: translate(-50%, 0) scale(1); 
+          }
+          50% { 
+            /* Nhảy lên cao (Y = -70px) và phóng to một chút. 
+               QUAN TRỌNG: Vẫn giữ translateX(-50%) để không bị lệch ngang */
+            transform: translate(-50%, -70px) scale(1.1); 
+          }
+          100% { 
+            /* Đáp xuống lại vị trí cũ */
+            transform: translate(-50%, 0) scale(1); 
+          }
+        }
       `}</style>
 
       {/* Finish flag giữ nguyên */}
