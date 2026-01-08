@@ -77,7 +77,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Finish flag giữ nguyên */}
       <div
         className="absolute text-3xl z-30"
-        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "90px" }}
+        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "40px" }}
       >
         🏁
       </div>
