@@ -79,7 +79,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Start Line */}
       <div
         className="absolute"
-        style={{ left: `${startLine}%`, transform: "translateX(50%) rotate(-20deg)", bottom: "0px", zIndex: 5 }}
+        style={{ left: `${startLine}%`, transform: "translateX(50%) rotate(-10deg)", bottom: "0px", zIndex: 5 }}
       >
         <img src={startLineImg} alt="Start Line" className="w-20 h-auto opacity-80" />
       </div>
