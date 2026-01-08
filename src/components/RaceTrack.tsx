@@ -52,6 +52,33 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
             transform: translate(-50%, 0) scale(1); 
           }
         }
+
+        .mascot {
+          position: absolute;
+          transition: left 0.5s linear; /* Dùng linear hoặc ease-in-out cho mượt */
+          /* Mặc định luôn căn giữa */
+          transform: translateX(-50%);
+        }
+        
+        .jumping {
+          /* Khi có class này, animation sẽ chiếm quyền điều khiển transform */
+          animation: jump-forward 0.5s ease-in-out;
+        }
+      
+        @keyframes jump-forward {
+          0% {
+            /* BẮT BUỘC PHẢI CÓ -50% ĐỂ KHỚP VỚI TRẠNG THÁI CŨ */
+            transform: translate(-50%, 0) scale(1);
+          }
+          50% {
+            /* Nhảy lên nhưng vẫn giữ trục X là -50% */
+            transform: translate(-50%, -80px) scale(1.1);
+          }
+          100% {
+            /* Đáp xuống và vẫn giữ trục X là -50% */
+            transform: translate(-50%, 0) scale(1);
+          }
+        }
       `}</style>
 
       {/* Finish flag giữ nguyên */}
@@ -64,7 +91,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Player */}
       <div
-        className={`mascot ${isJumping.player ? "jumping1" : ""}`}
+        className={`mascot ${isJumping.player ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(playerPosition)}%`,
           // transform: "translateX(-50%)",  <-- XÓA dòng này ở style inline vì đã đưa vào keyframes/class
@@ -78,7 +105,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Bot 1 */}
       <div
-        className={`mascot ${isJumping.bot1 ? "jumping1" : ""}`}
+        className={`mascot ${isJumping.bot1 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(bot1Position) + 6}%`,
           bottom: "20px",
@@ -91,7 +118,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
 
       {/* Bot 2 */}
       <div
-        className={`mascot ${isJumping.bot2 ? "jumping1" : ""}`}
+        className={`mascot ${isJumping.bot2 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(bot2Position) + 12}%`,
           bottom: "40px",
