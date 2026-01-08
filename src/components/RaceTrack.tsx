@@ -22,7 +22,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   };
 
   return (
-    <div className="relative w-full h-[200px] mt-[-50px] overflow-hidden flex-shrink-0 pointer-events-none">
+    <div className="relative w-full h-[180px] mt-[-50px] overflow-hidden flex-shrink-0 pointer-events-none">
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
       <style>{`
         .mascot {
