@@ -158,12 +158,7 @@ const TetQuizGame = () => {
       <div className="flex flex-col gap-2 px-4 py-2 flex-1">
         {currentQuestion.answers.map((answer, index) => (
           <AnswerButton
-            {/* key={index}
-            text={answer}
-            label={answerLabels[index]}
-            onClick={() => handleAnswer(index)}
-            disabled={isAnswering}
-            state={answerStates[index]} */}
+           
               key={index}
                     answer={answer}
                     index={index}
