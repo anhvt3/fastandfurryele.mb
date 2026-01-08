@@ -19,6 +19,8 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
     return startLine + (progress / 5) * range;
   };
 
+  console.log("bot1Position", bot1Position);
+
   return (
     <div className="relative w-full h-40 mt-auto overflow-hidden flex-shrink-0">
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
