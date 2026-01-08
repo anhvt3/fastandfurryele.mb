@@ -22,56 +22,60 @@ const TetQuizGame = () => {
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  const handleAnswer = useCallback((selectedIndex: number) => {
-    if (isAnswering || gameOver) return;
-    
-    setIsAnswering(true);
-    const isCorrect = selectedIndex === currentQuestion.correctIndex;
+  const handleAnswer = useCallback(
+    (selectedIndex: number) => {
+      if (isAnswering || gameOver) return;
 
-    // Update answer states to show correct/incorrect
-    const newStates: AnswerState[] = answerStates.map((_, idx) => {
-      if (idx === currentQuestion.correctIndex) return "correct";
-      if (idx === selectedIndex && !isCorrect) return "incorrect";
-      return "normal";
-    });
-    setAnswerStates(newStates);
+      setIsAnswering(true);
+      const isCorrect = selectedIndex === currentQuestion.correctIndex;
 
-    // Trigger jumping animations
-    if (isCorrect) {
-      // Player always advances on correct answer
-      setIsJumping({ player: true, bot1: true, bot2: true });
-      
-      const newScore = score + 1;
-      setScore(newScore);
-      setPlayerPosition(newScore);
-      
-      // Bots advance slower (random 0.3-0.7 of player step, but never exceed player)
-      setBot1Position(prev => Math.min(prev + Math.random() * 0.4 + 0.3, newScore - 0.3));
-      setBot2Position(prev => Math.min(prev + Math.random() * 0.4 + 0.2, newScore - 0.5));
-    } else {
-      // Player doesn't advance, bots advance slightly
-      setIsJumping({ player: false, bot1: true, bot2: true });
-      setBot1Position(prev => Math.min(prev + Math.random() * 0.2 + 0.1, playerPosition - 0.2));
-      setBot2Position(prev => Math.min(prev + Math.random() * 0.15 + 0.05, playerPosition - 0.4));
-    }
+      // Update answer states to show correct/incorrect
+      const newStates: AnswerState[] = answerStates.map((_, idx) => {
+        if (idx === currentQuestion.correctIndex) return "correct";
+        if (idx === selectedIndex && !isCorrect) return "incorrect";
+        return "normal";
+      });
+      setAnswerStates(newStates);
 
-    // Reset jumping after animation
-    setTimeout(() => {
-      setIsJumping({ player: false, bot1: false, bot2: false });
-    }, 500);
+      // Trigger jumping animations
+      if (isCorrect) {
+        // Player always advances on correct answer
+        setIsJumping({ player: true, bot1: true, bot2: true });
 
-    // Move to next question or end game
-    setTimeout(() => {
-      setAnswerStates(["normal", "normal", "normal", "normal"]);
-      
-      if (currentQuestionIndex >= questions.length - 1 || score + (isCorrect ? 1 : 0) >= 5) {
-        setGameOver(true);
+        const newScore = score + 1;
+        setScore(newScore);
+        // setPlayerPosition(newScore);
+        setPlayerPosition((prev) => Math.min(newScore, 5));
+
+        // Bots advance slower (random 0.3-0.7 of player step, but never exceed player)
+        setBot1Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.3, newScore - 0.3));
+        setBot2Position((prev) => Math.min(prev + Math.random() * 0.4 + 0.2, newScore - 0.5));
       } else {
-        setCurrentQuestionIndex(prev => prev + 1);
+        // Player doesn't advance, bots advance slightly
+        setIsJumping({ player: false, bot1: true, bot2: true });
+        setBot1Position((prev) => Math.min(prev + Math.random() * 0.2 + 0.1, playerPosition - 0.2));
+        setBot2Position((prev) => Math.min(prev + Math.random() * 0.15 + 0.05, playerPosition - 0.4));
       }
-      setIsAnswering(false);
-    }, 1200);
-  }, [currentQuestionIndex, currentQuestion, score, isAnswering, gameOver, playerPosition, answerStates]);
+
+      // Reset jumping after animation
+      setTimeout(() => {
+        setIsJumping({ player: false, bot1: false, bot2: false });
+      }, 500);
+
+      // Move to next question or end game
+      setTimeout(() => {
+        setAnswerStates(["normal", "normal", "normal", "normal"]);
+
+        if (currentQuestionIndex >= questions.length - 1 || score + (isCorrect ? 1 : 0) >= 5) {
+          setGameOver(true);
+        } else {
+          setCurrentQuestionIndex((prev) => prev + 1);
+        }
+        setIsAnswering(false);
+      }, 1200);
+    },
+    [currentQuestionIndex, currentQuestion, score, isAnswering, gameOver, playerPosition, answerStates],
+  );
 
   const handleRestart = () => {
     setCurrentQuestionIndex(0);
@@ -88,10 +92,7 @@ const TetQuizGame = () => {
   const answerLabels = ["A", "B", "C", "D"];
 
   return (
-    <div
-      className="game-container flex flex-col"
-      style={{ backgroundImage: `url(${background})` }}
-    >
+    <div className="game-container flex flex-col" style={{ backgroundImage: `url(${background})` }}>
       {/* Score Display - Top */}
       <div className="pt-4 pb-2">
         <ScoreDisplay score={score} total={5} />
@@ -99,10 +100,7 @@ const TetQuizGame = () => {
 
       {/* Question Box */}
       <div className="px-2 py-2">
-        <QuestionBox
-          question={currentQuestion.question}
-          questionNumber={currentQuestionIndex + 1}
-        />
+        <QuestionBox question={currentQuestion.question} questionNumber={currentQuestionIndex + 1} />
       </div>
 
       {/* Answer Buttons */}
@@ -128,13 +126,7 @@ const TetQuizGame = () => {
       />
 
       {/* Win/Lose Screen */}
-      {gameOver && (
-        <WinScreen
-          score={score}
-          totalQuestions={questions.length}
-          onRestart={handleRestart}
-        />
-      )}
+      {gameOver && <WinScreen score={score} totalQuestions={questions.length} onRestart={handleRestart} />}
     </div>
   );
 };
