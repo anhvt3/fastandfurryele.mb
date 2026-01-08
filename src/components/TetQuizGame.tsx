@@ -120,7 +120,7 @@ const TetQuizGame = () => {
 
       {/* Answer/Continue Button - Same position, overlapping */}
       <div className="flex justify-center px-4 py-2">
-        <div className="relative w-32 h-12">
+        <div className="relative w-28 h-10">
           {/* Answer Button (TRẢ LỜI) */}
           <button
             onClick={handleSubmitAnswer}
