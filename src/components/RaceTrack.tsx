@@ -53,12 +53,12 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           }
         }
 
-        .mascot {
-          position: absolute;
-          transition: left 0.5s linear; /* Dùng linear hoặc ease-in-out cho mượt */
-          /* Mặc định luôn căn giữa */
-          transform: translateX(-50%);
-        }
+        // .mascot {
+        //   position: absolute;
+        //   transition: left 0.5s linear; /* Dùng linear hoặc ease-in-out cho mượt */
+        //   /* Mặc định luôn căn giữa */
+        //   transform: translateX(-50%);
+        // }
         
         .jumping {
           /* Khi có class này, animation sẽ chiếm quyền điều khiển transform */
