@@ -19,7 +19,7 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
         />
         
         <h2 className="text-3xl font-bold text-tet-red mb-4">
-          🎉 Hoàn thành! 🎉
+          Hoàn thành!
         </h2>
         
         <p className="text-tet-brown font-bold text-4xl mb-6">
@@ -28,7 +28,7 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
         
         <button
           onClick={onRestart}
-          className="bg-tet-red hover:bg-tet-red/90 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition-all hover:scale-105"
+          className="bg-tet-gold hover:bg-tet-gold/90 text-tet-brown font-bold py-3 px-8 rounded-full text-lg shadow-lg transition-all hover:scale-105"
         >
           Tiếp tục
         </button>
