@@ -19,6 +19,7 @@ const TetQuizGame = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [answerResults, setAnswerResults] = useState<(boolean | null)[]>(Array(5).fill(null));
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -57,6 +58,13 @@ const TetQuizGame = () => {
       setBot2Position((prev) => Math.min(prev + 1, 5));
     }
 
+    // Track answer result for current question
+    setAnswerResults((prev) => {
+      const newResults = [...prev];
+      newResults[currentQuestionIndex] = isCorrect;
+      return newResults;
+    });
+
     // Reset jumping after animation
     setTimeout(() => {
       setIsJumping({ player: false, bot1: false, bot2: false });
@@ -87,13 +95,14 @@ const TetQuizGame = () => {
     setSelectedAnswer(null);
     setIsAnswered(false);
     setGameOver(false);
+    setAnswerResults(Array(5).fill(null));
   };
 
   return (
     <div className="game-container flex flex-col" style={{ backgroundImage: `url(${background})` }}>
       {/* Score Display - Top */}
       <div className="pt-4 pb-2">
-        <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} />
+        <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} answerResults={answerResults} />
       </div>
 
       {/* Question Box */}
