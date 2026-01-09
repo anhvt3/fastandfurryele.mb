@@ -18,19 +18,20 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
           className={`w-32 h-auto mx-auto mb-4 ${isWinner ? "celebrating" : ""}`} 
         />
         
-        <h2 className="text-3xl font-bold text-tet-red mb-2">
-          {isWinner ? "🎉 Hoàn thành 🎉" : "Kết Thúc!"}
+        <h2 className="text-3xl font-bold text-tet-red mb-4">
+          🎉 Hoàn thành! 🎉
         </h2>
         
-        <p className="text-foreground text-lg mb-2">
-          {isWinner 
-            ? "Bạn đã về đích thành công!" 
-            : "Cố gắng hơn lần sau nhé!"}
+        <p className="text-tet-brown font-bold text-4xl mb-6">
+          {score}/5 câu đúng
         </p>
         
-        <p className="text-tet-brown font-semibold">
-          Điểm số: {score}/5 câu đúng
-        </p>
+        <button
+          onClick={onRestart}
+          className="bg-tet-red hover:bg-tet-red/90 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transition-all hover:scale-105"
+        >
+          Tiếp tục
+        </button>
       </div>
     </div>
   );
