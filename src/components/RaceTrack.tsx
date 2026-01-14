@@ -105,12 +105,28 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className={`mascot ${isJumping.player && playerPosition < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(playerPosition)}%`,
-          // transform: "translateX(-50%)",  <-- XÓA dòng này ở style inline vì đã đưa vào keyframes/class
           bottom: "0px",
           zIndex: 30,
-          // transform: "translateX(-50%)", // Vẫn cần cái này để căn giữa, nhưng keyframes sẽ override khi nhảy
         }}
       >
+        {/* Player Name Label */}
+        <div 
+          className="absolute left-1/2 -translate-x-1/2 -top-6 whitespace-nowrap"
+          style={{ zIndex: 31 }}
+        >
+          <span 
+            className="px-2 py-0.5 rounded-full text-xs font-medium"
+            style={{
+              backgroundColor: 'rgba(255, 248, 235, 0.95)',
+              color: '#5D4037',
+              fontFamily: '"Comic Sans MS", "Fredoka", cursive, sans-serif',
+              fontSize: '11px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+            }}
+          >
+            Player
+          </span>
+        </div>
         <img src={mascotRed} alt="Player" className="min-w-24 w-24 drop-shadow-lg" />
       </div>
 
