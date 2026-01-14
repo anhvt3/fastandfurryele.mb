@@ -1,3 +1,6 @@
+import "katex/dist/katex.min.css";
+import { InlineMath } from "react-katex";
+
 interface AnswerButtonProps {
   answer: string;
   index: number;
@@ -66,6 +69,38 @@ const AnswerButton = ({
     return "hsl(var(--primary) / 0.2)"; // Default circle background
   };
 
+  // Check if answer contains LaTeX ($ delimiters)
+  const renderAnswerText = () => {
+    const hasInlineMath = answer.includes("$");
+    
+    if (hasInlineMath) {
+      const parts = answer.split(/\$/);
+      return (
+        <span 
+          className="font-semibold text-left leading-tight font-sf-compact" 
+          style={{ color: "#0a0a48", fontSize: "16px" }}
+        >
+          {parts.map((part, idx) => 
+            idx % 2 === 0 ? (
+              <span key={idx}>{part}</span>
+            ) : (
+              <InlineMath key={idx} math={part} />
+            )
+          )}
+        </span>
+      );
+    }
+    
+    return (
+      <span 
+        className="font-semibold text-left leading-tight font-sf-compact" 
+        style={{ color: "#0a0a48", fontSize: "16px" }}
+      >
+        {answer}
+      </span>
+    );
+  };
+
   return (
     <button
       onClick={onClick}
@@ -79,14 +114,12 @@ const AnswerButton = ({
       `}
     >
       <span
-        className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-[12px] lg:text-[16px] shrink-0 transition-colors duration-200"
-        style={{ color: getLetterColor(), backgroundColor: getCircleBackground() }}
+        className="w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0 transition-colors duration-200 font-sf-compact"
+        style={{ color: getLetterColor(), backgroundColor: getCircleBackground(), fontSize: "16px" }}
       >
         {labels[index]}
       </span>
-      <span className="font-semibold text-left text-[12px] lg:text-[16px] leading-tight" style={{ color: "#0a0a48" }}>
-        {answer}
-      </span>
+      {renderAnswerText()}
     </button>
   );
 };
