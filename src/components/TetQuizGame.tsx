@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import background from "@/assets/background.png";
 import submitButton from "@/assets/submit-button.png";
 import continueButton from "@/assets/continue-button.png";
@@ -7,9 +7,14 @@ import QuestionBox from "./QuestionBox";
 import AnswerButton from "./AnswerButton";
 import RaceTrack from "./RaceTrack";
 import WinScreen from "./WinScreen";
-import { questions } from "@/data/questions";
+import { sampleQuestions, Question } from "@/data/questions";
+import { fetchQuestions } from "@/services/questionApi";
+import { USE_SAMPLE_DATA } from "@/config/gameConfig";
+import { useGameAudio } from "@/hooks/useGameAudio";
 
 const TetQuizGame = () => {
+  const [questions, setQuestions] = useState<Question[]>(sampleQuestions);
+  const [isLoading, setIsLoading] = useState(!USE_SAMPLE_DATA);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [playerPosition, setPlayerPosition] = useState(0);
@@ -21,18 +26,52 @@ const TetQuizGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [answerResults, setAnswerResults] = useState<(boolean | null)[]>(Array(5).fill(null));
 
+  const { playButtonClick, playCorrectAnswer, playWrongAnswer, playFinishGame } = useGameAudio();
+
+  // Load questions based on data source configuration
+  useEffect(() => {
+    if (USE_SAMPLE_DATA) {
+      setQuestions(sampleQuestions);
+      setIsLoading(false);
+    } else {
+      // Load from API
+      setIsLoading(true);
+      fetchQuestions()
+        .then((data) => {
+          setQuestions(data);
+          setAnswerResults(Array(data.length).fill(null));
+        })
+        .catch((error) => {
+          console.error("Failed to load questions from API, using sample data:", error);
+          setQuestions(sampleQuestions);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, []);
+
   const currentQuestion = questions[currentQuestionIndex];
 
   const handleSelectAnswer = (index: number) => {
     if (isAnswered) return;
+    playButtonClick();
     setSelectedAnswer(index);
   };
 
   const handleSubmitAnswer = useCallback(() => {
     if (selectedAnswer === null || isAnswered || gameOver) return;
 
+    playButtonClick();
     setIsAnswered(true);
     const isCorrect = selectedAnswer === currentQuestion.correctIndex;
+
+    // Play correct or wrong answer sound
+    if (isCorrect) {
+      playCorrectAnswer();
+    } else {
+      playWrongAnswer();
+    }
 
     // Xác định di chuyển
     const playerWillMove = isCorrect;
@@ -69,12 +108,14 @@ const TetQuizGame = () => {
     setTimeout(() => {
       setIsJumping({ player: false, bot1: false, bot2: false });
     }, 500);
-  }, [selectedAnswer, isAnswered, gameOver, currentQuestion.correctIndex]);
+  }, [selectedAnswer, isAnswered, gameOver, currentQuestion?.correctIndex, playButtonClick, playCorrectAnswer, playWrongAnswer, currentQuestionIndex]);
 
   const handleContinue = useCallback(() => {
+    playButtonClick();
     const currentScore = score;
 
     if (currentQuestionIndex >= questions.length - 1 || currentScore >= 5) {
+      playFinishGame();
       setGameOver(true);
     } else {
       setCurrentQuestionIndex((prev) => prev + 1);
@@ -83,9 +124,10 @@ const TetQuizGame = () => {
     // Reset for next question
     setSelectedAnswer(null);
     setIsAnswered(false);
-  }, [currentQuestionIndex, score]);
+  }, [currentQuestionIndex, score, questions.length, playButtonClick, playFinishGame]);
 
   const handleRestart = () => {
+    playButtonClick();
     setCurrentQuestionIndex(0);
     setScore(0);
     setPlayerPosition(0);
@@ -95,8 +137,17 @@ const TetQuizGame = () => {
     setSelectedAnswer(null);
     setIsAnswered(false);
     setGameOver(false);
-    setAnswerResults(Array(5).fill(null));
+    setAnswerResults(Array(questions.length).fill(null));
   };
+
+  // Show loading state while fetching from API
+  if (isLoading || !currentQuestion) {
+    return (
+      <div className="game-container flex items-center justify-center" style={{ backgroundImage: `url(${background})` }}>
+        <div className="text-foreground font-sf-compact text-xl">Đang tải câu hỏi...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="game-container flex flex-col" style={{ backgroundImage: `url(${background})` }}>
@@ -107,7 +158,12 @@ const TetQuizGame = () => {
 
       {/* Question Box */}
       <div className="px-2 py-0 mb-1">
-        <QuestionBox question={currentQuestion.question} questionNumber={currentQuestionIndex + 1} />
+        <QuestionBox 
+          question={currentQuestion.question} 
+          questionNumber={currentQuestionIndex + 1}
+          type={currentQuestion.type}
+          imageUrl={currentQuestion.imageUrl}
+        />
       </div>
 
       {/* Answer Buttons */}
