@@ -13,7 +13,7 @@ export const sampleQuestions: Question[] = [
     id: 1,
     question: "Đọc và hiểu ngữ cảnh của đoạn văn xung quanh câu hỏi số 5\n\nĐoạn văn nói về phương tiện công cộng, ưu điểm và nhược điểm. Câu trước câu hỏi 5: \"During rush hour, buses and trains can become extremely crowded, making the commute uncomfortable.\" Câu hỏi 5 tiếp tục nói về một vấn đề khác: sự chậm trễ. Hãy xác định ngữ cảnh của đoạn văn xung quanh câu hỏi số 5.",
     type: "text",
-    answers: ["Đoạn văn nói về phương tiện công cộng, ưu điểm và nhược điểm. Câu trước câu hỏi 5: 'During rush hour, buses and trains can become extremely crowded,'", "Delays and waiting", "Expensive tickets", "Long distances"],
+    answers: ["Đoạn văn nói về phương tiện công cộng, ưu điểm và nhược điểm. Câu trước câu hỏi 5: 'During rush hour, buses and trains can become extremely crowded,'", "Delays and waiting", "Expensive tickets", "Long disng rush hour, buses and trains can become extremely crtances"],
     correctIndex: 1,
   },
   {
