@@ -5,12 +5,13 @@ import continueButton from "@/assets/continue-button.png";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
 import AnswerButton from "./AnswerButton";
-import RaceTrack, { TRACK_CONFIG } from "./RaceTrack";
+import RaceTrack from "./RaceTrack";
 import WinScreen from "./WinScreen";
 import { sampleQuestions, Question } from "@/data/questions";
 import { fetchQuestions } from "@/services/questionApi";
 import { USE_SAMPLE_DATA } from "@/config/gameConfig";
 import { useGameAudio } from "@/hooks/useGameAudio";
+import { UI_CONFIG } from "@/config/uiConfig";
 
 const TetQuizGame = () => {
   const [questions, setQuestions] = useState<Question[]>(sampleQuestions);
@@ -27,6 +28,13 @@ const TetQuizGame = () => {
   const [answerResults, setAnswerResults] = useState<(boolean | null)[]>(Array(5).fill(null));
 
   const { playButtonClick, playCorrectAnswer, playWrongAnswer, playFinishGame } = useGameAudio();
+
+  // Extract config values
+  const { paddingTop: scorePaddingTop, paddingBottom: scorePaddingBottom } = UI_CONFIG.scoreDisplay;
+  const { containerPaddingX: questionPaddingX, containerPaddingY: questionPaddingY, marginBottom: questionMarginBottom } = UI_CONFIG.questionBox;
+  const { containerPaddingX: answerPaddingX, containerPaddingY: answerPaddingY, marginBottom: answerMarginBottom, buttonGap } = UI_CONFIG.answerButtons;
+  const { containerPaddingX: actionPaddingX, containerPaddingY: actionPaddingY, buttonWidth: actionButtonWidth, buttonHeight: actionButtonHeight } = UI_CONFIG.actionButton;
+  const { trackBottomOffset } = UI_CONFIG.raceTrack;
 
   // Load questions based on data source configuration
   useEffect(() => {
@@ -152,12 +160,15 @@ const TetQuizGame = () => {
   return (
     <div className="game-container flex flex-col relative" style={{ backgroundImage: `url(${background})` }}>
       {/* Score Display - Top */}
-      <div className="pt-4 pb-2">
+      <div style={{ paddingTop: `${scorePaddingTop}px`, paddingBottom: `${scorePaddingBottom}px` }}>
         <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} answerResults={answerResults} />
       </div>
 
       {/* Question Box */}
-      <div className="px-2 py-0 mb-1">
+      <div style={{ 
+        padding: `${questionPaddingY}px ${questionPaddingX}px`, 
+        marginBottom: `${questionMarginBottom}px` 
+      }}>
         <QuestionBox 
           question={currentQuestion.question} 
           questionNumber={currentQuestionIndex + 1}
@@ -167,7 +178,14 @@ const TetQuizGame = () => {
       </div>
 
       {/* Answer Buttons */}
-      <div className="flex flex-col gap-1 px-4 py-0 mb-1">
+      <div 
+        className="flex flex-col"
+        style={{ 
+          padding: `${answerPaddingY}px ${answerPaddingX}px`, 
+          marginBottom: `${answerMarginBottom}px`,
+          gap: `${buttonGap}px`
+        }}
+      >
         {currentQuestion.answers.map((answer, index) => (
           <AnswerButton
             key={index}
@@ -184,8 +202,14 @@ const TetQuizGame = () => {
       </div>
 
       {/* Answer/Continue Button - Same position, overlapping */}
-      <div className="flex justify-center px-4 py-0">
-        <div className="relative w-32 h-[35px]">
+      <div 
+        className="flex justify-center"
+        style={{ padding: `${actionPaddingY}px ${actionPaddingX}px` }}
+      >
+        <div 
+          className="relative"
+          style={{ width: `${actionButtonWidth}px`, height: `${actionButtonHeight}px` }}
+        >
           {/* Answer Button (TRẢ LỜI) */}
           <button
             onClick={handleSubmitAnswer}
@@ -212,7 +236,7 @@ const TetQuizGame = () => {
       {/* Race Track - Fixed at Bottom */}
       <div 
         className="absolute left-0 right-0"
-        style={{ bottom: `${TRACK_CONFIG.trackBottomOffset}px` }}
+        style={{ bottom: `${trackBottomOffset}px` }}
       >
         <RaceTrack
           playerPosition={playerPosition}

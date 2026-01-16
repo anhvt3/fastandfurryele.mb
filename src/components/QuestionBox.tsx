@@ -1,6 +1,7 @@
 import questionFrame from "@/assets/question-frame.png";
 import "katex/dist/katex.min.css";
 import { InlineMath, BlockMath } from "react-katex";
+import { UI_CONFIG } from "@/config/uiConfig";
 
 interface QuestionBoxProps {
   question: string;
@@ -15,15 +16,19 @@ const QuestionBox = ({
   type = "text",
   imageUrl 
 }: QuestionBoxProps) => {
+  const { fontSize, imageMaxWidth, imageGap, innerPaddingX, framePaddingX, innerPaddingY } = UI_CONFIG.questionBox;
   
   const renderQuestionContent = () => {
     switch (type) {
       case "image":
         return (
-          <div className="flex flex-col items-center gap-2">
+          <div 
+            className="flex flex-col items-center"
+            style={{ gap: `${imageGap}px` }}
+          >
             <p 
               className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
-              style={{ fontSize: "18px" }}
+              style={{ fontSize: `${fontSize}px` }}
             >
               {question}
             </p>
@@ -31,7 +36,8 @@ const QuestionBox = ({
               <img 
                 src={imageUrl} 
                 alt="Question image" 
-                className="max-w-[200px] h-auto object-contain rounded-lg"
+                className="h-auto object-contain rounded-lg"
+                style={{ maxWidth: `${imageMaxWidth}px` }}
               />
             )}
           </div>
@@ -48,7 +54,7 @@ const QuestionBox = ({
           return (
             <div 
               className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
-              style={{ fontSize: "18px" }}
+              style={{ fontSize: `${fontSize}px` }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -65,7 +71,7 @@ const QuestionBox = ({
           return (
             <p 
               className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
-              style={{ fontSize: "18px" }}
+              style={{ fontSize: `${fontSize}px` }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -81,7 +87,7 @@ const QuestionBox = ({
           return (
             <div 
               className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
-              style={{ fontSize: "18px" }}
+              style={{ fontSize: `${fontSize}px` }}
             >
               <BlockMath math={question} />
             </div>
@@ -93,7 +99,7 @@ const QuestionBox = ({
         return (
           <p 
             className="text-foreground font-semibold text-center leading-relaxed font-sf-compact whitespace-pre-line"
-            style={{ fontSize: "18px" }}
+            style={{ fontSize: `${fontSize}px` }}
           >
             {question}
           </p>
@@ -102,10 +108,16 @@ const QuestionBox = ({
   };
 
   return (
-    <div className="question-box w-full px-4">
+    <div 
+      className="question-box w-full"
+      style={{ padding: `0 ${innerPaddingX}px` }}
+    >
       <div className="relative w-full">
         <img src={questionFrame} alt="Question frame" className="w-full h-auto" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-8 py-4">
+        <div 
+          className="absolute inset-0 flex flex-col items-center justify-center"
+          style={{ padding: `${innerPaddingY}px ${framePaddingX}px` }}
+        >
           {renderQuestionContent()}
         </div>
       </div>

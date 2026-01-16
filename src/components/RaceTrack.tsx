@@ -3,32 +3,7 @@ import mascotGreen from "@/assets/mascot-green.png";
 import mascotBlue from "@/assets/mascot-blue.png";
 import startLineImg from "@/assets/start-line.png";
 import finishLineImg from "@/assets/finish-line.png";
-
-// ==========================================
-// POSITION CONFIGURATION - CHANGE VALUES HERE
-// ==========================================
-export const TRACK_CONFIG = {
-  // Race track container position (pixels from bottom of screen)
-  trackBottomOffset: 10,
-
-  // Track container height in pixels
-  trackHeight: 180,
-
-  // Start and Finish line positions (percentage from left)
-  startLineLeft: 5,
-  finishLineLeft: 85,
-
-  // Player (red squirrel) vertical position (pixels from bottom of track)
-  playerBottom: 0,
-
-  // Bot vertical positions (pixels from bottom of track)
-  bot1Bottom: 20,
-  bot2Bottom: 40,
-
-  // Horizontal offsets for bots (percentage offset from player path)
-  bot1LeftOffset: 6,
-  bot2LeftOffset: 12,
-};
+import { UI_CONFIG } from "@/config/uiConfig";
 
 interface RaceTrackProps {
   playerPosition: number;
@@ -41,13 +16,18 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   const {
     startLineLeft,
     finishLineLeft,
+    startLineWidth,
+    finishLineWidth,
     playerBottom,
     bot1Bottom,
     bot2Bottom,
     bot1LeftOffset,
     bot2LeftOffset,
     trackHeight,
-  } = TRACK_CONFIG;
+  } = UI_CONFIG.raceTrack;
+
+  const { playerWidth, bot1Width, bot2Width } = UI_CONFIG.mascots;
+  const { offsetTop, paddingX, paddingY, fontSize: labelFontSize, borderRadius: labelBorderRadius } = UI_CONFIG.playerLabel;
 
   const calculatePosition = (progress: number) => {
     // Progress is 0-5 (5 correct answers to win)
@@ -63,34 +43,34 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
       <style>{`
         .mascot {
-          position: absolute;
+          position: absolute;
           /* Dòng này QUAN TRỌNG: nó giúp nhân vật trượt ngang mượt mà */
-          transition: left 0.5s ease-in-out; 
+          transition: left 0.5s ease-in-out; 
           /* Đảm bảo nhân vật luôn được căn giữa dựa trên điểm neo left */
           transform: translateX(-50%); 
-        }
-        
-        .mascot.jumping {
+        }
+        
+        .mascot.jumping {
           /* Khi có class jumping, áp dụng animation hop */
-          animation: hop 0.5s ease-in-out;
-        }
+          animation: hop 0.5s ease-in-out;
+        }
 
         /* Định nghĩa keyframes hop CHỈ NHẢY LÊN XUỐNG */
-        @keyframes hop {
-          0% { 
+        @keyframes hop {
+          0% { 
             /* Bắt đầu ở vị trí bình thường (đang căn giữa -50%) */
             transform: translate(-50%, 0) scale(1); 
           }
-          50% { 
+          50% { 
             /* Nhảy lên cao (Y = -70px) và phóng to một chút. 
                QUAN TRỌNG: Vẫn giữ translateX(-50%) để không bị lệch ngang */
             transform: translate(-50%, -70px) scale(1.1); 
           }
-          100% { 
+          100% { 
             /* Đáp xuống lại vị trí cũ */
             transform: translate(-50%, 0) scale(1); 
           }
-        }
+        }
         
         .jumping {
           /* Khi có class này, animation sẽ chiếm quyền điều khiển transform */
@@ -116,9 +96,19 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Start Line */}
       <div
         className="absolute"
-        style={{ left: `${startLineLeft}%`, transform: "translateX(50%) rotate(-10deg)", bottom: "0px", zIndex: 5 }}
+        style={{ 
+          left: `${startLineLeft}%`, 
+          transform: "translateX(50%) rotate(-10deg)", 
+          bottom: "0px", 
+          zIndex: 5 
+        }}
       >
-        <img src={startLineImg} alt="Start Line" className="w-20 h-auto opacity-80" />
+        <img 
+          src={startLineImg} 
+          alt="Start Line" 
+          className="h-auto opacity-80"
+          style={{ width: `${startLineWidth}px` }}
+        />
       </div>
 
       {/* Finish Line */}
@@ -126,16 +116,13 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className="absolute"
         style={{ left: `${finishLineLeft}%`, transform: "translateX(-50%)", bottom: "0px", zIndex: 25 }}
       >
-        <img src={finishLineImg} alt="Finish Line" className="w-16 h-auto" />
+        <img 
+          src={finishLineImg} 
+          alt="Finish Line" 
+          className="h-auto"
+          style={{ width: `${finishLineWidth}px` }}
+        />
       </div>
-
-      {/* Finish flag */}
-      {/* <div
-        className="absolute text-3xl z-30"
-        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "100px" }}
-      >
-        🏁
-      </div> */}
 
       {/* Player */}
       <div
@@ -147,21 +134,31 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         }}
       >
         {/* Player Name Label */}
-        <div className="absolute left-1/2 -translate-x-1/2 -top-6 whitespace-nowrap" style={{ zIndex: 31 }}>
+        <div 
+          className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap" 
+          style={{ top: `${offsetTop}px`, zIndex: 31 }}
+        >
           <span
-            className="px-2 py-0.5 rounded-full text-xs font-medium"
+            className="font-medium"
             style={{
+              padding: `${paddingY}px ${paddingX}px`,
+              borderRadius: `${labelBorderRadius}px`,
               backgroundColor: "rgba(255, 248, 235, 0.95)",
               color: "#5D4037",
               fontFamily: '"Comic Sans MS", "Fredoka", cursive, sans-serif',
-              fontSize: "11px",
+              fontSize: `${labelFontSize}px`,
               boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
             }}
           >
             Player
           </span>
         </div>
-        <img src={mascotRed} alt="Player" className="min-w-24 w-24 drop-shadow-lg" />
+        <img 
+          src={mascotRed} 
+          alt="Player" 
+          className="drop-shadow-lg"
+          style={{ width: `${playerWidth}px`, minWidth: `${playerWidth}px` }}
+        />
       </div>
 
       {/* Bot 1 */}
@@ -173,7 +170,11 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           zIndex: 20,
         }}
       >
-        <img src={mascotGreen} alt="Bot 1" className="min-w-20 w-20" />
+        <img 
+          src={mascotGreen} 
+          alt="Bot 1"
+          style={{ width: `${bot1Width}px`, minWidth: `${bot1Width}px` }}
+        />
       </div>
 
       {/* Bot 2 */}
@@ -185,50 +186,12 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           zIndex: 10,
         }}
       >
-        <img src={mascotBlue} alt="Bot 2" className="min-w-20 w-20" />
+        <img 
+          src={mascotBlue} 
+          alt="Bot 2"
+          style={{ width: `${bot2Width}px`, minWidth: `${bot2Width}px` }}
+        />
       </div>
-      {/* <div 
-        className="absolute text-3xl z-30"
-        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "90px" }}
-      >
-        🏁
-      </div>
-
-      <div
-        className={`mascot ${isJumping.player ? "jumping" : ""}`}
-        style={{ 
-          left: `${calculatePosition(playerPosition)}%`,
-          transform: "translateX(-50%)",
-          bottom: "0px",
-          zIndex: 30
-        }}
-      >
-        <img src={mascotRed} alt="Player" className="w-24 h-auto drop-shadow-lg" />
-      </div>
-
-      <div
-        className={`mascot ${isJumping.bot1 ? "jumping" : ""}`}
-        style={{ 
-          left: `${calculatePosition(bot1Position) + 6}%`,
-          transform: "translateX(-50%)",
-          bottom: "20px",
-          zIndex: 20
-        }}
-      >
-        <img src={mascotGreen} alt="Bot 1" className="w-20 h-auto" />
-      </div>
-
-      <div
-        className={`mascot ${isJumping.bot2 ? "jumping" : ""}`}
-        style={{ 
-          left: `${calculatePosition(bot2Position) + 12}%`,
-          transform: "translateX(-50%)",
-          bottom: "40px",
-          zIndex: 10
-        }}
-      >
-        <img src={mascotBlue} alt="Bot 2" className="w-16 h-auto" />
-      </div> */}
     </div>
   );
 };

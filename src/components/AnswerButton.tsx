@@ -1,5 +1,6 @@
 import "katex/dist/katex.min.css";
 import { InlineMath } from "react-katex";
+import { UI_CONFIG } from "@/config/uiConfig";
 
 interface AnswerButtonProps {
   answer: string;
@@ -22,6 +23,16 @@ const AnswerButton = ({
   correctIndex,
   onClick,
 }: AnswerButtonProps) => {
+  const { 
+    buttonPadding, 
+    buttonMinHeight, 
+    buttonBorderRadius, 
+    fontSize, 
+    letterCircleSize, 
+    letterFontSize,
+    letterGap 
+  } = UI_CONFIG.answerButtons;
+
   const getButtonClass = (): string => {
     if (isAnswered) {
       // After submission
@@ -78,7 +89,7 @@ const AnswerButton = ({
       return (
         <span 
           className="font-semibold text-left leading-tight font-sf-compact" 
-          style={{ color: "#0a0a48", fontSize: "16px" }}
+          style={{ color: "#0a0a48", fontSize: `${fontSize}px` }}
         >
           {parts.map((part, idx) => 
             idx % 2 === 0 ? (
@@ -94,7 +105,7 @@ const AnswerButton = ({
     return (
       <span 
         className="font-semibold text-left leading-tight font-sf-compact" 
-        style={{ color: "#0a0a48", fontSize: "16px" }}
+        style={{ color: "#0a0a48", fontSize: `${fontSize}px` }}
       >
         {answer}
       </span>
@@ -106,16 +117,27 @@ const AnswerButton = ({
       onClick={onClick}
       disabled={isDisabled}
       className={`
-        answer-btn rounded-2xl p-2.5 min-h-[60px]
-        flex items-center gap-3
+        answer-btn flex items-center
         ${getButtonClass()}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer active:scale-95"}
         transition-all duration-200
       `}
+      style={{
+        padding: `${buttonPadding}px`,
+        minHeight: `${buttonMinHeight}px`,
+        borderRadius: `${buttonBorderRadius}px`,
+        gap: `${letterGap}px`,
+      }}
     >
       <span
-        className="w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0 transition-colors duration-200 font-sf-compact"
-        style={{ color: getLetterColor(), backgroundColor: getCircleBackground(), fontSize: "16px" }}
+        className="rounded-full flex items-center justify-center font-bold shrink-0 transition-colors duration-200 font-sf-compact"
+        style={{ 
+          color: getLetterColor(), 
+          backgroundColor: getCircleBackground(), 
+          fontSize: `${letterFontSize}px`,
+          width: `${letterCircleSize}px`,
+          height: `${letterCircleSize}px`,
+        }}
       >
         {labels[index]}
       </span>
