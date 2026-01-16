@@ -20,6 +20,8 @@ export const UI_CONFIG = {
     scale: 1.0, // Multiplier for all size values in this section
     // Height settings
     minHeight: 180, // pixels - minimum question box height
+    height: 180, // pixels - fixed height (used when useFixedHeight is true)
+    useFixedHeight: true, // true = use fixed height, false = use image aspect ratio
     // Container spacing
     containerPaddingX: 8, // pixels - left/right container padding (px-2)
     containerPaddingY: 0, // pixels - top/bottom container padding
