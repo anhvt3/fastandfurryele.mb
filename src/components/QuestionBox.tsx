@@ -18,6 +18,7 @@ const QuestionBox = ({
 }: QuestionBoxProps) => {
   const { 
     fontSize, 
+    textAlign,
     imageMaxWidth, 
     imageGap, 
     innerPaddingX, 
@@ -27,6 +28,9 @@ const QuestionBox = ({
     scrollbarColor,
     scrollbarTrackColor
   } = UI_CONFIG.questionBox;
+
+  const alignClass = textAlign === "left" ? "text-left" : 
+                     textAlign === "right" ? "text-right" : "text-center";
   
   const renderQuestionContent = () => {
     switch (type) {
@@ -36,12 +40,12 @@ const QuestionBox = ({
             className="flex flex-col items-center"
             style={{ gap: `${imageGap}px` }}
           >
-            <p 
-              className="text-black text-center"
-              style={{ fontSize: `${fontSize}px` }}
-            >
-              {question}
-            </p>
+          <p 
+            className={`text-black ${alignClass}`}
+            style={{ fontSize: `${fontSize}px` }}
+          >
+            {question}
+          </p>
             {imageUrl && (
               <img 
                 src={imageUrl} 
@@ -63,7 +67,7 @@ const QuestionBox = ({
           const parts = question.split(/\$\$/);
           return (
             <div 
-              className="text-black text-center"
+              className={`text-black ${alignClass}`}
               style={{ fontSize: `${fontSize}px` }}
             >
               {parts.map((part, index) => 
@@ -80,7 +84,7 @@ const QuestionBox = ({
           const parts = question.split(/\$/);
           return (
             <p 
-              className="text-black text-center"
+              className={`text-black ${alignClass}`}
               style={{ fontSize: `${fontSize}px` }}
             >
               {parts.map((part, index) => 
@@ -96,7 +100,7 @@ const QuestionBox = ({
           // No math delimiters, try to render entire content as LaTeX
           return (
             <div 
-              className="text-black text-center"
+              className={`text-black ${alignClass}`}
               style={{ fontSize: `${fontSize}px` }}
             >
               <BlockMath math={question} />
@@ -108,7 +112,7 @@ const QuestionBox = ({
       default:
         return (
           <p 
-            className="text-black text-center whitespace-pre-line"
+            className={`text-black ${alignClass} whitespace-pre-line`}
             style={{ fontSize: `${fontSize}px` }}
           >
             {question}
