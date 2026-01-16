@@ -25,6 +25,7 @@ const AnswerButton = ({
 }: AnswerButtonProps) => {
   const config = UI_CONFIG.answerButtons;
   const { 
+    scale,
     buttonPadding, 
     buttonMinHeight, 
     buttonBorderRadius, 
@@ -59,17 +60,28 @@ const AnswerButton = ({
     transitionDuration,
   } = config;
 
+  // Apply scale to pixel values
+  const scaledButtonPadding = buttonPadding * scale;
+  const scaledButtonMinHeight = buttonMinHeight * scale;
+  const scaledButtonBorderRadius = buttonBorderRadius * scale;
+  const scaledBorderWidth = borderWidth * scale;
+  const scaledFontSize = fontSize * scale;
+  const scaledLetterCircleSize = letterCircleSize * scale;
+  const scaledLetterFontSize = letterFontSize * scale;
+  const scaledLetterGap = letterGap * scale;
+  const scaledSelectedShadowBlur = selectedShadowBlur * scale;
+
   const alignClass = textAlign === "left" ? "text-left" : 
                      textAlign === "center" ? "text-center" : "text-right";
 
   // Get button styles based on state
   const getButtonStyles = (): React.CSSProperties => {
     const baseStyles: React.CSSProperties = {
-      padding: `${buttonPadding}px`,
-      minHeight: `${buttonMinHeight}px`,
-      borderRadius: `${buttonBorderRadius}px`,
-      gap: `${letterGap}px`,
-      borderWidth: `${borderWidth}px`,
+      padding: `${scaledButtonPadding}px`,
+      minHeight: `${scaledButtonMinHeight}px`,
+      borderRadius: `${scaledButtonBorderRadius}px`,
+      gap: `${scaledLetterGap}px`,
+      borderWidth: `${scaledBorderWidth}px`,
       borderStyle: 'solid',
       transition: `all ${transitionDuration}ms`,
     };
@@ -104,7 +116,7 @@ const AnswerButton = ({
         ...baseStyles,
         backgroundColor: selectedBackgroundColor,
         borderColor: selectedBorderColor,
-        boxShadow: `0 0 ${selectedShadowBlur}px ${selectedShadowColor}`,
+        boxShadow: `0 0 ${scaledSelectedShadowBlur}px ${selectedShadowColor}`,
       };
     }
 
@@ -152,7 +164,7 @@ const AnswerButton = ({
       return (
         <span 
           className={alignClass}
-          style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
+          style={{ fontSize: `${scaledFontSize}px`, fontFamily, color: textColor }}
         >
           {parts.map((part, idx) => 
             idx % 2 === 0 ? (
@@ -168,7 +180,7 @@ const AnswerButton = ({
     return (
       <span 
         className={alignClass}
-        style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
+        style={{ fontSize: `${scaledFontSize}px`, fontFamily, color: textColor }}
       >
         {answer}
       </span>
@@ -206,9 +218,9 @@ const AnswerButton = ({
         style={{ 
           color: getLetterColor(), 
           backgroundColor: getCircleBackground(), 
-          fontSize: `${letterFontSize}px`,
-          width: `${letterCircleSize}px`,
-          height: `${letterCircleSize}px`,
+          fontSize: `${scaledLetterFontSize}px`,
+          width: `${scaledLetterCircleSize}px`,
+          height: `${scaledLetterCircleSize}px`,
           transition: `all ${transitionDuration}ms`,
         }}
       >

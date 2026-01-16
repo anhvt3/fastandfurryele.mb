@@ -9,7 +9,11 @@ interface ScoreDisplayProps {
 }
 
 const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps) => {
-  const { iconSize, iconGap } = UI_CONFIG.scoreDisplay;
+  const { scale, iconSize, iconGap } = UI_CONFIG.scoreDisplay;
+
+  // Apply scale to pixel values
+  const scaledIconSize = iconSize * scale;
+  const scaledIconGap = iconGap * scale;
 
   return (
     <div className="relative">
@@ -54,7 +58,7 @@ const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps)
 
       <div 
         className="flex items-center justify-center"
-        style={{ gap: `${iconGap}px` }}
+        style={{ gap: `${scaledIconGap}px` }}
       >
         {Array.from({ length: total }).map((_, index) => {
           // Logic xác định trạng thái dựa trên kết quả trả lời
@@ -75,7 +79,7 @@ const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps)
               src={banhChung}
               alt="Bánh chưng"
               className={`transition-all duration-300 ${statusClass}`}
-              style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
+              style={{ width: `${scaledIconSize}px`, height: `${scaledIconSize}px` }}
             />
           );
         })}

@@ -14,6 +14,7 @@ interface RaceTrackProps {
 
 const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: RaceTrackProps) => {
   const {
+    scale: trackScale,
     startLineLeft,
     finishLineLeft,
     startLineWidth,
@@ -26,14 +27,32 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
     trackHeight,
   } = UI_CONFIG.raceTrack;
 
-  const { playerWidth, bot1Width, bot2Width } = UI_CONFIG.mascots;
+  const { scale: mascotScale, playerWidth, bot1Width, bot2Width } = UI_CONFIG.mascots;
   const {
+    scale: labelScale,
     offsetTop,
     paddingX,
     paddingY,
     fontSize: labelFontSize,
     borderRadius: labelBorderRadius,
   } = UI_CONFIG.playerLabel;
+
+  // Apply scale to pixel values
+  const scaledTrackHeight = trackHeight * trackScale;
+  const scaledStartLineWidth = startLineWidth * trackScale;
+  const scaledFinishLineWidth = finishLineWidth * trackScale;
+  const scaledPlayerBottom = playerBottom * trackScale;
+  const scaledBot1Bottom = bot1Bottom * trackScale;
+  const scaledBot2Bottom = bot2Bottom * trackScale;
+
+  const scaledPlayerWidth = playerWidth * mascotScale;
+  const scaledBot1Width = bot1Width * mascotScale;
+  const scaledBot2Width = bot2Width * mascotScale;
+
+  const scaledOffsetTop = offsetTop * labelScale;
+  const scaledPaddingX = paddingX * labelScale;
+  const scaledPaddingY = paddingY * labelScale;
+  const scaledLabelFontSize = labelFontSize * labelScale;
 
   const calculatePosition = (progress: number) => {
     // Progress is 0-5 (5 correct answers to win)
@@ -44,7 +63,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   return (
     <div
       className="relative w-full overflow-hidden flex-shrink-0 pointer-events-none"
-      style={{ height: `${trackHeight}px` }}
+      style={{ height: `${scaledTrackHeight}px` }}
     >
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
       <style>{`
@@ -113,7 +132,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           src={startLineImg}
           alt="Start Line"
           className="h-auto opacity-80"
-          style={{ width: `${startLineWidth}px` }}
+          style={{ width: `${scaledStartLineWidth}px` }}
         />
       </div>
 
@@ -122,7 +141,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className="absolute"
         style={{ left: `${finishLineLeft}%`, transform: "translateX(-50%)", bottom: "0px", zIndex: 25 }}
       >
-        <img src={finishLineImg} alt="Finish Line" className="h-auto" style={{ width: `${finishLineWidth}px` }} />
+        <img src={finishLineImg} alt="Finish Line" className="h-auto" style={{ width: `${scaledFinishLineWidth}px` }} />
       </div>
 
       {/* Player */}
@@ -130,24 +149,24 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className={`mascot ${isJumping.player && playerPosition < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(playerPosition)}%`,
-          bottom: `${playerBottom}px`,
+          bottom: `${scaledPlayerBottom}px`,
           zIndex: 300,
         }}
       >
         {/* Player Name Label */}
         <div
           className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
-          style={{ top: `${offsetTop}px`, zIndex: 31 }}
+          style={{ top: `${scaledOffsetTop}px`, zIndex: 31 }}
         >
           <span
             className="font-medium"
             style={{
-              padding: `${paddingY}px ${paddingX}px`,
+              padding: `${scaledPaddingY}px ${scaledPaddingX}px`,
               borderRadius: `${labelBorderRadius}px`,
               backgroundColor: "rgba(255, 248, 235, 0.95)",
               color: "#5D4037",
               fontFamily: '"Comic Sans MS", "Fredoka", cursive, sans-serif',
-              fontSize: `${labelFontSize}px`,
+              fontSize: `${scaledLabelFontSize}px`,
               boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
             }}
           >
@@ -158,7 +177,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
           src={mascotRed}
           alt="Player"
           className="drop-shadow-lg"
-          style={{ width: `${playerWidth}px`, minWidth: `${playerWidth}px` }}
+          style={{ width: `${scaledPlayerWidth}px`, minWidth: `${scaledPlayerWidth}px` }}
         />
       </div>
 
@@ -167,11 +186,11 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className={`mascot ${isJumping.bot1 && bot1Position < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(bot1Position) + bot1LeftOffset}%`,
-          bottom: `${bot1Bottom}px`,
+          bottom: `${scaledBot1Bottom}px`,
           zIndex: 200,
         }}
       >
-        <img src={mascotGreen} alt="Bot 1" style={{ width: `${bot1Width}px`, minWidth: `${bot1Width}px` }} />
+        <img src={mascotGreen} alt="Bot 1" style={{ width: `${scaledBot1Width}px`, minWidth: `${scaledBot1Width}px` }} />
       </div>
 
       {/* Bot 2 */}
@@ -179,11 +198,11 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className={`mascot ${isJumping.bot2 && bot2Position < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(bot2Position) + bot2LeftOffset}%`,
-          bottom: `${bot2Bottom}px`,
+          bottom: `${scaledBot2Bottom}px`,
           zIndex: 100,
         }}
       >
-        <img src={mascotBlue} alt="Bot 2" style={{ width: `${bot2Width}px`, minWidth: `${bot2Width}px` }} />
+        <img src={mascotBlue} alt="Bot 2" style={{ width: `${scaledBot2Width}px`, minWidth: `${scaledBot2Width}px` }} />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ const QuestionBox = ({
   imageUrl 
 }: QuestionBoxProps) => {
   const { 
+    scale,
     minHeight,
     fontSize, 
     fontFamily,
@@ -31,6 +32,16 @@ const QuestionBox = ({
     scrollbarTrackColor
   } = UI_CONFIG.questionBox;
 
+  // Apply scale to pixel values
+  const scaledMinHeight = minHeight * scale;
+  const scaledFontSize = fontSize * scale;
+  const scaledImageMaxWidth = imageMaxWidth * scale;
+  const scaledImageGap = imageGap * scale;
+  const scaledInnerPaddingX = innerPaddingX * scale;
+  const scaledFramePaddingX = framePaddingX * scale;
+  const scaledInnerPaddingY = innerPaddingY * scale;
+  const scaledMaxContentHeight = maxContentHeight * scale;
+
   const alignClass = textAlign === "left" ? "text-left" : 
                      textAlign === "right" ? "text-right" : "text-center";
   
@@ -40,11 +51,11 @@ const QuestionBox = ({
         return (
           <div 
             className="flex flex-col items-center"
-            style={{ gap: `${imageGap}px` }}
+            style={{ gap: `${scaledImageGap}px` }}
           >
           <p 
             className={`text-black ${alignClass}`}
-            style={{ fontSize: `${fontSize}px`, fontFamily }}
+            style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
           >
             {question}
           </p>
@@ -53,7 +64,7 @@ const QuestionBox = ({
                 src={imageUrl} 
                 alt="Question image" 
                 className="h-auto object-contain rounded-lg"
-                style={{ maxWidth: `${imageMaxWidth}px` }}
+                style={{ maxWidth: `${scaledImageMaxWidth}px` }}
               />
             )}
           </div>
@@ -70,7 +81,7 @@ const QuestionBox = ({
           return (
             <div 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${fontSize}px`, fontFamily }}
+              style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -87,7 +98,7 @@ const QuestionBox = ({
           return (
             <p 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${fontSize}px`, fontFamily }}
+              style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -103,7 +114,7 @@ const QuestionBox = ({
           return (
             <div 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${fontSize}px`, fontFamily }}
+              style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
             >
               <BlockMath math={question} />
             </div>
@@ -115,7 +126,7 @@ const QuestionBox = ({
         return (
           <p 
             className={`text-black ${alignClass} whitespace-pre-line`}
-            style={{ fontSize: `${fontSize}px`, fontFamily }}
+            style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
           >
             {question}
           </p>
@@ -126,18 +137,18 @@ const QuestionBox = ({
   return (
     <div 
       className="question-box w-full"
-      style={{ padding: `0 ${innerPaddingX}px` }}
+      style={{ padding: `0 ${scaledInnerPaddingX}px` }}
     >
-      <div className="relative w-full" style={{ minHeight: `${minHeight}px` }}>
+      <div className="relative w-full" style={{ minHeight: `${scaledMinHeight}px` }}>
         <img src={questionFrame} alt="Question frame" className="w-full h-auto" />
         <div 
           className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ padding: `${innerPaddingY}px ${framePaddingX}px` }}
+          style={{ padding: `${scaledInnerPaddingY}px ${scaledFramePaddingX}px` }}
         >
           <div 
             className="overflow-y-auto w-full custom-scrollbar flex items-center justify-center"
             style={{ 
-              maxHeight: `${maxContentHeight}px`,
+              maxHeight: `${scaledMaxContentHeight}px`,
               scrollbarWidth: 'thin',
               scrollbarColor: `${scrollbarColor} ${scrollbarTrackColor}`
             }}

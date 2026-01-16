@@ -10,6 +10,7 @@ interface WinScreenProps {
 const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
   const isWinner = score >= 5;
   const {
+    scale,
     overlayOpacity,
     cardPadding,
     cardMarginX,
@@ -27,6 +28,22 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
     buttonBorderRadius,
   } = UI_CONFIG.winScreen;
 
+  // Apply scale to pixel values
+  const scaledCardPadding = cardPadding * scale;
+  const scaledCardMarginX = cardMarginX * scale;
+  const scaledCardBorderRadius = cardBorderRadius * scale;
+  const scaledCardBorderWidth = cardBorderWidth * scale;
+  const scaledMascotWidth = mascotWidth * scale;
+  const scaledMascotMarginBottom = mascotMarginBottom * scale;
+  const scaledTitleFontSize = titleFontSize * scale;
+  const scaledTitleMarginBottom = titleMarginBottom * scale;
+  const scaledScoreFontSize = scoreFontSize * scale;
+  const scaledScoreMarginBottom = scoreMarginBottom * scale;
+  const scaledButtonPaddingY = buttonPaddingY * scale;
+  const scaledButtonPaddingX = buttonPaddingX * scale;
+  const scaledButtonFontSize = buttonFontSize * scale;
+  const scaledButtonBorderRadius = buttonBorderRadius * scale;
+
   return (
     <div
       className="absolute inset-0 flex items-center justify-center z-[9999] animate-fade-in"
@@ -35,10 +52,10 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
       <div
         className="bg-tet-cream text-center shadow-2xl border-tet-red"
         style={{
-          padding: `${cardPadding}px`,
-          margin: `0 ${cardMarginX}px`,
-          borderRadius: `${cardBorderRadius}px`,
-          borderWidth: `${cardBorderWidth}px`,
+          padding: `${scaledCardPadding}px`,
+          margin: `0 ${scaledCardMarginX}px`,
+          borderRadius: `${scaledCardBorderRadius}px`,
+          borderWidth: `${scaledCardBorderWidth}px`,
           borderStyle: "solid",
         }}
       >
@@ -46,19 +63,19 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
           src={mascotRed}
           alt="Mascot"
           className={`mx-auto ${isWinner ? "celebrating" : ""}`}
-          style={{ width: `${mascotWidth}px`, marginBottom: `${mascotMarginBottom}px` }}
+          style={{ width: `${scaledMascotWidth}px`, marginBottom: `${scaledMascotMarginBottom}px` }}
         />
 
         <h2
           className="font-bold text-tet-red"
-          style={{ fontSize: `${titleFontSize}px`, marginBottom: `${titleMarginBottom}px` }}
+          style={{ fontSize: `${scaledTitleFontSize}px`, marginBottom: `${scaledTitleMarginBottom}px` }}
         >
           Hoàn thành!
         </h2>
 
         <p
           className="text-tet-brown font-bold"
-          style={{ fontSize: `${scoreFontSize}px`, marginBottom: `${scoreMarginBottom}px` }}
+          style={{ fontSize: `${scaledScoreFontSize}px`, marginBottom: `${scaledScoreMarginBottom}px` }}
         >
           {score}/5 câu đúng
         </p>
@@ -67,9 +84,9 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
           onClick={onRestart}
           className="bg-tet-gold hover:bg-tet-gold/90 text-tet-brown font-bold shadow-lg transition-all hover:scale-105"
           style={{
-            padding: `${buttonPaddingY}px ${buttonPaddingX}px`,
-            fontSize: `${buttonFontSize}px`,
-            borderRadius: `${buttonBorderRadius}px`,
+            padding: `${scaledButtonPaddingY}px ${scaledButtonPaddingX}px`,
+            fontSize: `${scaledButtonFontSize}px`,
+            borderRadius: `${scaledButtonBorderRadius}px`,
           }}
         >
           Tiếp tục
