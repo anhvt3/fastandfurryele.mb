@@ -49,6 +49,9 @@ export const UI_CONFIG = {
   // ANSWER BUTTONS
   answerButtons: {
     scale: 1.0, // Multiplier for all size values in this section
+    // Height settings
+    height: 280, // pixels - fixed height for answer area
+    useFixedHeight: true, // true = use fixed height, false = auto height
     // Container spacing
     containerPaddingX: 16, // pixels - left/right container padding (px-4)
     containerPaddingY: 10, // pixels - top/bottom container padding
