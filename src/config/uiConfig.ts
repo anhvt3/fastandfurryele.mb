@@ -17,7 +17,7 @@ export const UI_CONFIG = {
   // QUESTION BOX
   // ==========================================
   questionBox: {
-    scale: 1.2, // Multiplier for all size values in this section
+    scale: 1.4, // Multiplier for all size values in this section
     // Height settings
     minHeight: 150, // pixels - minimum question box height
     // Container spacing
