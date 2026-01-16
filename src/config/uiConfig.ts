@@ -37,7 +37,7 @@ export const UI_CONFIG = {
     textColor: "#1a1a1a", // hex - question text color
     // Image settings
     imageMaxWidth: 200, // pixels - max width for image questions
-    imageGap: 8, // pixels - gap between text and image (gap-2)
+    imageGap: 10, // pixels - gap between text and image (gap-2)
     // Scroll configuration for long questions
     maxContentHeight: 120, // pixels - max height before scrolling
     scrollbarWidth: 4, // pixels - scrollbar width
@@ -57,7 +57,7 @@ export const UI_CONFIG = {
     paddingBottom: 10, // pixels - bottom padding
     paddingLeft: 12, // pixels - left padding
     paddingRight: 20, // pixels - right padding
-    marginBottom: 10, // pixels - space below answer buttons (mb-1)
+    marginBottom: 8, // pixels - space below answer buttons (mb-1)
     buttonGap: 6, // pixels - gap between answer buttons (gap-1)
     buttonPadding: 8, // pixels - padding inside each button (p-2.5)
     buttonMinHeight: 90, // pixels - minimum button height (min-h-[60px])
