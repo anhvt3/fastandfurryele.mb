@@ -17,6 +17,7 @@ const QuestionBox = ({
   imageUrl 
 }: QuestionBoxProps) => {
   const { 
+    minHeight,
     fontSize, 
     fontFamily,
     textAlign,
@@ -127,7 +128,7 @@ const QuestionBox = ({
       className="question-box w-full"
       style={{ padding: `0 ${innerPaddingX}px` }}
     >
-      <div className="relative w-full">
+      <div className="relative w-full" style={{ minHeight: `${minHeight}px` }}>
         <img src={questionFrame} alt="Question frame" className="w-full h-auto" />
         <div 
           className="absolute inset-0 flex flex-col items-center justify-center"
