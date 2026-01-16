@@ -25,6 +25,7 @@ export const UI_CONFIG = {
     innerPaddingY: 16, // pixels - frame padding Y (py-4)
     framePaddingX: 32, // pixels - text padding inside frame (px-8)
     fontSize: 16, // pixels - question text font size
+    textAlign: "center" as "left" | "center" | "right", // "left" | "center" | "right" - question text alignment
     imageMaxWidth: 200, // pixels - max width for image questions
     imageGap: 8, // pixels - gap between text and image (gap-2)
     // Scroll configuration for long questions
@@ -46,6 +47,7 @@ export const UI_CONFIG = {
     buttonMinHeight: 60, // pixels - minimum button height (min-h-[60px])
     buttonBorderRadius: 16, // pixels - border radius (rounded-2xl)
     fontSize: 16, // pixels - answer text font size
+    textAlign: "left" as "left" | "center" | "right", // "left" | "center" | "right" - answer text alignment
     letterCircleSize: 32, // pixels - A/B/C/D circle size (w-8 h-8)
     letterFontSize: 16, // pixels - A/B/C/D letter font size
     letterGap: 12, // pixels - gap between letter circle and text (gap-3)

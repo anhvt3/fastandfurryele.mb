@@ -28,10 +28,14 @@ const AnswerButton = ({
     buttonMinHeight, 
     buttonBorderRadius, 
     fontSize, 
+    textAlign,
     letterCircleSize, 
     letterFontSize,
     letterGap 
   } = UI_CONFIG.answerButtons;
+
+  const alignClass = textAlign === "left" ? "text-left" : 
+                     textAlign === "center" ? "text-center" : "text-right";
 
   const getButtonClass = (): string => {
     if (isAnswered) {
@@ -88,7 +92,7 @@ const AnswerButton = ({
       const parts = answer.split(/\$/);
       return (
         <span 
-          className="text-left text-black" 
+          className={`${alignClass} text-black`}
           style={{ fontSize: `${fontSize}px` }}
         >
           {parts.map((part, idx) => 
@@ -104,7 +108,7 @@ const AnswerButton = ({
     
     return (
       <span 
-        className="text-left text-black" 
+        className={`${alignClass} text-black`}
         style={{ fontSize: `${fontSize}px` }}
       >
         {answer}
