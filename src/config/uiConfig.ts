@@ -56,7 +56,7 @@ export const UI_CONFIG = {
     innerPaddingBottom: 0, // pixels - bottom padding inside answer area
     innerPaddingLeft: 0, // pixels - left padding inside answer area
     innerPaddingRight: 0, // pixels - right padding inside answer area
-    buttonGap: 10, // pixels - gap between answer buttons (gap-1)
+    buttonGap: 8, // pixels - gap between answer buttons (gap-1)
     buttonPadding: 8, // pixels - padding inside each button (p-2.5)
     buttonMinHeight: 90, // pixels - minimum button height (min-h-[60px])
     buttonBorderRadius: 16, // pixels - border radius (rounded-2xl)
