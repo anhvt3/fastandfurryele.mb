@@ -4,6 +4,32 @@ import mascotBlue from "@/assets/mascot-blue.png";
 import startLineImg from "@/assets/start-line.png";
 import finishLineImg from "@/assets/finish-line.png";
 
+// ==========================================
+// POSITION CONFIGURATION - CHANGE VALUES HERE
+// ==========================================
+export const TRACK_CONFIG = {
+  // Race track container position (pixels from bottom of screen)
+  trackBottomOffset: 0,
+  
+  // Track container height in pixels
+  trackHeight: 180,
+  
+  // Start and Finish line positions (percentage from left)
+  startLineLeft: 5,
+  finishLineLeft: 85,
+  
+  // Player (red squirrel) vertical position (pixels from bottom of track)
+  playerBottom: 0,
+  
+  // Bot vertical positions (pixels from bottom of track)
+  bot1Bottom: 20,
+  bot2Bottom: 40,
+  
+  // Horizontal offsets for bots (percentage offset from player path)
+  bot1LeftOffset: 6,
+  bot2LeftOffset: 12,
+};
+
 interface RaceTrackProps {
   playerPosition: number;
   bot1Position: number;
@@ -12,17 +38,19 @@ interface RaceTrackProps {
 }
 
 const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: RaceTrackProps) => {
-  const finishLine = 85; // percentage from left where finish line is
-  const startLine = 5; // percentage from left where start is
+  const { startLineLeft, finishLineLeft, playerBottom, bot1Bottom, bot2Bottom, bot1LeftOffset, bot2LeftOffset, trackHeight } = TRACK_CONFIG;
 
   const calculatePosition = (progress: number) => {
     // Progress is 0-5 (5 correct answers to win)
-    const range = finishLine - startLine;
-    return startLine + (progress / 5) * range;
+    const range = finishLineLeft - startLineLeft;
+    return startLineLeft + (progress / 5) * range;
   };
 
   return (
-    <div className="relative w-full h-[180px] mt-[-50px] overflow-hidden flex-shrink-0 pointer-events-none">
+    <div 
+      className="relative w-full overflow-hidden flex-shrink-0 pointer-events-none"
+      style={{ height: `${trackHeight}px` }}
+    >
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
       <style>{`
         .mascot {
@@ -79,7 +107,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Start Line */}
       <div
         className="absolute"
-        style={{ left: `${startLine}%`, transform: "translateX(50%) rotate(-10deg)", bottom: "0px", zIndex: 5 }}
+        style={{ left: `${startLineLeft}%`, transform: "translateX(50%) rotate(-10deg)", bottom: "0px", zIndex: 5 }}
       >
         <img src={startLineImg} alt="Start Line" className="w-20 h-auto opacity-80" />
       </div>
@@ -87,7 +115,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Finish Line */}
       <div
         className="absolute"
-        style={{ left: `${finishLine}%`, transform: "translateX(-50%)", bottom: "0px", zIndex: 25 }}
+        style={{ left: `${finishLineLeft}%`, transform: "translateX(-50%)", bottom: "0px", zIndex: 25 }}
       >
         <img src={finishLineImg} alt="Finish Line" className="w-16 h-auto" />
       </div>
@@ -105,7 +133,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className={`mascot ${isJumping.player && playerPosition < 5 ? "jumping" : ""}`}
         style={{
           left: `${calculatePosition(playerPosition)}%`,
-          bottom: "0px",
+          bottom: `${playerBottom}px`,
           zIndex: 30,
         }}
       >
@@ -134,10 +162,9 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       <div
         className={`mascot ${isJumping.bot1 && bot1Position < 5 ? "jumping" : ""}`}
         style={{
-          left: `${calculatePosition(bot1Position) + 6}%`,
-          bottom: "20px",
+          left: `${calculatePosition(bot1Position) + bot1LeftOffset}%`,
+          bottom: `${bot1Bottom}px`,
           zIndex: 20,
-          // transform: "translateX(-50%)",
         }}
       >
         <img src={mascotGreen} alt="Bot 1" className="min-w-20 w-20" />
@@ -147,10 +174,9 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       <div
         className={`mascot ${isJumping.bot2 && bot2Position < 5 ? "jumping" : ""}`}
         style={{
-          left: `${calculatePosition(bot2Position) + 12}%`,
-          bottom: "40px",
+          left: `${calculatePosition(bot2Position) + bot2LeftOffset}%`,
+          bottom: `${bot2Bottom}px`,
           zIndex: 10,
-          // transform: "translateX(-50%)",
         }}
       >
         <img src={mascotBlue} alt="Bot 2" className="min-w-20 w-20" />
