@@ -19,6 +19,8 @@ const QuestionBox = ({
   const { 
     scale,
     minHeight,
+    height,
+    useFixedHeight,
     fontSize, 
     fontFamily,
     textAlign,
@@ -35,6 +37,7 @@ const QuestionBox = ({
 
   // Apply scale to container values only (not text)
   const scaledMinHeight = minHeight * scale;
+  const scaledHeight = height * scale;
   const scaledImageMaxWidth = imageMaxWidth * scale;
   const scaledImageGap = imageGap * scale;
   const scaledInnerPaddingX = innerPaddingX * scale;
@@ -141,7 +144,12 @@ const QuestionBox = ({
       style={{ padding: `0 ${scaledInnerPaddingX}px` }}
     >
       <div className="relative w-full" style={{ minHeight: `${scaledMinHeight}px` }}>
-        <img src={questionFrame} alt="Question frame" className="w-full h-auto" />
+        <img 
+          src={questionFrame} 
+          alt="Question frame" 
+          className="w-full"
+          style={{ height: useFixedHeight ? `${scaledHeight}px` : 'auto' }}
+        />
         <div 
           className="absolute inset-0 flex flex-col items-center justify-start"
           style={{ 
