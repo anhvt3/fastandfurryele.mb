@@ -25,7 +25,7 @@ export const UI_CONFIG = {
     // Container spacing
     containerPaddingX: 8, // pixels - left/right container padding (px-2)
     containerPaddingY: 0, // pixels - top/bottom container padding
-    marginBottom: 10, // pixels - space below question box (mb-1)
+    marginBottom: 6, // pixels - space below question box (mb-1)
     innerPaddingX: 6, // pixels - inner horizontal padding (px-4)
     innerPaddingTop: 72, // pixels - top padding inside frame
     innerPaddingBottom: 20, // pixels - bottom padding inside frame
