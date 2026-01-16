@@ -152,7 +152,7 @@ const QuestionBox = ({
           }}
         >
           <div 
-            className="overflow-y-auto w-full custom-scrollbar flex items-center justify-center"
+            className="overflow-y-auto w-full custom-scrollbar"
             style={{ 
               maxHeight: `${scaledMaxContentHeight}px`,
               scrollbarWidth: 'thin',
