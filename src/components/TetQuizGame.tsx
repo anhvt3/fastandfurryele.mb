@@ -5,7 +5,7 @@ import continueButton from "@/assets/continue-button.png";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
 import AnswerButton from "./AnswerButton";
-import RaceTrack from "./RaceTrack";
+import RaceTrack, { TRACK_CONFIG } from "./RaceTrack";
 import WinScreen from "./WinScreen";
 import { sampleQuestions, Question } from "@/data/questions";
 import { fetchQuestions } from "@/services/questionApi";
@@ -150,7 +150,7 @@ const TetQuizGame = () => {
   }
 
   return (
-    <div className="game-container flex flex-col" style={{ backgroundImage: `url(${background})` }}>
+    <div className="game-container flex flex-col relative" style={{ backgroundImage: `url(${background})` }}>
       {/* Score Display - Top */}
       <div className="pt-4 pb-2">
         <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} answerResults={answerResults} />
@@ -209,13 +209,18 @@ const TetQuizGame = () => {
         </div>
       </div>
 
-      {/* Race Track - Bottom */}
-      <RaceTrack
-        playerPosition={playerPosition}
-        bot1Position={bot1Position}
-        bot2Position={bot2Position}
-        isJumping={isJumping}
-      />
+      {/* Race Track - Fixed at Bottom */}
+      <div 
+        className="absolute left-0 right-0"
+        style={{ bottom: `${TRACK_CONFIG.trackBottomOffset}px` }}
+      >
+        <RaceTrack
+          playerPosition={playerPosition}
+          bot1Position={bot1Position}
+          bot2Position={bot2Position}
+          isJumping={isJumping}
+        />
+      </div>
 
       {/* Win/Lose Screen */}
       {gameOver && <WinScreen score={score} totalQuestions={questions.length} onRestart={handleRestart} />}
