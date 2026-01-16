@@ -88,8 +88,8 @@ const AnswerButton = ({
       const parts = answer.split(/\$/);
       return (
         <span 
-          className="font-semibold text-left leading-tight font-sf-compact" 
-          style={{ color: "#0a0a48", fontSize: `${fontSize}px` }}
+          className="text-left text-black" 
+          style={{ fontSize: `${fontSize}px` }}
         >
           {parts.map((part, idx) => 
             idx % 2 === 0 ? (
@@ -104,8 +104,8 @@ const AnswerButton = ({
     
     return (
       <span 
-        className="font-semibold text-left leading-tight font-sf-compact" 
-        style={{ color: "#0a0a48", fontSize: `${fontSize}px` }}
+        className="text-left text-black" 
+        style={{ fontSize: `${fontSize}px` }}
       >
         {answer}
       </span>
