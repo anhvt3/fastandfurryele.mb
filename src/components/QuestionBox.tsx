@@ -37,7 +37,7 @@ const QuestionBox = ({
             style={{ gap: `${imageGap}px` }}
           >
             <p 
-              className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
+              className="text-black text-center"
               style={{ fontSize: `${fontSize}px` }}
             >
               {question}
@@ -63,7 +63,7 @@ const QuestionBox = ({
           const parts = question.split(/\$\$/);
           return (
             <div 
-              className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
+              className="text-black text-center"
               style={{ fontSize: `${fontSize}px` }}
             >
               {parts.map((part, index) => 
@@ -80,7 +80,7 @@ const QuestionBox = ({
           const parts = question.split(/\$/);
           return (
             <p 
-              className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
+              className="text-black text-center"
               style={{ fontSize: `${fontSize}px` }}
             >
               {parts.map((part, index) => 
@@ -96,7 +96,7 @@ const QuestionBox = ({
           // No math delimiters, try to render entire content as LaTeX
           return (
             <div 
-              className="text-foreground font-semibold text-center leading-relaxed font-sf-compact"
+              className="text-black text-center"
               style={{ fontSize: `${fontSize}px` }}
             >
               <BlockMath math={question} />
@@ -108,7 +108,7 @@ const QuestionBox = ({
       default:
         return (
           <p 
-            className="text-foreground font-semibold text-center leading-relaxed font-sf-compact whitespace-pre-line"
+            className="text-black text-center whitespace-pre-line"
             style={{ fontSize: `${fontSize}px` }}
           >
             {question}
