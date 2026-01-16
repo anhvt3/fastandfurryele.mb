@@ -152,11 +152,10 @@ const QuestionBox = ({
           }}
         >
           <div 
-            className="overflow-y-auto w-full custom-scrollbar"
-            style={{ 
-              maxHeight: `${scaledMaxContentHeight}px`,
-              scrollbarWidth: 'thin',
-              scrollbarColor: `${scrollbarColor} ${scrollbarTrackColor}`
+            className="overflow-y-auto w-full flex-1 min-h-0 custom-scrollbar"
+            style={{
+              scrollbarWidth: "thin",
+              scrollbarColor: `${scrollbarColor} ${scrollbarTrackColor}`,
             }}
           >
             {renderQuestionContent()}
