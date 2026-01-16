@@ -51,7 +51,7 @@ export const UI_CONFIG = {
     scale: 1.0, // Multiplier for all size values in this section
     // Fixed dimensions for answer container
     width: 460, // pixels - fixed width for answer container
-    height: 280, // pixels - fixed height for answer container
+    height: 240, // pixels - fixed height for answer container
     // Padding inside container
     paddingTop: 6, // pixels - top padding
     paddingBottom: 6, // pixels - bottom padding
