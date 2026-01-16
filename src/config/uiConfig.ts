@@ -29,6 +29,7 @@ export const UI_CONFIG = {
     fontSize: 16, // pixels - question text font size
     fontFamily: "roboto", // font family - "fredoka" | "sf-compact" | "roboto" | "sans-serif" | "serif"
     textAlign: "center" as "left" | "center" | "right", // "left" | "center" | "right" - question text alignment
+    textColor: "#1a1a1a", // hex - question text color
     // Image settings
     imageMaxWidth: 200, // pixels - max width for image questions
     imageGap: 8, // pixels - gap between text and image (gap-2)
@@ -51,14 +52,46 @@ export const UI_CONFIG = {
     buttonPadding: 10, // pixels - padding inside each button (p-2.5)
     buttonMinHeight: 60, // pixels - minimum button height (min-h-[60px])
     buttonBorderRadius: 16, // pixels - border radius (rounded-2xl)
+    borderWidth: 3, // pixels - button border width
     // Text settings
     fontSize: 16, // pixels - answer text font size
     fontFamily: "roboto", // font family - "fredoka" | "sf-compact" | "roboto" | "sans-serif" | "serif"
     textAlign: "left" as "left" | "center" | "right", // "left" | "center" | "right" - answer text alignment
+    textColor: "#000000", // hex - answer text color
     // Letter circle settings
     letterCircleSize: 32, // pixels - A/B/C/D circle size (w-8 h-8)
     letterFontSize: 16, // pixels - A/B/C/D letter font size
     letterGap: 12, // pixels - gap between letter circle and text (gap-3)
+    
+    // ========== BUTTON COLORS ==========
+    // Default state
+    defaultBackgroundColor: "#ffe6cc", // hsl(30 100% 90%)
+    defaultBorderColor: "#c9954a", // hsl(30 80% 65%)
+    defaultLetterColor: "#0a0a48", // letter A/B/C/D color
+    defaultLetterBgColor: "rgba(139, 69, 19, 0.2)", // letter circle background
+    
+    // Selected state (before submit)
+    selectedBackgroundColor: "#ffe6cc", // same as default
+    selectedBorderColor: "#007bff", // blue selection border
+    selectedShadowColor: "rgba(0, 123, 255, 0.5)", // glow shadow
+    selectedShadowBlur: 12, // pixels - shadow blur radius
+    
+    // Correct state (after submit)
+    correctBackgroundColor: "#cefdd5", // light green
+    correctBorderColor: "#2acb42", // green border
+    correctLetterColor: "#2acb42", // green letter
+    correctLetterBgColor: "#C8F7C5", // light green circle
+    
+    // Wrong state (after submit)
+    wrongBackgroundColor: "#ffcfcc", // light red
+    wrongBorderColor: "#ff3b30", // red border
+    wrongLetterColor: "#ff3b30", // red letter
+    wrongLetterBgColor: "#FADBD8", // light red circle
+    
+    // Animation settings
+    disabledOpacity: 0.7, // opacity when disabled but not answered
+    activeScale: 0.95, // scale when pressed
+    transitionDuration: 200, // ms - transition duration
   },
 
   // ==========================================
@@ -69,6 +102,10 @@ export const UI_CONFIG = {
     containerPaddingY: 0, // pixels - top/bottom padding
     buttonWidth: 128, // pixels - button width (w-32)
     buttonHeight: 35, // pixels - button height
+    // Animation settings
+    disabledOpacity: 0.5, // opacity when disabled
+    activeScale: 0.95, // scale when pressed
+    transitionDuration: 200, // ms - transition duration
   },
 
   // ==========================================
