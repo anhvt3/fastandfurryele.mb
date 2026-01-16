@@ -9,22 +9,22 @@ import finishLineImg from "@/assets/finish-line.png";
 // ==========================================
 export const TRACK_CONFIG = {
   // Race track container position (pixels from bottom of screen)
-  trackBottomOffset: 0,
-  
+  trackBottomOffset: 10,
+
   // Track container height in pixels
   trackHeight: 180,
-  
+
   // Start and Finish line positions (percentage from left)
   startLineLeft: 5,
   finishLineLeft: 85,
-  
+
   // Player (red squirrel) vertical position (pixels from bottom of track)
   playerBottom: 0,
-  
+
   // Bot vertical positions (pixels from bottom of track)
   bot1Bottom: 20,
   bot2Bottom: 40,
-  
+
   // Horizontal offsets for bots (percentage offset from player path)
   bot1LeftOffset: 6,
   bot2LeftOffset: 12,
@@ -38,7 +38,16 @@ interface RaceTrackProps {
 }
 
 const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: RaceTrackProps) => {
-  const { startLineLeft, finishLineLeft, playerBottom, bot1Bottom, bot2Bottom, bot1LeftOffset, bot2LeftOffset, trackHeight } = TRACK_CONFIG;
+  const {
+    startLineLeft,
+    finishLineLeft,
+    playerBottom,
+    bot1Bottom,
+    bot2Bottom,
+    bot1LeftOffset,
+    bot2LeftOffset,
+    trackHeight,
+  } = TRACK_CONFIG;
 
   const calculatePosition = (progress: number) => {
     // Progress is 0-5 (5 correct answers to win)
@@ -47,7 +56,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   };
 
   return (
-    <div 
+    <div
       className="relative w-full overflow-hidden flex-shrink-0 pointer-events-none"
       style={{ height: `${trackHeight}px` }}
     >
@@ -138,18 +147,15 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         }}
       >
         {/* Player Name Label */}
-        <div 
-          className="absolute left-1/2 -translate-x-1/2 -top-6 whitespace-nowrap"
-          style={{ zIndex: 31 }}
-        >
-          <span 
+        <div className="absolute left-1/2 -translate-x-1/2 -top-6 whitespace-nowrap" style={{ zIndex: 31 }}>
+          <span
             className="px-2 py-0.5 rounded-full text-xs font-medium"
             style={{
-              backgroundColor: 'rgba(255, 248, 235, 0.95)',
-              color: '#5D4037',
+              backgroundColor: "rgba(255, 248, 235, 0.95)",
+              color: "#5D4037",
               fontFamily: '"Comic Sans MS", "Fredoka", cursive, sans-serif',
-              fontSize: '11px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+              fontSize: "11px",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
             }}
           >
             Player
