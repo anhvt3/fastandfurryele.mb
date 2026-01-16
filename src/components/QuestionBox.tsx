@@ -32,9 +32,8 @@ const QuestionBox = ({
     scrollbarTrackColor
   } = UI_CONFIG.questionBox;
 
-  // Apply scale to pixel values
+  // Apply scale to container values only (not text)
   const scaledMinHeight = minHeight * scale;
-  const scaledFontSize = fontSize * scale;
   const scaledImageMaxWidth = imageMaxWidth * scale;
   const scaledImageGap = imageGap * scale;
   const scaledInnerPaddingX = innerPaddingX * scale;
@@ -55,7 +54,7 @@ const QuestionBox = ({
           >
           <p 
             className={`text-black ${alignClass}`}
-            style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
+            style={{ fontSize: `${fontSize}px`, fontFamily }}
           >
             {question}
           </p>
@@ -81,7 +80,7 @@ const QuestionBox = ({
           return (
             <div 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
+              style={{ fontSize: `${fontSize}px`, fontFamily }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -98,7 +97,7 @@ const QuestionBox = ({
           return (
             <p 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
+              style={{ fontSize: `${fontSize}px`, fontFamily }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -114,7 +113,7 @@ const QuestionBox = ({
           return (
             <div 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
+              style={{ fontSize: `${fontSize}px`, fontFamily }}
             >
               <BlockMath math={question} />
             </div>
@@ -126,7 +125,7 @@ const QuestionBox = ({
         return (
           <p 
             className={`text-black ${alignClass} whitespace-pre-line`}
-            style={{ fontSize: `${scaledFontSize}px`, fontFamily }}
+            style={{ fontSize: `${fontSize}px`, fontFamily }}
           >
             {question}
           </p>

@@ -52,7 +52,6 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   const scaledOffsetTop = offsetTop * labelScale;
   const scaledPaddingX = paddingX * labelScale;
   const scaledPaddingY = paddingY * labelScale;
-  const scaledLabelFontSize = labelFontSize * labelScale;
 
   const calculatePosition = (progress: number) => {
     // Progress is 0-5 (5 correct answers to win)
@@ -166,7 +165,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
               backgroundColor: "rgba(255, 248, 235, 0.95)",
               color: "#5D4037",
               fontFamily: '"Comic Sans MS", "Fredoka", cursive, sans-serif',
-              fontSize: `${scaledLabelFontSize}px`,
+              fontSize: `${labelFontSize}px`,
               boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
             }}
           >
