@@ -24,7 +24,7 @@ export const UI_CONFIG = {
     innerPaddingX: 16, // pixels - inner horizontal padding (px-4)
     innerPaddingY: 16, // pixels - frame padding Y (py-4)
     framePaddingX: 32, // pixels - text padding inside frame (px-8)
-    fontSize: 18, // pixels - question text font size
+    fontSize: 16, // pixels - question text font size
     imageMaxWidth: 200, // pixels - max width for image questions
     imageGap: 8, // pixels - gap between text and image (gap-2)
   },
@@ -34,7 +34,7 @@ export const UI_CONFIG = {
   // ==========================================
   answerButtons: {
     containerPaddingX: 16, // pixels - left/right container padding (px-4)
-    containerPaddingY: 0, // pixels - top/bottom container padding
+    containerPaddingY: 10, // pixels - top/bottom container padding
     marginBottom: 4, // pixels - space below answer buttons (mb-1)
     buttonGap: 16, // pixels - gap between answer buttons (gap-1)
     buttonPadding: 10, // pixels - padding inside each button (p-2.5)
