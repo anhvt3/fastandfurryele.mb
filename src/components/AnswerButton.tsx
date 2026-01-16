@@ -23,38 +23,96 @@ const AnswerButton = ({
   correctIndex,
   onClick,
 }: AnswerButtonProps) => {
+  const config = UI_CONFIG.answerButtons;
   const { 
     buttonPadding, 
     buttonMinHeight, 
     buttonBorderRadius, 
+    borderWidth,
     fontSize, 
     fontFamily,
     textAlign,
+    textColor,
     letterCircleSize, 
     letterFontSize,
-    letterGap 
-  } = UI_CONFIG.answerButtons;
+    letterGap,
+    // Colors
+    defaultBackgroundColor,
+    defaultBorderColor,
+    defaultLetterColor,
+    defaultLetterBgColor,
+    selectedBackgroundColor,
+    selectedBorderColor,
+    selectedShadowColor,
+    selectedShadowBlur,
+    correctBackgroundColor,
+    correctBorderColor,
+    correctLetterColor,
+    correctLetterBgColor,
+    wrongBackgroundColor,
+    wrongBorderColor,
+    wrongLetterColor,
+    wrongLetterBgColor,
+    // Animation
+    disabledOpacity,
+    activeScale,
+    transitionDuration,
+  } = config;
 
   const alignClass = textAlign === "left" ? "text-left" : 
                      textAlign === "center" ? "text-center" : "text-right";
 
-  const getButtonClass = (): string => {
+  // Get button styles based on state
+  const getButtonStyles = (): React.CSSProperties => {
+    const baseStyles: React.CSSProperties = {
+      padding: `${buttonPadding}px`,
+      minHeight: `${buttonMinHeight}px`,
+      borderRadius: `${buttonBorderRadius}px`,
+      gap: `${letterGap}px`,
+      borderWidth: `${borderWidth}px`,
+      borderStyle: 'solid',
+      transition: `all ${transitionDuration}ms`,
+    };
+
     if (isAnswered) {
       // After submission
       if (index === correctIndex) {
-        return "answer-btn-correct";
+        return {
+          ...baseStyles,
+          backgroundColor: correctBackgroundColor,
+          borderColor: correctBorderColor,
+        };
       }
       if (isSelected && !isCorrect) {
-        return "answer-btn-wrong";
+        return {
+          ...baseStyles,
+          backgroundColor: wrongBackgroundColor,
+          borderColor: wrongBorderColor,
+        };
       }
-      return "answer-btn-default opacity-70";
+      return {
+        ...baseStyles,
+        backgroundColor: defaultBackgroundColor,
+        borderColor: defaultBorderColor,
+        opacity: disabledOpacity,
+      };
     }
 
     // Before submission
     if (isSelected) {
-      return "answer-btn-selected";
+      return {
+        ...baseStyles,
+        backgroundColor: selectedBackgroundColor,
+        borderColor: selectedBorderColor,
+        boxShadow: `0 0 ${selectedShadowBlur}px ${selectedShadowColor}`,
+      };
     }
-    return "answer-btn-default";
+
+    return {
+      ...baseStyles,
+      backgroundColor: defaultBackgroundColor,
+      borderColor: defaultBorderColor,
+    };
   };
 
   const labels = ["A", "B", "C", "D"];
@@ -63,26 +121,26 @@ const AnswerButton = ({
   const getLetterColor = (): string => {
     if (isAnswered) {
       if (index === correctIndex) {
-        return "#2acb42"; // Correct answer letter color
+        return correctLetterColor;
       }
       if (isSelected && !isCorrect) {
-        return "#ff3b30"; // Wrong answer letter color
+        return wrongLetterColor;
       }
     }
-    return "#0a0a48"; // Default letter color
+    return defaultLetterColor;
   };
 
   // Determine circle background color based on answer state
   const getCircleBackground = (): string => {
     if (isAnswered) {
       if (index === correctIndex) {
-        return "#C8F7C5"; // Correct answer circle fill
+        return correctLetterBgColor;
       }
       if (isSelected && !isCorrect) {
-        return "#FADBD8"; // Wrong answer circle fill
+        return wrongLetterBgColor;
       }
     }
-    return "hsl(var(--primary) / 0.2)"; // Default circle background
+    return defaultLetterBgColor;
   };
 
   // Check if answer contains LaTeX ($ delimiters)
@@ -93,8 +151,8 @@ const AnswerButton = ({
       const parts = answer.split(/\$/);
       return (
         <span 
-          className={`${alignClass} text-black`}
-          style={{ fontSize: `${fontSize}px`, fontFamily }}
+          className={alignClass}
+          style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
         >
           {parts.map((part, idx) => 
             idx % 2 === 0 ? (
@@ -109,8 +167,8 @@ const AnswerButton = ({
     
     return (
       <span 
-        className={`${alignClass} text-black`}
-        style={{ fontSize: `${fontSize}px`, fontFamily }}
+        className={alignClass}
+        style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
       >
         {answer}
       </span>
@@ -122,26 +180,36 @@ const AnswerButton = ({
       onClick={onClick}
       disabled={isDisabled}
       className={`
-        answer-btn flex items-center
-        ${getButtonClass()}
-        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer active:scale-95"}
-        transition-all duration-200
+        flex items-center relative overflow-hidden
+        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
       `}
       style={{
-        padding: `${buttonPadding}px`,
-        minHeight: `${buttonMinHeight}px`,
-        borderRadius: `${buttonBorderRadius}px`,
-        gap: `${letterGap}px`,
+        ...getButtonStyles(),
+        transform: !isDisabled ? undefined : undefined,
+      }}
+      onMouseDown={(e) => {
+        if (!isDisabled) {
+          (e.currentTarget as HTMLElement).style.transform = `scale(${activeScale})`;
+        }
+      }}
+      onMouseUp={(e) => {
+        if (!isDisabled) {
+          (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
       }}
     >
       <span
-        className="rounded-full flex items-center justify-center font-bold shrink-0 transition-colors duration-200 font-sf-compact"
+        className="rounded-full flex items-center justify-center font-bold shrink-0 font-sf-compact"
         style={{ 
           color: getLetterColor(), 
           backgroundColor: getCircleBackground(), 
           fontSize: `${letterFontSize}px`,
           width: `${letterCircleSize}px`,
           height: `${letterCircleSize}px`,
+          transition: `all ${transitionDuration}ms`,
         }}
       >
         {labels[index]}
