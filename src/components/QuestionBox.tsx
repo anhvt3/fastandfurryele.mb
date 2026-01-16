@@ -16,7 +16,17 @@ const QuestionBox = ({
   type = "text",
   imageUrl 
 }: QuestionBoxProps) => {
-  const { fontSize, imageMaxWidth, imageGap, innerPaddingX, framePaddingX, innerPaddingY } = UI_CONFIG.questionBox;
+  const { 
+    fontSize, 
+    imageMaxWidth, 
+    imageGap, 
+    innerPaddingX, 
+    framePaddingX, 
+    innerPaddingY,
+    maxContentHeight,
+    scrollbarColor,
+    scrollbarTrackColor
+  } = UI_CONFIG.questionBox;
   
   const renderQuestionContent = () => {
     switch (type) {
@@ -118,7 +128,16 @@ const QuestionBox = ({
           className="absolute inset-0 flex flex-col items-center justify-center"
           style={{ padding: `${innerPaddingY}px ${framePaddingX}px` }}
         >
-          {renderQuestionContent()}
+          <div 
+            className="overflow-y-auto w-full custom-scrollbar flex items-center justify-center"
+            style={{ 
+              maxHeight: `${maxContentHeight}px`,
+              scrollbarWidth: 'thin',
+              scrollbarColor: `${scrollbarColor} ${scrollbarTrackColor}`
+            }}
+          >
+            {renderQuestionContent()}
+          </div>
         </div>
       </div>
     </div>
