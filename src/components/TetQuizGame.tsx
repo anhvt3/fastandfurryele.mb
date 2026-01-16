@@ -32,7 +32,7 @@ const TetQuizGame = () => {
   // Extract config values
   const { paddingTop: scorePaddingTop, paddingBottom: scorePaddingBottom } = UI_CONFIG.scoreDisplay;
   const { containerPaddingX: questionPaddingX, containerPaddingY: questionPaddingY, marginBottom: questionMarginBottom } = UI_CONFIG.questionBox;
-  const { containerPaddingX: answerPaddingX, containerPaddingY: answerPaddingY, marginBottom: answerMarginBottom, buttonGap } = UI_CONFIG.answerButtons;
+  const { containerPaddingX: answerPaddingX, containerPaddingY: answerPaddingY, marginBottom: answerMarginBottom, buttonGap, innerPaddingTop: answerInnerTop, innerPaddingBottom: answerInnerBottom, innerPaddingLeft: answerInnerLeft, innerPaddingRight: answerInnerRight } = UI_CONFIG.answerButtons;
   const { containerPaddingX: actionPaddingX, containerPaddingY: actionPaddingY, buttonWidth: actionButtonWidth, buttonHeight: actionButtonHeight } = UI_CONFIG.actionButton;
   const { trackBottomOffset } = UI_CONFIG.raceTrack;
 
@@ -183,6 +183,10 @@ const TetQuizGame = () => {
         style={{ 
           padding: `${answerPaddingY}px ${answerPaddingX}px`, 
           marginBottom: `${answerMarginBottom}px`,
+          paddingTop: `${answerInnerTop}px`,
+          paddingBottom: `${answerInnerBottom}px`,
+          paddingLeft: `${answerInnerLeft + answerPaddingX}px`,
+          paddingRight: `${answerInnerRight + answerPaddingX}px`,
           gap: `${buttonGap}px`
         }}
       >
