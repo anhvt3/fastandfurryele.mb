@@ -53,8 +53,8 @@ export const UI_CONFIG = {
     width: 460, // pixels - fixed width for answer container
     height: 280, // pixels - fixed height for answer container
     // Padding inside container
-    paddingTop: 10, // pixels - top padding
-    paddingBottom: 10, // pixels - bottom padding
+    paddingTop: 6, // pixels - top padding
+    paddingBottom: 6, // pixels - bottom padding
     paddingLeft: 12, // pixels - left padding
     paddingRight: 20, // pixels - right padding
     marginBottom: 8, // pixels - space below answer buttons (mb-1)
