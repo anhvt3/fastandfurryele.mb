@@ -110,7 +110,7 @@ export const UI_CONFIG = {
   actionButton: {
     scale: 1.0, // Multiplier for all size values in this section
     containerPaddingX: 16, // pixels - left/right padding (px-4)
-    containerPaddingY: 90, // pixels - top/bottom padding
+    containerPaddingY: 110, // pixels - top/bottom padding
     buttonWidth: 128, // pixels - button width (w-32)
     buttonHeight: 35, // pixels - button height
     // Animation settings
