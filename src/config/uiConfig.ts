@@ -23,11 +23,11 @@ export const UI_CONFIG = {
     // Container spacing
     containerPaddingX: 8, // pixels - left/right container padding (px-2)
     containerPaddingY: 0, // pixels - top/bottom container padding
-    marginBottom: 4, // pixels - space below question box (mb-1)
+    marginBottom: 1, // pixels - space below question box (mb-1)
     innerPaddingX: 16, // pixels - inner horizontal padding (px-4)
-    innerPaddingTop: 74, // pixels - top padding inside frame
-    innerPaddingBottom: 50, // pixels - bottom padding inside frame
-    framePaddingX: 20, // pixels - text padding inside frame (px-8)
+    innerPaddingTop: 64, // pixels - top padding inside frame
+    innerPaddingBottom: 10, // pixels - bottom padding inside frame
+    framePaddingX: 10, // pixels - text padding inside frame (px-8)
     // Text settings
     fontSize: 16, // pixels - question text font size
     fontFamily: "roboto", // font family - "fredoka" | "sf-compact" | "roboto" | "sans-serif" | "serif"
