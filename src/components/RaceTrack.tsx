@@ -27,7 +27,13 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   } = UI_CONFIG.raceTrack;
 
   const { playerWidth, bot1Width, bot2Width } = UI_CONFIG.mascots;
-  const { offsetTop, paddingX, paddingY, fontSize: labelFontSize, borderRadius: labelBorderRadius } = UI_CONFIG.playerLabel;
+  const {
+    offsetTop,
+    paddingX,
+    paddingY,
+    fontSize: labelFontSize,
+    borderRadius: labelBorderRadius,
+  } = UI_CONFIG.playerLabel;
 
   const calculatePosition = (progress: number) => {
     // Progress is 0-5 (5 correct answers to win)
@@ -96,16 +102,16 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       {/* Start Line */}
       <div
         className="absolute"
-        style={{ 
-          left: `${startLineLeft}%`, 
-          transform: "translateX(50%) rotate(-10deg)", 
-          bottom: "0px", 
-          zIndex: 5 
+        style={{
+          left: `${startLineLeft}%`,
+          transform: "translateX(50%) rotate(-10deg)",
+          bottom: "0px",
+          zIndex: 5,
         }}
       >
-        <img 
-          src={startLineImg} 
-          alt="Start Line" 
+        <img
+          src={startLineImg}
+          alt="Start Line"
           className="h-auto opacity-80"
           style={{ width: `${startLineWidth}px` }}
         />
@@ -116,12 +122,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         className="absolute"
         style={{ left: `${finishLineLeft}%`, transform: "translateX(-50%)", bottom: "0px", zIndex: 25 }}
       >
-        <img 
-          src={finishLineImg} 
-          alt="Finish Line" 
-          className="h-auto"
-          style={{ width: `${finishLineWidth}px` }}
-        />
+        <img src={finishLineImg} alt="Finish Line" className="h-auto" style={{ width: `${finishLineWidth}px` }} />
       </div>
 
       {/* Player */}
@@ -130,12 +131,12 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         style={{
           left: `${calculatePosition(playerPosition)}%`,
           bottom: `${playerBottom}px`,
-          zIndex: 30,
+          zIndex: 300,
         }}
       >
         {/* Player Name Label */}
-        <div 
-          className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap" 
+        <div
+          className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
           style={{ top: `${offsetTop}px`, zIndex: 31 }}
         >
           <span
@@ -153,9 +154,9 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
             Player
           </span>
         </div>
-        <img 
-          src={mascotRed} 
-          alt="Player" 
+        <img
+          src={mascotRed}
+          alt="Player"
           className="drop-shadow-lg"
           style={{ width: `${playerWidth}px`, minWidth: `${playerWidth}px` }}
         />
@@ -167,14 +168,10 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         style={{
           left: `${calculatePosition(bot1Position) + bot1LeftOffset}%`,
           bottom: `${bot1Bottom}px`,
-          zIndex: 20,
+          zIndex: 200,
         }}
       >
-        <img 
-          src={mascotGreen} 
-          alt="Bot 1"
-          style={{ width: `${bot1Width}px`, minWidth: `${bot1Width}px` }}
-        />
+        <img src={mascotGreen} alt="Bot 1" style={{ width: `${bot1Width}px`, minWidth: `${bot1Width}px` }} />
       </div>
 
       {/* Bot 2 */}
@@ -183,14 +180,10 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         style={{
           left: `${calculatePosition(bot2Position) + bot2LeftOffset}%`,
           bottom: `${bot2Bottom}px`,
-          zIndex: 10,
+          zIndex: 100,
         }}
       >
-        <img 
-          src={mascotBlue} 
-          alt="Bot 2"
-          style={{ width: `${bot2Width}px`, minWidth: `${bot2Width}px` }}
-        />
+        <img src={mascotBlue} alt="Bot 2" style={{ width: `${bot2Width}px`, minWidth: `${bot2Width}px` }} />
       </div>
     </div>
   );
