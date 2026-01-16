@@ -7,6 +7,7 @@ export const UI_CONFIG = {
   // ==========================================
   // SCORE DISPLAY (Top banh chung icons)
   scoreDisplay: {
+    scale: 1.0, // Multiplier for all size values in this section
     paddingTop: 16, // pixels - top padding (pt-4)
     paddingBottom: 8, // pixels - bottom padding (pb-2)
     iconSize: 32, // pixels - banh chung icon width/height (w-8 h-8)
@@ -16,6 +17,7 @@ export const UI_CONFIG = {
   // QUESTION BOX
   // ==========================================
   questionBox: {
+    scale: 1.0, // Multiplier for all size values in this section
     // Height settings
     minHeight: 150, // pixels - minimum question box height
     // Container spacing
@@ -43,6 +45,7 @@ export const UI_CONFIG = {
   // ==========================================
   // ANSWER BUTTONS
   answerButtons: {
+    scale: 1.0, // Multiplier for all size values in this section
     // Container spacing
     containerPaddingX: 16, // pixels - left/right container padding (px-4)
     containerPaddingY: 10, // pixels - top/bottom container padding
@@ -97,6 +100,7 @@ export const UI_CONFIG = {
   // SUBMIT/CONTINUE BUTTON
   // ==========================================
   actionButton: {
+    scale: 1.0, // Multiplier for all size values in this section
     containerPaddingX: 16, // pixels - left/right padding (px-4)
     containerPaddingY: 0, // pixels - top/bottom padding
     buttonWidth: 128, // pixels - button width (w-32)
@@ -111,6 +115,7 @@ export const UI_CONFIG = {
   // RACE TRACK
   // ==========================================
   raceTrack: {
+    scale: 1.0, // Multiplier for all size values in this section
     trackBottomOffset: 10, // pixels - distance from screen bottom
     trackHeight: 180, // pixels - track container height
     startLineLeft: 5, // percentage - start line position
@@ -128,6 +133,7 @@ export const UI_CONFIG = {
   // MASCOTS
   // ==========================================
   mascots: {
+    scale: 1.0, // Multiplier for all size values in this section
     playerWidth: 96, // pixels - player mascot width (w-24)
     bot1Width: 80, // pixels - bot1 mascot width (w-20)
     bot2Width: 80, // pixels - bot2 mascot width (w-20)
@@ -137,6 +143,7 @@ export const UI_CONFIG = {
   // PLAYER LABEL
   // ==========================================
   playerLabel: {
+    scale: 1.0, // Multiplier for all size values in this section
     offsetTop: -24, // pixels - distance above player (-top-6)
     paddingX: 8, // pixels - horizontal padding (px-2)
     paddingY: 2, // pixels - vertical padding (py-0.5)
@@ -148,6 +155,7 @@ export const UI_CONFIG = {
   // WIN SCREEN
   // ==========================================
   winScreen: {
+    scale: 1.0, // Multiplier for all size values in this section
     overlayOpacity: 0.6, // background overlay opacity
     cardPadding: 32, // pixels - card padding (p-8)
     cardMarginX: 16, // pixels - horizontal margin (mx-4)
