@@ -20,7 +20,7 @@ export const UI_CONFIG = {
     scale: 1.0, // Multiplier for all size values in this section
     // Height settings
     minHeight: 180, // pixels - minimum question box height
-    height: 300, // pixels - fixed height (used when useFixedHeight is true)
+    height: 250, // pixels - fixed height (used when useFixedHeight is true)
     useFixedHeight: true, // true = use fixed height, false = use image aspect ratio
     // Container spacing
     containerPaddingX: 8, // pixels - left/right container padding (px-2)
@@ -58,7 +58,7 @@ export const UI_CONFIG = {
     innerPaddingBottom: 0, // pixels - bottom padding inside answer area
     innerPaddingLeft: 0, // pixels - left padding inside answer area
     innerPaddingRight: 0, // pixels - right padding inside answer area
-    buttonGap: 8, // pixels - gap between answer buttons (gap-1)
+    buttonGap: 6, // pixels - gap between answer buttons (gap-1)
     buttonPadding: 8, // pixels - padding inside each button (p-2.5)
     buttonMinHeight: 90, // pixels - minimum button height (min-h-[60px])
     buttonBorderRadius: 16, // pixels - border radius (rounded-2xl)
