@@ -2,7 +2,7 @@
 // Set USE_SAMPLE_DATA to true to use hardcoded sample questions
 // Set USE_SAMPLE_DATA to false to load questions from API
 
-export const USE_SAMPLE_DATA = true;
+export const USE_SAMPLE_DATA = false;
 
 // API endpoint for questions (used when USE_SAMPLE_DATA is false)
 export const API_ENDPOINT = "https://supham.clevai.edu.vn";

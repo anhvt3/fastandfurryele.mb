@@ -7,7 +7,7 @@ interface WinScreenProps {
   onRestart: () => void;
 }
 
-const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
+const WinScreen = ({ score, onRestart }: WinScreenProps) => {
   const isWinner = score >= 5;
   const {
     scale,
@@ -28,7 +28,6 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
     buttonBorderRadius,
   } = UI_CONFIG.winScreen;
 
-  // Apply scale to container values only (not text)
   const scaledCardPadding = cardPadding * scale;
   const scaledCardMarginX = cardMarginX * scale;
   const scaledCardBorderRadius = cardBorderRadius * scale;
@@ -67,14 +66,16 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
           className="font-bold text-tet-red"
           style={{ fontSize: `${titleFontSize}px`, marginBottom: `${scaledTitleMarginBottom}px` }}
         >
-          Hoàn thành!
+          {isWinner ? "🎉 VỀ ĐÍCH!" : "🌊 CHƯA VỀ ĐÍCH"}
         </h2>
 
         <p
-          className="text-tet-brown font-bold"
-          style={{ fontSize: `${scoreFontSize}px`, marginBottom: `${scaledScoreMarginBottom}px` }}
+          className="text-tet-brown"
+          style={{ fontSize: `${scoreFontSize * 0.6}px`, marginBottom: `${scaledScoreMarginBottom}px` }}
         >
-          {score}/5 câu đúng
+          {isWinner 
+            ? "Chúc mừng! Bạn đã về đích!" 
+            : "Hành trình vạn dặm bắt đầu từ một bước chân. Hãy thử lại nhé!"}
         </p>
 
         <button
@@ -86,7 +87,7 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
             borderRadius: `${scaledButtonBorderRadius}px`,
           }}
         >
-          Tiếp tục
+          Chơi lại
         </button>
       </div>
     </div>

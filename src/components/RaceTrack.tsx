@@ -24,6 +24,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
     bot2Bottom,
     bot1LeftOffset,
     bot2LeftOffset,
+    playerLeftOffset,
     trackHeight,
   } = UI_CONFIG.raceTrack;
 
@@ -53,66 +54,62 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
   const scaledPaddingX = paddingX * labelScale;
   const scaledPaddingY = paddingY * labelScale;
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const playerName = urlParams.get('name') || 'Player';
+
   const calculatePosition = (progress: number) => {
-    // Progress is 0-5 (5 correct answers to win)
     const range = finishLineLeft - startLineLeft;
     return startLineLeft + (progress / 5) * range;
   };
 
   return (
     <div
-      className="relative w-full overflow-hidden flex-shrink-0 pointer-events-none"
+      className="relative w-full overflow-visible flex-shrink-0 pointer-events-none"
       style={{ height: `${scaledTrackHeight}px` }}
     >
       {/* Thêm thẻ style này hoặc copy vào file CSS của bạn */}
       <style>{`
         .mascot {
           position: absolute;
-          /* Dòng này QUAN TRỌNG: nó giúp nhân vật trượt ngang mượt mà */
-          transition: left 0.5s ease-in-out; 
-          /* Đảm bảo nhân vật luôn được căn giữa dựa trên điểm neo left */
-          transform: translateX(-50%); 
-        }
-        
-        .mascot.jumping {
-          /* Khi có class jumping, áp dụng animation hop */
-          animation: hop 0.5s ease-in-out;
+          transition: left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transform: translateX(-50%);
         }
 
-        /* Định nghĩa keyframes hop CHỈ NHẢY LÊN XUỐNG */
-        @keyframes hop {
-          0% { 
-            /* Bắt đầu ở vị trí bình thường (đang căn giữa -50%) */
-            transform: translate(-50%, 0) scale(1); 
+        .mascot img {
+          animation: mascotRocking 2s ease-in-out infinite;
+        }
+        
+        @keyframes mascotRocking {
+          0%, 100% {
+            transform: rotate(-1deg) translateY(0);
           }
-          50% { 
-            /* Nhảy lên cao (Y = -70px) và phóng to một chút. 
-               QUAN TRỌNG: Vẫn giữ translateX(-50%) để không bị lệch ngang */
-            transform: translate(-50%, -70px) scale(1.1); 
+          25% {
+            transform: rotate(1deg) translateY(-2px);
           }
-          100% { 
-            /* Đáp xuống lại vị trí cũ */
-            transform: translate(-50%, 0) scale(1); 
+          50% {
+            transform: rotate(-1deg) translateY(0);
+          }
+          75% {
+            transform: rotate(1deg) translateY(2px);
           }
         }
         
-        .jumping {
-          /* Khi có class này, animation sẽ chiếm quyền điều khiển transform */
-          animation: jump-forward 0.5s ease-in-out;
+        .mascot.jumping img {
+          animation: mascotPaddling 0.3s ease-in-out 3;
         }
-      
-        @keyframes jump-forward {
-          0% {
-            /* BẮT BUỘC PHẢI CÓ -50% ĐỂ KHỚP VỚI TRẠNG THÁI CŨ */
-            transform: translate(-50%, 0) scale(1);
+
+        @keyframes mascotPaddling {
+          0%, 100% {
+            transform: rotate(0deg) translateX(0);
+          }
+          25% {
+            transform: rotate(-3deg) translateX(5px);
           }
           50% {
-            /* Nhảy lên nhưng vẫn giữ trục X là -50% */
-            transform: translate(-50%, -20px) scale(1);
+            transform: rotate(0deg) translateX(0);
           }
-          100% {
-            /* Đáp xuống và vẫn giữ trục X là -50% */
-            transform: translate(-50%, 0) scale(1);
+          75% {
+            transform: rotate(3deg) translateX(-5px);
           }
         }
       `}</style>
@@ -147,9 +144,9 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
       <div
         className={`mascot ${isJumping.player && playerPosition < 5 ? "jumping" : ""}`}
         style={{
-          left: `${calculatePosition(playerPosition)}%`,
+          left: `${calculatePosition(playerPosition) + playerLeftOffset}%`,
           bottom: `${scaledPlayerBottom}px`,
-          zIndex: 300,
+          zIndex: 100,
         }}
       >
         {/* Player Name Label */}
@@ -169,7 +166,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
               boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
             }}
           >
-            Player
+            {playerName}
           </span>
         </div>
         <img
@@ -198,7 +195,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
         style={{
           left: `${calculatePosition(bot2Position) + bot2LeftOffset}%`,
           bottom: `${scaledBot2Bottom}px`,
-          zIndex: 100,
+          zIndex: 300,
         }}
       >
         <img src={mascotBlue} alt="Bot 2" style={{ width: `${scaledBot2Width}px`, minWidth: `${scaledBot2Width}px` }} />

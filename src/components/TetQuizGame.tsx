@@ -1,17 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
 import background from "@/assets/background.png";
-import submitButton from "@/assets/submit-button.png";
-import continueButton from "@/assets/continue-button.png";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
 import AnswerButton from "./AnswerButton";
+import SubmitButton from "./SubmitButton";
 import RaceTrack from "./RaceTrack";
 import WinScreen from "./WinScreen";
 import { sampleQuestions, Question } from "@/data/questions";
 import { fetchQuestions } from "@/services/questionApi";
 import { USE_SAMPLE_DATA } from "@/config/gameConfig";
 import { useGameAudio } from "@/hooks/useGameAudio";
-import { UI_CONFIG } from "@/config/uiConfig";
 
 const TetQuizGame = () => {
   const [questions, setQuestions] = useState<Question[]>(sampleQuestions);
@@ -28,13 +26,6 @@ const TetQuizGame = () => {
   const [answerResults, setAnswerResults] = useState<(boolean | null)[]>(Array(5).fill(null));
 
   const { playButtonClick, playCorrectAnswer, playWrongAnswer, playFinishGame } = useGameAudio();
-
-  // Extract config values
-  const { paddingTop: scorePaddingTop, paddingBottom: scorePaddingBottom } = UI_CONFIG.scoreDisplay;
-  const { containerPaddingX: questionPaddingX, containerPaddingY: questionPaddingY, marginBottom: questionMarginBottom } = UI_CONFIG.questionBox;
-  const { width: answerWidth, height: answerHeight, paddingTop: answerPaddingTop, paddingBottom: answerPaddingBottom, paddingLeft: answerPaddingLeft, paddingRight: answerPaddingRight, marginBottom: answerMarginBottom, buttonGap } = UI_CONFIG.answerButtons;
-  const { containerPaddingX: actionPaddingX, containerPaddingY: actionPaddingY, buttonWidth: actionButtonWidth, buttonHeight: actionButtonHeight } = UI_CONFIG.actionButton;
-  const { trackBottomOffset } = UI_CONFIG.raceTrack;
 
   // Load questions based on data source configuration
   useEffect(() => {
@@ -158,102 +149,71 @@ const TetQuizGame = () => {
   }
 
   return (
-    <div className="game-container flex flex-col relative" style={{ backgroundImage: `url(${background})` }}>
-      {/* Score Display - Top */}
-      <div style={{ paddingTop: `${scorePaddingTop}px`, paddingBottom: `${scorePaddingBottom}px` }}>
-        <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} answerResults={answerResults} />
+    <div 
+      className="h-screen w-full bg-cover bg-no-repeat flex flex-col overflow-y-auto"
+      style={{ backgroundImage: `url(${background})`, backgroundPosition: "center top" }}
+    >
+      <div className="w-full flex flex-col pt-8 pb-4 lg:pt-16">
+        {/* Score Display */}
+        {!gameOver && (
+          <header className="flex justify-center pb-4 lg:pb-6">
+            <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} answerResults={answerResults} />
+          </header>
+        )}
+
+        {/* Main Content */}
+        <main className="flex-1 flex flex-col px-4 pb-1 max-w-md mx-auto w-full">
+          {gameOver ? (
+            <WinScreen score={score} totalQuestions={questions.length} onRestart={handleRestart} />
+          ) : (
+            <>
+              {/* Question Box */}
+              <QuestionBox 
+                question={currentQuestion.question} 
+                questionNumber={currentQuestionIndex + 1}
+                type={currentQuestion.type}
+                imageUrl={currentQuestion.imageUrl}
+              />
+
+              {/* Answer Buttons */}
+              <div className="flex flex-col gap-2 w-full px-4 mt-4" key={currentQuestionIndex}>
+                {currentQuestion.answers.map((answer, index) => (
+                  <AnswerButton
+                    key={index}
+                    answer={answer}
+                    index={index}
+                    correctIndex={currentQuestion.correctIndex}
+                    isSelected={selectedAnswer === index}
+                    isCorrect={selectedAnswer === index ? selectedAnswer === currentQuestion.correctIndex : null}
+                    isDisabled={isAnswered}
+                    isAnswered={isAnswered}
+                    onClick={() => handleSelectAnswer(index)}
+                  />
+                ))}
+              </div>
+
+              {/* Submit/Continue Button */}
+              <div className="flex justify-center mt-6">
+                <SubmitButton
+                  isAnswered={isAnswered}
+                  isDisabled={selectedAnswer === null && !isAnswered}
+                  onClick={isAnswered ? handleContinue : handleSubmitAnswer}
+                />
+              </div>
+
+              {/* Race Track */}
+              <div className="mt-2">
+                <RaceTrack
+                  playerPosition={playerPosition}
+                  bot1Position={bot1Position}
+                  bot2Position={bot2Position}
+                  isJumping={isJumping}
+                />
+              </div>
+            </>
+          )}
+        </main>
       </div>
-
-      {/* Question Box */}
-      <div style={{ 
-        padding: `${questionPaddingY}px ${questionPaddingX}px`, 
-        marginBottom: `${questionMarginBottom}px` 
-      }}>
-        <QuestionBox 
-          question={currentQuestion.question} 
-          questionNumber={currentQuestionIndex + 1}
-          type={currentQuestion.type}
-          imageUrl={currentQuestion.imageUrl}
-        />
-      </div>
-
-      {/* Answer Buttons */}
-      <div 
-        className="flex flex-col mx-auto"
-        style={{ 
-          width: `${answerWidth}px`,
-          height: `${answerHeight}px`,
-          paddingTop: `${answerPaddingTop}px`,
-          paddingBottom: `${answerPaddingBottom}px`,
-          paddingLeft: `${answerPaddingLeft}px`,
-          paddingRight: `${answerPaddingRight}px`,
-          marginBottom: `${answerMarginBottom}px`,
-          gap: `${buttonGap}px`,
-          boxSizing: 'border-box'
-        }}
-      >
-        {currentQuestion.answers.map((answer, index) => (
-          <AnswerButton
-            key={index}
-            answer={answer}
-            index={index}
-            correctIndex={currentQuestion.correctIndex}
-            isSelected={selectedAnswer === index}
-            isCorrect={selectedAnswer === index ? selectedAnswer === currentQuestion.correctIndex : null}
-            isDisabled={isAnswered}
-            isAnswered={isAnswered}
-            onClick={() => handleSelectAnswer(index)}
-          />
-        ))}
-      </div>
-
-      {/* Answer/Continue Button - Same position, overlapping */}
-      <div 
-        className="flex justify-center"
-        style={{ padding: `${actionPaddingY}px ${actionPaddingX}px` }}
-      >
-        <div 
-          className="relative"
-          style={{ width: `${actionButtonWidth}px`, height: `${actionButtonHeight}px` }}
-        >
-          {/* Answer Button (TRẢ LỜI) */}
-          <button
-            onClick={handleSubmitAnswer}
-            disabled={selectedAnswer === null || isAnswered}
-            className={`absolute inset-0 transition-opacity duration-200 ${
-              isAnswered ? "opacity-0 pointer-events-none" : "opacity-100"
-            } ${selectedAnswer === null ? "opacity-50 cursor-not-allowed" : "cursor-pointer active:scale-95"}`}
-          >
-            <img src={submitButton} alt="Trả lời" className="w-full h-full object-contain" />
-          </button>
-
-          {/* Continue Button (TIẾP TỤC) */}
-          <button
-            onClick={handleContinue}
-            className={`absolute inset-0 transition-opacity duration-200 ${
-              isAnswered ? "opacity-100 cursor-pointer active:scale-95" : "opacity-0 pointer-events-none"
-            }`}
-          >
-            <img src={continueButton} alt="Tiếp tục" className="w-full h-full object-contain" />
-          </button>
-        </div>
-      </div>
-
-      {/* Race Track - Fixed at Bottom */}
-      <div 
-        className="absolute left-0 right-0"
-        style={{ bottom: `${trackBottomOffset}px` }}
-      >
-        <RaceTrack
-          playerPosition={playerPosition}
-          bot1Position={bot1Position}
-          bot2Position={bot2Position}
-          isJumping={isJumping}
-        />
-      </div>
-
-      {/* Win/Lose Screen */}
-      {gameOver && <WinScreen score={score} totalQuestions={questions.length} onRestart={handleRestart} />}
     </div>
   );
 };

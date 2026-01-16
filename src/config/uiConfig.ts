@@ -10,39 +10,35 @@ export const UI_CONFIG = {
     scale: 1.0, // Multiplier for all size values in this section
     paddingTop: 16, // pixels - top padding (pt-4)
     paddingBottom: 8, // pixels - bottom padding (pb-2)
-    iconSize: 32, // pixels - banh chung icon width/height (w-8 h-8)
+    iconSize: 40, // pixels - banh chung icon width/height
     iconGap: 8, // pixels - gap between icons (gap-2)
   },
 
   // QUESTION BOX
   // ==========================================
   questionBox: {
-    scale: 1.0, // Multiplier for all size values in this section
-    // Height settings
-    minHeight: 140, // pixels - minimum question box height
-    height: 250, // pixels - fixed height (used when useFixedHeight is true)
-    useFixedHeight: true, // true = use fixed height, false = use image aspect ratio
-    // Container spacing
-    containerPaddingX: 8, // pixels - left/right container padding (px-2)
-    containerPaddingY: 0, // pixels - top/bottom container padding
-    marginBottom: 6, // pixels - space below question box (mb-1)
-    innerPaddingX: 6, // pixels - inner horizontal padding (px-4)
-    innerPaddingTop: 72, // pixels - top padding inside frame
-    innerPaddingBottom: 20, // pixels - bottom padding inside frame
-    framePaddingX: 10, // pixels - text padding inside frame (px-8)
-    // Text settings
-    fontSize: 16, // pixels - question text font size
-    fontFamily: "roboto", // font family - "fredoka" | "sf-compact" | "roboto" | "sans-serif" | "serif"
-    textAlign: "center" as "left" | "center" | "right", // "left" | "center" | "right" - question text alignment
-    textColor: "#1a1a1a", // hex - question text color
-    // Image settings
-    imageMaxWidth: 200, // pixels - max width for image questions
-    imageGap: 10, // pixels - gap between text and image (gap-2)
-    // Scroll configuration for long questions
-    maxContentHeight: 120, // pixels - max height before scrolling
-    scrollbarWidth: 4, // pixels - scrollbar width
-    scrollbarColor: "#c4a484", // scrollbar thumb color (tan/wood)
-    scrollbarTrackColor: "transparent", // scrollbar track color
+    scale: 1.0,
+    minHeight: 140,
+    height: 250,
+    useFixedHeight: true,
+    containerPaddingX: 8,
+    containerPaddingY: 0,
+    marginBottom: 6,
+    innerPaddingX: 6,
+    innerPaddingTop: 70,
+    innerPaddingBottom: 0,
+    framePaddingX: 10,
+    fontSize: 0.95,
+    fontSizeUnit: "rem" as "px" | "rem",
+    fontFamily: "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    textAlign: "justify" as "left" | "center" | "right" | "justify",
+    textColor: "#4a2c00",
+    imageMaxWidth: 200,
+    imageGap: 10,
+    maxContentHeight: 120,
+    scrollbarWidth: 4,
+    scrollbarColor: "#c4a484",
+    scrollbarTrackColor: "transparent",
   },
 
   // ==========================================
@@ -123,28 +119,29 @@ export const UI_CONFIG = {
   // RACE TRACK
   // ==========================================
   raceTrack: {
-    scale: 1.0, // Multiplier for all size values in this section
-    trackBottomOffset: 10, // pixels - distance from screen bottom
-    trackHeight: 180, // pixels - track container height
-    startLineLeft: 5, // percentage - start line position
-    finishLineLeft: 85, // percentage - finish line position
-    startLineWidth: 80, // pixels - start line image width (w-20)
-    finishLineWidth: 64, // pixels - finish line image width (w-16)
-    playerBottom: 0, // pixels - player vertical position
-    bot1Bottom: 20, // pixels - bot1 vertical position
-    bot2Bottom: 40, // pixels - bot2 vertical position
-    bot1LeftOffset: 6, // percentage - bot1 horizontal offset
-    bot2LeftOffset: 12, // percentage - bot2 horizontal offset
+    scale: 1.0,
+    trackBottomOffset: 10,
+    trackHeight: 180,
+    startLineLeft: 0,
+    finishLineLeft: 85,
+    startLineWidth: 60,
+    finishLineWidth: 50,
+    playerBottom: 60,
+    bot1Bottom: 30,
+    bot2Bottom: 0,
+    bot1LeftOffset: 5,
+    bot2LeftOffset: 0,
+    playerLeftOffset: 10,
   },
 
   // ==========================================
   // MASCOTS
   // ==========================================
   mascots: {
-    scale: 1.0, // Multiplier for all size values in this section
-    playerWidth: 96, // pixels - player mascot width (w-24)
-    bot1Width: 80, // pixels - bot1 mascot width (w-20)
-    bot2Width: 80, // pixels - bot2 mascot width (w-20)
+    scale: 1.0,
+    playerWidth: 75,
+    bot1Width: 75,
+    bot2Width: 75,
   },
 
   // ==========================================

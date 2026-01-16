@@ -1,6 +1,4 @@
-import "katex/dist/katex.min.css";
-import { InlineMath } from "react-katex";
-import { UI_CONFIG } from "@/config/uiConfig";
+import HtmlContent from "./HtmlContent";
 
 interface AnswerButtonProps {
   answer: string;
@@ -23,166 +21,47 @@ const AnswerButton = ({
   correctIndex,
   onClick,
 }: AnswerButtonProps) => {
-  const config = UI_CONFIG.answerButtons;
-  const { 
-    scale,
-    buttonPadding, 
-    buttonMinHeight, 
-    buttonBorderRadius, 
-    borderWidth,
-    fontSize, 
-    fontFamily,
-    textAlign,
-    textColor,
-    letterCircleSize, 
-    letterFontSize,
-    letterGap,
-    // Colors
-    defaultBackgroundColor,
-    defaultBorderColor,
-    defaultLetterColor,
-    defaultLetterBgColor,
-    selectedBackgroundColor,
-    selectedBorderColor,
-    selectedShadowColor,
-    selectedShadowBlur,
-    correctBackgroundColor,
-    correctBorderColor,
-    correctLetterColor,
-    correctLetterBgColor,
-    wrongBackgroundColor,
-    wrongBorderColor,
-    wrongLetterColor,
-    wrongLetterBgColor,
-    // Animation
-    disabledOpacity,
-    activeScale,
-    transitionDuration,
-  } = config;
-
-  // Apply scale to container values only (not text)
-  const scaledButtonPadding = buttonPadding * scale;
-  const scaledButtonMinHeight = buttonMinHeight * scale;
-  const scaledButtonBorderRadius = buttonBorderRadius * scale;
-  const scaledBorderWidth = borderWidth * scale;
-  const scaledLetterCircleSize = letterCircleSize * scale;
-  const scaledLetterGap = letterGap * scale;
-  const scaledSelectedShadowBlur = selectedShadowBlur * scale;
-
-  const alignClass = textAlign === "left" ? "text-left" : 
-                     textAlign === "center" ? "text-center" : "text-right";
-
-  // Get button styles based on state
-  const getButtonStyles = (): React.CSSProperties => {
-    const baseStyles: React.CSSProperties = {
-      padding: `${scaledButtonPadding}px`,
-      minHeight: `${scaledButtonMinHeight}px`,
-      borderRadius: `${scaledButtonBorderRadius}px`,
-      gap: `${scaledLetterGap}px`,
-      borderWidth: `${scaledBorderWidth}px`,
-      borderStyle: 'solid',
-      transition: `all ${transitionDuration}ms`,
-    };
-
+  const getButtonClass = (): string => {
     if (isAnswered) {
-      // After submission
       if (index === correctIndex) {
-        return {
-          ...baseStyles,
-          backgroundColor: correctBackgroundColor,
-          borderColor: correctBorderColor,
-        };
+        return "answer-btn-correct";
       }
       if (isSelected && !isCorrect) {
-        return {
-          ...baseStyles,
-          backgroundColor: wrongBackgroundColor,
-          borderColor: wrongBorderColor,
-        };
+        return "answer-btn-wrong";
       }
-      return {
-        ...baseStyles,
-        backgroundColor: defaultBackgroundColor,
-        borderColor: defaultBorderColor,
-        opacity: disabledOpacity,
-      };
+      return "answer-btn-default opacity-70";
     }
 
-    // Before submission
     if (isSelected) {
-      return {
-        ...baseStyles,
-        backgroundColor: selectedBackgroundColor,
-        borderColor: selectedBorderColor,
-        boxShadow: `0 0 ${scaledSelectedShadowBlur}px ${selectedShadowColor}`,
-      };
+      return "answer-btn-selected";
     }
-
-    return {
-      ...baseStyles,
-      backgroundColor: defaultBackgroundColor,
-      borderColor: defaultBorderColor,
-    };
+    return "answer-btn-default";
   };
 
   const labels = ["A", "B", "C", "D"];
 
-  // Determine letter color based on answer state
   const getLetterColor = (): string => {
     if (isAnswered) {
       if (index === correctIndex) {
-        return correctLetterColor;
+        return "#2acb42";
       }
       if (isSelected && !isCorrect) {
-        return wrongLetterColor;
+        return "#ff3b30";
       }
     }
-    return defaultLetterColor;
+    return "#4a2c00";
   };
 
-  // Determine circle background color based on answer state
   const getCircleBackground = (): string => {
     if (isAnswered) {
       if (index === correctIndex) {
-        return correctLetterBgColor;
+        return "#C8F7C5";
       }
       if (isSelected && !isCorrect) {
-        return wrongLetterBgColor;
+        return "#FADBD8";
       }
     }
-    return defaultLetterBgColor;
-  };
-
-  // Check if answer contains LaTeX ($ delimiters)
-  const renderAnswerText = () => {
-    const hasInlineMath = answer.includes("$");
-    
-    if (hasInlineMath) {
-      const parts = answer.split(/\$/);
-      return (
-        <span 
-          className={alignClass}
-          style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
-        >
-          {parts.map((part, idx) => 
-            idx % 2 === 0 ? (
-              <span key={idx}>{part}</span>
-            ) : (
-              <InlineMath key={idx} math={part} />
-            )
-          )}
-        </span>
-      );
-    }
-    
-    return (
-      <span 
-        className={alignClass}
-        style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
-      >
-        {answer}
-      </span>
-    );
+    return "rgba(139, 69, 19, 0.2)";
   };
 
   return (
@@ -190,41 +69,25 @@ const AnswerButton = ({
       onClick={onClick}
       disabled={isDisabled}
       className={`
-        flex items-center relative overflow-hidden
-        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
+        answer-btn rounded-2xl p-2.5 min-h-[3.75rem]
+        flex items-center gap-3
+        ${getButtonClass()}
+        ${isDisabled ? "cursor-not-allowed" : "cursor-pointer active:scale-95"}
+        transition-all duration-200
       `}
-      style={{
-        ...getButtonStyles(),
-        transform: !isDisabled ? undefined : undefined,
-      }}
-      onMouseDown={(e) => {
-        if (!isDisabled) {
-          (e.currentTarget as HTMLElement).style.transform = `scale(${activeScale})`;
-        }
-      }}
-      onMouseUp={(e) => {
-        if (!isDisabled) {
-          (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-        }
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-      }}
     >
-      <span
-        className="rounded-full flex items-center justify-center font-bold shrink-0 font-sf-compact"
-        style={{ 
-          color: getLetterColor(), 
-          backgroundColor: getCircleBackground(), 
-          fontSize: `${letterFontSize}px`,
-          width: `${scaledLetterCircleSize}px`,
-          height: `${scaledLetterCircleSize}px`,
-          transition: `all ${transitionDuration}ms`,
-        }}
+      <span 
+        className="answer-label w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors duration-200"
+        style={{ color: getLetterColor(), backgroundColor: getCircleBackground() }}
       >
         {labels[index]}
       </span>
-      {renderAnswerText()}
+      <span className="answer-text">
+        <HtmlContent 
+          html={answer}
+          className="font-semibold text-left leading-tight min-w-0 break-all"
+        />
+      </span>
     </button>
   );
 };
