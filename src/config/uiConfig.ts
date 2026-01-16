@@ -50,7 +50,7 @@ export const UI_CONFIG = {
   answerButtons: {
     scale: 1.0, // Multiplier for all size values in this section
     // Fixed dimensions for answer container
-    width: 560, // pixels - fixed width for answer container
+    width: 460, // pixels - fixed width for answer container
     height: 280, // pixels - fixed height for answer container
     // Padding inside container
     paddingTop: 10, // pixels - top padding
