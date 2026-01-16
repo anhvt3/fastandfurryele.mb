@@ -26,7 +26,8 @@ const QuestionBox = ({
     imageGap, 
     innerPaddingX, 
     framePaddingX, 
-    innerPaddingY,
+    innerPaddingTop,
+    innerPaddingBottom,
     maxContentHeight,
     scrollbarColor,
     scrollbarTrackColor
@@ -38,7 +39,8 @@ const QuestionBox = ({
   const scaledImageGap = imageGap * scale;
   const scaledInnerPaddingX = innerPaddingX * scale;
   const scaledFramePaddingX = framePaddingX * scale;
-  const scaledInnerPaddingY = innerPaddingY * scale;
+  const scaledInnerPaddingTop = innerPaddingTop * scale;
+  const scaledInnerPaddingBottom = innerPaddingBottom * scale;
   const scaledMaxContentHeight = maxContentHeight * scale;
 
   const alignClass = textAlign === "left" ? "text-left" : 
@@ -141,8 +143,13 @@ const QuestionBox = ({
       <div className="relative w-full" style={{ minHeight: `${scaledMinHeight}px` }}>
         <img src={questionFrame} alt="Question frame" className="w-full h-auto" />
         <div 
-          className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{ padding: `${scaledInnerPaddingY}px ${scaledFramePaddingX}px` }}
+          className="absolute inset-0 flex flex-col items-center justify-start"
+          style={{ 
+            paddingTop: `${scaledInnerPaddingTop}px`,
+            paddingBottom: `${scaledInnerPaddingBottom}px`,
+            paddingLeft: `${scaledFramePaddingX}px`,
+            paddingRight: `${scaledFramePaddingX}px`
+          }}
         >
           <div 
             className="overflow-y-auto w-full custom-scrollbar flex items-center justify-center"
