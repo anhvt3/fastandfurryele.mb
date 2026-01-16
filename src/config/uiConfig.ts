@@ -27,6 +27,7 @@ export const UI_CONFIG = {
     framePaddingX: 32, // pixels - text padding inside frame (px-8)
     // Text settings
     fontSize: 16, // pixels - question text font size
+    fontFamily: "fredoka", // font family - "fredoka" | "sf-compact" | "sans-serif" | "serif"
     textAlign: "center" as "left" | "center" | "right", // "left" | "center" | "right" - question text alignment
     // Image settings
     imageMaxWidth: 200, // pixels - max width for image questions
@@ -52,6 +53,7 @@ export const UI_CONFIG = {
     buttonBorderRadius: 16, // pixels - border radius (rounded-2xl)
     // Text settings
     fontSize: 16, // pixels - answer text font size
+    fontFamily: "fredoka", // font family - "fredoka" | "sf-compact" | "sans-serif" | "serif"
     textAlign: "left" as "left" | "center" | "right", // "left" | "center" | "right" - answer text alignment
     // Letter circle settings
     letterCircleSize: 32, // pixels - A/B/C/D circle size (w-8 h-8)

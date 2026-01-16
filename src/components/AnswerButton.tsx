@@ -28,6 +28,7 @@ const AnswerButton = ({
     buttonMinHeight, 
     buttonBorderRadius, 
     fontSize, 
+    fontFamily,
     textAlign,
     letterCircleSize, 
     letterFontSize,
@@ -93,7 +94,7 @@ const AnswerButton = ({
       return (
         <span 
           className={`${alignClass} text-black`}
-          style={{ fontSize: `${fontSize}px` }}
+          style={{ fontSize: `${fontSize}px`, fontFamily }}
         >
           {parts.map((part, idx) => 
             idx % 2 === 0 ? (
@@ -109,7 +110,7 @@ const AnswerButton = ({
     return (
       <span 
         className={`${alignClass} text-black`}
-        style={{ fontSize: `${fontSize}px` }}
+        style={{ fontSize: `${fontSize}px`, fontFamily }}
       >
         {answer}
       </span>

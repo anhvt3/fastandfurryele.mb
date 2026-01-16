@@ -18,6 +18,7 @@ const QuestionBox = ({
 }: QuestionBoxProps) => {
   const { 
     fontSize, 
+    fontFamily,
     textAlign,
     imageMaxWidth, 
     imageGap, 
@@ -42,7 +43,7 @@ const QuestionBox = ({
           >
           <p 
             className={`text-black ${alignClass}`}
-            style={{ fontSize: `${fontSize}px` }}
+            style={{ fontSize: `${fontSize}px`, fontFamily }}
           >
             {question}
           </p>
@@ -68,7 +69,7 @@ const QuestionBox = ({
           return (
             <div 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${fontSize}px` }}
+              style={{ fontSize: `${fontSize}px`, fontFamily }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -85,7 +86,7 @@ const QuestionBox = ({
           return (
             <p 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${fontSize}px` }}
+              style={{ fontSize: `${fontSize}px`, fontFamily }}
             >
               {parts.map((part, index) => 
                 index % 2 === 0 ? (
@@ -101,7 +102,7 @@ const QuestionBox = ({
           return (
             <div 
               className={`text-black ${alignClass}`}
-              style={{ fontSize: `${fontSize}px` }}
+              style={{ fontSize: `${fontSize}px`, fontFamily }}
             >
               <BlockMath math={question} />
             </div>
@@ -113,7 +114,7 @@ const QuestionBox = ({
         return (
           <p 
             className={`text-black ${alignClass} whitespace-pre-line`}
-            style={{ fontSize: `${fontSize}px` }}
+            style={{ fontSize: `${fontSize}px`, fontFamily }}
           >
             {question}
           </p>
