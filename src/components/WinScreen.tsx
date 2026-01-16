@@ -1,4 +1,5 @@
 import mascotRed from "@/assets/mascot-red.png";
+import { UI_CONFIG } from "@/config/uiConfig";
 
 interface WinScreenProps {
   score: number;
@@ -8,27 +9,68 @@ interface WinScreenProps {
 
 const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
   const isWinner = score >= 5;
+  const {
+    overlayOpacity,
+    cardPadding,
+    cardMarginX,
+    cardBorderRadius,
+    cardBorderWidth,
+    mascotWidth,
+    mascotMarginBottom,
+    titleFontSize,
+    titleMarginBottom,
+    scoreFontSize,
+    scoreMarginBottom,
+    buttonPaddingY,
+    buttonPaddingX,
+    buttonFontSize,
+    buttonBorderRadius,
+  } = UI_CONFIG.winScreen;
 
   return (
-    <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center z-50 animate-fade-in">
-      <div className="bg-tet-cream rounded-3xl p-8 mx-4 text-center shadow-2xl border-4 border-tet-red">
+    <div 
+      className="absolute inset-0 flex items-center justify-center z-50 animate-fade-in"
+      style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})` }}
+    >
+      <div 
+        className="bg-tet-cream text-center shadow-2xl border-tet-red"
+        style={{
+          padding: `${cardPadding}px`,
+          margin: `0 ${cardMarginX}px`,
+          borderRadius: `${cardBorderRadius}px`,
+          borderWidth: `${cardBorderWidth}px`,
+          borderStyle: 'solid',
+        }}
+      >
         <img 
           src={mascotRed} 
           alt="Mascot" 
-          className={`w-32 h-auto mx-auto mb-4 ${isWinner ? "celebrating" : ""}`} 
+          className={`mx-auto ${isWinner ? "celebrating" : ""}`}
+          style={{ width: `${mascotWidth}px`, marginBottom: `${mascotMarginBottom}px` }}
         />
         
-        <h2 className="text-3xl font-bold text-tet-red mb-4">
+        <h2 
+          className="font-bold text-tet-red"
+          style={{ fontSize: `${titleFontSize}px`, marginBottom: `${titleMarginBottom}px` }}
+        >
           Hoàn thành!
         </h2>
         
-        <p className="text-tet-brown font-bold text-4xl mb-6">
+        <p 
+          className="text-tet-brown font-bold"
+          style={{ fontSize: `${scoreFontSize}px`, marginBottom: `${scoreMarginBottom}px` }}
+        >
           {score}/5 câu đúng
         </p>
         
         <button
           onClick={onRestart}
-          className="bg-tet-gold hover:bg-tet-gold/90 text-tet-brown font-bold py-3 px-8 rounded-full text-lg shadow-lg transition-all hover:scale-105"
+          className="bg-tet-gold hover:bg-tet-gold/90 text-tet-brown font-bold shadow-lg transition-all hover:scale-105"
+          style={{
+            padding: `${buttonPaddingY}px ${buttonPaddingX}px`,
+            fontSize: `${buttonFontSize}px`,
+            borderRadius: `${buttonBorderRadius}px`,
+          }}
         >
           Tiếp tục
         </button>

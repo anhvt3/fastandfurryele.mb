@@ -1,4 +1,5 @@
 import banhChung from "@/assets/banh-chung.png";
+import { UI_CONFIG } from "@/config/uiConfig";
 
 interface ScoreDisplayProps {
   score: number;
@@ -8,6 +9,8 @@ interface ScoreDisplayProps {
 }
 
 const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps) => {
+  const { iconSize, iconGap } = UI_CONFIG.scoreDisplay;
+
   return (
     <div className="relative">
       {/* Định nghĩa animation nhấp nháy vàng */}
@@ -49,7 +52,10 @@ const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps)
         }
       `}</style>
 
-      <div className="flex items-center justify-center gap-2">
+      <div 
+        className="flex items-center justify-center"
+        style={{ gap: `${iconGap}px` }}
+      >
         {Array.from({ length: total }).map((_, index) => {
           // Logic xác định trạng thái dựa trên kết quả trả lời
           let statusClass = "future";
@@ -68,7 +74,8 @@ const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps)
               key={index}
               src={banhChung}
               alt="Bánh chưng"
-              className={`w-8 h-8 transition-all duration-300 ${statusClass}`}
+              className={`transition-all duration-300 ${statusClass}`}
+              style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
             />
           );
         })}
