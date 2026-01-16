@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         fredoka: ['Fredoka', 'sans-serif'],
         'sf-compact': ['"SF Compact Display"', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
