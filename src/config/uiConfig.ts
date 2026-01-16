@@ -55,7 +55,7 @@ export const UI_CONFIG = {
     // Padding inside container
     paddingTop: 10, // pixels - top padding
     paddingBottom: 10, // pixels - bottom padding
-    paddingLeft: 20, // pixels - left padding
+    paddingLeft: 18, // pixels - left padding
     paddingRight: 20, // pixels - right padding
     marginBottom: 10, // pixels - space below answer buttons (mb-1)
     buttonGap: 6, // pixels - gap between answer buttons (gap-1)
