@@ -32,7 +32,7 @@ const TetQuizGame = () => {
   // Extract config values
   const { paddingTop: scorePaddingTop, paddingBottom: scorePaddingBottom } = UI_CONFIG.scoreDisplay;
   const { containerPaddingX: questionPaddingX, containerPaddingY: questionPaddingY, marginBottom: questionMarginBottom } = UI_CONFIG.questionBox;
-  const { containerPaddingX: answerPaddingX, containerPaddingY: answerPaddingY, marginBottom: answerMarginBottom, buttonGap, innerPaddingX: answerInnerX, innerPaddingTop: answerInnerTop, innerPaddingBottom: answerInnerBottom, framePaddingX: answerFramePaddingX, height: answerHeight, useFixedHeight: answerUseFixedHeight } = UI_CONFIG.answerButtons;
+  const { width: answerWidth, height: answerHeight, paddingTop: answerPaddingTop, paddingBottom: answerPaddingBottom, paddingLeft: answerPaddingLeft, paddingRight: answerPaddingRight, marginBottom: answerMarginBottom, buttonGap } = UI_CONFIG.answerButtons;
   const { containerPaddingX: actionPaddingX, containerPaddingY: actionPaddingY, buttonWidth: actionButtonWidth, buttonHeight: actionButtonHeight } = UI_CONFIG.actionButton;
   const { trackBottomOffset } = UI_CONFIG.raceTrack;
 
@@ -179,15 +179,18 @@ const TetQuizGame = () => {
 
       {/* Answer Buttons */}
       <div 
-        className="flex flex-col"
+        className="flex flex-col mx-auto"
         style={{ 
-          paddingTop: `${answerInnerTop}px`,
-          paddingBottom: `${answerInnerBottom}px`,
-          paddingLeft: `${answerInnerX + answerPaddingX + answerFramePaddingX}px`,
-          paddingRight: `${answerInnerX + answerPaddingX + answerFramePaddingX}px`,
+          width: `${answerWidth}px`,
+          height: `${answerHeight}px`,
+          paddingTop: `${answerPaddingTop}px`,
+          paddingBottom: `${answerPaddingBottom}px`,
+          paddingLeft: `${answerPaddingLeft}px`,
+          paddingRight: `${answerPaddingRight}px`,
           marginBottom: `${answerMarginBottom}px`,
           gap: `${buttonGap}px`,
-          height: answerUseFixedHeight ? `${answerHeight}px` : 'auto'
+          boxSizing: 'border-box',
+          overflowY: 'auto'
         }}
       >
         {currentQuestion.answers.map((answer, index) => (

@@ -49,18 +49,15 @@ export const UI_CONFIG = {
   // ANSWER BUTTONS
   answerButtons: {
     scale: 1.0, // Multiplier for all size values in this section
-    // Height settings
-    height: 280, // pixels - fixed height for answer area
-    useFixedHeight: true, // true = use fixed height, false = auto height
-    // Container spacing
-    containerPaddingX: 20, // pixels - left/right container padding (px-4)
-    containerPaddingY: 8, // pixels - top/bottom container padding
+    // Fixed dimensions for answer container
+    width: 360, // pixels - fixed width for answer container
+    height: 280, // pixels - fixed height for answer container
+    // Padding inside container
+    paddingTop: 10, // pixels - top padding
+    paddingBottom: 10, // pixels - bottom padding
+    paddingLeft: 20, // pixels - left padding
+    paddingRight: 20, // pixels - right padding
     marginBottom: 10, // pixels - space below answer buttons (mb-1)
-    // Inner padding (for positioning buttons within container)
-    innerPaddingTop: 0, // pixels - top padding inside answer area
-    innerPaddingBottom: 0, // pixels - bottom padding inside answer area
-    innerPaddingLeft: 0, // pixels - left padding inside answer area
-    innerPaddingRight: 0, // pixels - right padding inside answer area
     buttonGap: 6, // pixels - gap between answer buttons (gap-1)
     buttonPadding: 8, // pixels - padding inside each button (p-2.5)
     buttonMinHeight: 90, // pixels - minimum button height (min-h-[60px])
