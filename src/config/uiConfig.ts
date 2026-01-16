@@ -57,10 +57,10 @@ export const UI_CONFIG = {
     containerPaddingY: 10, // pixels - top/bottom container padding
     marginBottom: 10, // pixels - space below answer buttons (mb-1)
     // Inner padding (for positioning buttons within container)
-    innerPaddingTop: 5, // pixels - top padding inside answer area
-    innerPaddingBottom: 5, // pixels - bottom padding inside answer area
-    innerPaddingLeft: 5, // pixels - left padding inside answer area
-    innerPaddingRight: 5, // pixels - right padding inside answer area
+    innerPaddingX: 16, // pixels - inner horizontal padding (like questionBox)
+    innerPaddingTop: 10, // pixels - top padding inside frame
+    innerPaddingBottom: 10, // pixels - bottom padding inside frame
+    framePaddingX: 8, // pixels - additional text padding inside frame
     buttonGap: 6, // pixels - gap between answer buttons (gap-1)
     buttonPadding: 8, // pixels - padding inside each button (p-2.5)
     buttonMinHeight: 90, // pixels - minimum button height (min-h-[60px])
