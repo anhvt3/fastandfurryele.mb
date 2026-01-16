@@ -18,14 +18,17 @@ export const UI_CONFIG = {
   // QUESTION BOX
   // ==========================================
   questionBox: {
+    // Container spacing
     containerPaddingX: 8, // pixels - left/right container padding (px-2)
     containerPaddingY: 0, // pixels - top/bottom container padding
     marginBottom: 4, // pixels - space below question box (mb-1)
     innerPaddingX: 16, // pixels - inner horizontal padding (px-4)
     innerPaddingY: 16, // pixels - frame padding Y (py-4)
     framePaddingX: 32, // pixels - text padding inside frame (px-8)
+    // Text settings
     fontSize: 16, // pixels - question text font size
     textAlign: "center" as "left" | "center" | "right", // "left" | "center" | "right" - question text alignment
+    // Image settings
     imageMaxWidth: 200, // pixels - max width for image questions
     imageGap: 8, // pixels - gap between text and image (gap-2)
     // Scroll configuration for long questions
@@ -39,6 +42,7 @@ export const UI_CONFIG = {
   // ANSWER BUTTONS
   // ==========================================
   answerButtons: {
+    // Container spacing
     containerPaddingX: 16, // pixels - left/right container padding (px-4)
     containerPaddingY: 10, // pixels - top/bottom container padding
     marginBottom: 4, // pixels - space below answer buttons (mb-1)
@@ -46,8 +50,10 @@ export const UI_CONFIG = {
     buttonPadding: 10, // pixels - padding inside each button (p-2.5)
     buttonMinHeight: 60, // pixels - minimum button height (min-h-[60px])
     buttonBorderRadius: 16, // pixels - border radius (rounded-2xl)
+    // Text settings
     fontSize: 16, // pixels - answer text font size
     textAlign: "left" as "left" | "center" | "right", // "left" | "center" | "right" - answer text alignment
+    // Letter circle settings
     letterCircleSize: 32, // pixels - A/B/C/D circle size (w-8 h-8)
     letterFontSize: 16, // pixels - A/B/C/D letter font size
     letterGap: 12, // pixels - gap between letter circle and text (gap-3)
