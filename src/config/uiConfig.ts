@@ -27,6 +27,11 @@ export const UI_CONFIG = {
     fontSize: 16, // pixels - question text font size
     imageMaxWidth: 200, // pixels - max width for image questions
     imageGap: 8, // pixels - gap between text and image (gap-2)
+    // Scroll configuration for long questions
+    maxContentHeight: 120, // pixels - max height before scrolling
+    scrollbarWidth: 4, // pixels - scrollbar width
+    scrollbarColor: "#c4a484", // scrollbar thumb color (tan/wood)
+    scrollbarTrackColor: "transparent", // scrollbar track color
   },
 
   // ==========================================
