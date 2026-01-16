@@ -189,8 +189,7 @@ const TetQuizGame = () => {
           paddingRight: `${answerPaddingRight}px`,
           marginBottom: `${answerMarginBottom}px`,
           gap: `${buttonGap}px`,
-          boxSizing: 'border-box',
-          overflowY: 'auto'
+          boxSizing: 'border-box'
         }}
       >
         {currentQuestion.answers.map((answer, index) => (
