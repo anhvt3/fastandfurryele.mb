@@ -25,8 +25,8 @@ export const UI_CONFIG = {
     containerPaddingY: 0, // pixels - top/bottom container padding
     marginBottom: 4, // pixels - space below question box (mb-1)
     innerPaddingX: 16, // pixels - inner horizontal padding (px-4)
-    innerPaddingY: 16, // pixels - frame padding Y (py-4)
-    framePaddingX: 32, // pixels - text padding inside frame (px-8)
+    innerPaddingY: 10, // pixels - frame padding Y (py-4)
+    framePaddingX: 26, // pixels - text padding inside frame (px-8)
     // Text settings
     fontSize: 16, // pixels - question text font size
     fontFamily: "roboto", // font family - "fredoka" | "sf-compact" | "roboto" | "sans-serif" | "serif"
