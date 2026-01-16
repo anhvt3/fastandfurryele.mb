@@ -66,7 +66,7 @@ const WinScreen = ({ score, onRestart }: WinScreenProps) => {
           className="font-bold text-tet-red"
           style={{ fontSize: `${titleFontSize}px`, marginBottom: `${scaledTitleMarginBottom}px` }}
         >
-          {isWinner ? "🎉 VỀ ĐÍCH!" : "🌊 CHƯA VỀ ĐÍCH"}
+          {isWinner ? "🎉 VỀ ĐÍCH!" : "HOÀN THÀNH"}
         </h2>
 
         <p
@@ -75,7 +75,7 @@ const WinScreen = ({ score, onRestart }: WinScreenProps) => {
         >
           {isWinner 
             ? "Chúc mừng! Bạn đã về đích!" 
-            : "Hành trình vạn dặm bắt đầu từ một bước chân. Hãy thử lại nhé!"}
+            : `${score}/5 câu đúng`}
         </p>
 
         <button
@@ -87,7 +87,7 @@ const WinScreen = ({ score, onRestart }: WinScreenProps) => {
             borderRadius: `${scaledButtonBorderRadius}px`,
           }}
         >
-          Chơi lại
+          Tiếp tục
         </button>
       </div>
     </div>
