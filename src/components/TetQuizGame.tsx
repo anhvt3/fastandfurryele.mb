@@ -32,7 +32,7 @@ const TetQuizGame = () => {
   // Extract config values
   const { paddingTop: scorePaddingTop, paddingBottom: scorePaddingBottom } = UI_CONFIG.scoreDisplay;
   const { containerPaddingX: questionPaddingX, containerPaddingY: questionPaddingY, marginBottom: questionMarginBottom } = UI_CONFIG.questionBox;
-  const { containerPaddingX: answerPaddingX, containerPaddingY: answerPaddingY, marginBottom: answerMarginBottom, buttonGap, innerPaddingTop: answerInnerTop, innerPaddingBottom: answerInnerBottom, innerPaddingLeft: answerInnerLeft, innerPaddingRight: answerInnerRight, height: answerHeight, useFixedHeight: answerUseFixedHeight } = UI_CONFIG.answerButtons;
+  const { containerPaddingX: answerPaddingX, containerPaddingY: answerPaddingY, marginBottom: answerMarginBottom, buttonGap, innerPaddingX: answerInnerX, innerPaddingTop: answerInnerTop, innerPaddingBottom: answerInnerBottom, framePaddingX: answerFramePaddingX, height: answerHeight, useFixedHeight: answerUseFixedHeight } = UI_CONFIG.answerButtons;
   const { containerPaddingX: actionPaddingX, containerPaddingY: actionPaddingY, buttonWidth: actionButtonWidth, buttonHeight: actionButtonHeight } = UI_CONFIG.actionButton;
   const { trackBottomOffset } = UI_CONFIG.raceTrack;
 
@@ -181,12 +181,11 @@ const TetQuizGame = () => {
       <div 
         className="flex flex-col"
         style={{ 
-          padding: `${answerPaddingY}px ${answerPaddingX}px`, 
-          marginBottom: `${answerMarginBottom}px`,
           paddingTop: `${answerInnerTop}px`,
           paddingBottom: `${answerInnerBottom}px`,
-          paddingLeft: `${answerInnerLeft + answerPaddingX}px`,
-          paddingRight: `${answerInnerRight + answerPaddingX}px`,
+          paddingLeft: `${answerInnerX + answerPaddingX + answerFramePaddingX}px`,
+          paddingRight: `${answerInnerX + answerPaddingX + answerFramePaddingX}px`,
+          marginBottom: `${answerMarginBottom}px`,
           gap: `${buttonGap}px`,
           height: answerUseFixedHeight ? `${answerHeight}px` : 'auto'
         }}
