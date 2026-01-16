@@ -27,7 +27,7 @@ export const UI_CONFIG = {
     innerPaddingX: 16, // pixels - inner horizontal padding (px-4)
     innerPaddingTop: 14, // pixels - top padding inside frame
     innerPaddingBottom: 2, // pixels - bottom padding inside frame
-    framePaddingX: 10, // pixels - text padding inside frame (px-8)
+    framePaddingX: 20, // pixels - text padding inside frame (px-8)
     // Text settings
     fontSize: 16, // pixels - question text font size
     fontFamily: "roboto", // font family - "fredoka" | "sf-compact" | "roboto" | "sans-serif" | "serif"
