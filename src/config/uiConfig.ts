@@ -53,7 +53,7 @@ export const UI_CONFIG = {
     height: 280, // pixels - fixed height for answer area
     useFixedHeight: true, // true = use fixed height, false = auto height
     // Container spacing
-    containerPaddingX: 24, // pixels - left/right container padding (px-4)
+    containerPaddingX: 20, // pixels - left/right container padding (px-4)
     containerPaddingY: 8, // pixels - top/bottom container padding
     marginBottom: 10, // pixels - space below answer buttons (mb-1)
     // Inner padding (for positioning buttons within container)
