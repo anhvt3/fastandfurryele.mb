@@ -28,20 +28,17 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
     buttonBorderRadius,
   } = UI_CONFIG.winScreen;
 
-  // Apply scale to pixel values
+  // Apply scale to container values only (not text)
   const scaledCardPadding = cardPadding * scale;
   const scaledCardMarginX = cardMarginX * scale;
   const scaledCardBorderRadius = cardBorderRadius * scale;
   const scaledCardBorderWidth = cardBorderWidth * scale;
   const scaledMascotWidth = mascotWidth * scale;
   const scaledMascotMarginBottom = mascotMarginBottom * scale;
-  const scaledTitleFontSize = titleFontSize * scale;
   const scaledTitleMarginBottom = titleMarginBottom * scale;
-  const scaledScoreFontSize = scoreFontSize * scale;
   const scaledScoreMarginBottom = scoreMarginBottom * scale;
   const scaledButtonPaddingY = buttonPaddingY * scale;
   const scaledButtonPaddingX = buttonPaddingX * scale;
-  const scaledButtonFontSize = buttonFontSize * scale;
   const scaledButtonBorderRadius = buttonBorderRadius * scale;
 
   return (
@@ -68,14 +65,14 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
 
         <h2
           className="font-bold text-tet-red"
-          style={{ fontSize: `${scaledTitleFontSize}px`, marginBottom: `${scaledTitleMarginBottom}px` }}
+          style={{ fontSize: `${titleFontSize}px`, marginBottom: `${scaledTitleMarginBottom}px` }}
         >
           Hoàn thành!
         </h2>
 
         <p
           className="text-tet-brown font-bold"
-          style={{ fontSize: `${scaledScoreFontSize}px`, marginBottom: `${scaledScoreMarginBottom}px` }}
+          style={{ fontSize: `${scoreFontSize}px`, marginBottom: `${scaledScoreMarginBottom}px` }}
         >
           {score}/5 câu đúng
         </p>
@@ -85,7 +82,7 @@ const WinScreen = ({ score, totalQuestions, onRestart }: WinScreenProps) => {
           className="bg-tet-gold hover:bg-tet-gold/90 text-tet-brown font-bold shadow-lg transition-all hover:scale-105"
           style={{
             padding: `${scaledButtonPaddingY}px ${scaledButtonPaddingX}px`,
-            fontSize: `${scaledButtonFontSize}px`,
+            fontSize: `${buttonFontSize}px`,
             borderRadius: `${scaledButtonBorderRadius}px`,
           }}
         >

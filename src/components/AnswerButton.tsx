@@ -60,14 +60,12 @@ const AnswerButton = ({
     transitionDuration,
   } = config;
 
-  // Apply scale to pixel values
+  // Apply scale to container values only (not text)
   const scaledButtonPadding = buttonPadding * scale;
   const scaledButtonMinHeight = buttonMinHeight * scale;
   const scaledButtonBorderRadius = buttonBorderRadius * scale;
   const scaledBorderWidth = borderWidth * scale;
-  const scaledFontSize = fontSize * scale;
   const scaledLetterCircleSize = letterCircleSize * scale;
-  const scaledLetterFontSize = letterFontSize * scale;
   const scaledLetterGap = letterGap * scale;
   const scaledSelectedShadowBlur = selectedShadowBlur * scale;
 
@@ -164,7 +162,7 @@ const AnswerButton = ({
       return (
         <span 
           className={alignClass}
-          style={{ fontSize: `${scaledFontSize}px`, fontFamily, color: textColor }}
+          style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
         >
           {parts.map((part, idx) => 
             idx % 2 === 0 ? (
@@ -180,7 +178,7 @@ const AnswerButton = ({
     return (
       <span 
         className={alignClass}
-        style={{ fontSize: `${scaledFontSize}px`, fontFamily, color: textColor }}
+        style={{ fontSize: `${fontSize}px`, fontFamily, color: textColor }}
       >
         {answer}
       </span>
@@ -218,7 +216,7 @@ const AnswerButton = ({
         style={{ 
           color: getLetterColor(), 
           backgroundColor: getCircleBackground(), 
-          fontSize: `${scaledLetterFontSize}px`,
+          fontSize: `${letterFontSize}px`,
           width: `${scaledLetterCircleSize}px`,
           height: `${scaledLetterCircleSize}px`,
           transition: `all ${transitionDuration}ms`,
