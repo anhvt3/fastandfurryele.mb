@@ -176,7 +176,7 @@ export const UI_CONFIG_PC = {
   scoreDisplay: {
     scale: 1.0,
     paddingTop: 5,
-    paddingBottom: 5,
+    paddingBottom: 15,
     iconSize: 40,
     iconGap: 12,
   },
