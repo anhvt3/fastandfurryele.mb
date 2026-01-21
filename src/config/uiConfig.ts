@@ -37,7 +37,7 @@ export const UI_CONFIG_MOBILE = {
       "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     textAlign: "justify" as "left" | "center" | "right" | "justify",
     textColor: "#4a2c00",
-    imageMaxWidth: 200,
+    imageMaxWidth: 180,
     imageGap: 10,
     maxContentHeight: 120,
     scrollbarWidth: 4,
@@ -174,10 +174,10 @@ export const UI_CONFIG_PC = {
   // ==========================================
   // SCORE DISPLAY (Top banh chung icons)
   scoreDisplay: {
-    scale: 1.0,
-    paddingTop: 5,
-    paddingBottom: 15,
-    iconSize: 40,
+    scale: 1.2,
+    paddingTop: 20,
+    paddingBottom: 12,
+    iconSize: 50,
     iconGap: 12,
   },
 
