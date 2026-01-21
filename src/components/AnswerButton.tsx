@@ -52,7 +52,7 @@ const AnswerButton = ({
     if (isDesktop && backgroundImage) {
       return isSelected ? "" : "";
     }
-    
+
     if (isSelected) {
       return "answer-btn-selected";
     }
@@ -90,19 +90,25 @@ const AnswerButton = ({
   };
 
   // Desktop style with asset background
-  const desktopStyle = isDesktop && backgroundImage ? {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: '100% 100%',
-    backgroundRepeat: 'no-repeat' as const,
-    backgroundPosition: 'center',
-    // Orange outline for selection (pre-submit only)
-    outline: isSelected && !isAnswered ? '2px solid #ff9900ff' : 'none',
-    outlineOffset: '0px',
-    // Override border for answered states
-    ...(isAnswered && isSelected && isCorrect === true && { border: '3px solid #2acb42' }),
-    ...(isAnswered && isSelected && isCorrect === false && { border: '3px solid #ff3b30' }),
-    ...(isAnswered && correctIndex >= 0 && index === correctIndex && !isSelected && { border: '3px solid #2acb42' }),
-  } : {};
+  const desktopStyle =
+    isDesktop && backgroundImage
+      ? {
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat" as const,
+          backgroundPosition: "center",
+          // Orange outline for selection (pre-submit only)
+          outline: isSelected && !isAnswered ? "1px solid #ff9900ff" : "none",
+          outlineOffset: "0px",
+          // Override border for answered states
+          ...(isAnswered && isSelected && isCorrect === true && { border: "1px solid #2acb42" }),
+          ...(isAnswered && isSelected && isCorrect === false && { border: "1px solid #ff3b30" }),
+          ...(isAnswered &&
+            correctIndex >= 0 &&
+            index === correctIndex &&
+            !isSelected && { border: "1px solid #2acb42" }),
+        }
+      : {};
 
   return (
     <button
@@ -111,24 +117,21 @@ const AnswerButton = ({
       style={desktopStyle}
       className={`
         answer-btn rounded-2xl p-3 
-        ${isDesktop ? 'min-h-[4rem] h-full' : 'min-h-[3.75rem]'}
+        ${isDesktop ? "min-h-[5rem]" : "min-h-[3.75rem]"}
         flex items-center gap-3
         ${getButtonClass()}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer active:scale-95"}
         transition-all duration-200
       `}
     >
-      <span 
+      <span
         className="answer-label w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors duration-200"
         style={{ color: getLetterColor(), backgroundColor: getCircleBackground() }}
       >
-        {labels[index] ?? (index + 1)}
+        {labels[index] ?? index + 1}
       </span>
       <span className="answer-text flex-1 min-w-0">
-        <HtmlContent 
-          html={answer}
-          className="font-semibold text-left leading-tight break-words"
-        />
+        <HtmlContent html={answer} className="font-semibold text-left leading-tight break-words" />
       </span>
     </button>
   );
