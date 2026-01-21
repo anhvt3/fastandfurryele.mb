@@ -134,10 +134,10 @@ const TetQuizGame = () => {
 
   return (
     <div 
-      className="h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col overflow-y-auto"
+      className="h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col overflow-hidden"
       style={{ backgroundImage: `url(${assets.background})` }}
     >
-      <div className="w-full flex flex-col pt-8 pb-4 lg:pt-16">
+      <div className="w-full flex flex-col pt-4 pb-2 lg:pt-6">
         {/* Score Display - Progress bar with totalQuestions items */}
         {!isCompleted && (
           <header className="flex justify-center pb-4 lg:pb-6">
