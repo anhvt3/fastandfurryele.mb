@@ -173,35 +173,35 @@ export const UI_CONFIG_PC = {
   // ==========================================
   // SCORE DISPLAY (Top banh chung icons)
   scoreDisplay: {
-    scale: 1.2,
-    paddingTop: 20,
-    paddingBottom: 12,
-    iconSize: 50,
-    iconGap: 12,
+    scale: 1.0,
+    paddingTop: 12,
+    paddingBottom: 8,
+    iconSize: 40,
+    iconGap: 10,
   },
 
   // QUESTION BOX
   // ==========================================
   questionBox: {
     scale: 1.0,
-    minHeight: 180,
-    height: 300,
+    minHeight: 140,
+    height: 200,
     useFixedHeight: true,
     containerPaddingX: 16,
     containerPaddingY: 0,
-    marginBottom: 10,
+    marginBottom: 6,
     innerPaddingX: 12,
-    innerPaddingTop: 90,
+    innerPaddingTop: 60,
     innerPaddingBottom: 0,
     framePaddingX: 16,
-    fontSize: 1.1,
+    fontSize: 1.0,
     fontSizeUnit: "rem" as "px" | "rem",
     fontFamily: "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     textAlign: "justify" as "left" | "center" | "right" | "justify",
     textColor: "#4a2c00",
-    imageMaxWidth: 280,
-    imageGap: 14,
-    maxContentHeight: 160,
+    imageMaxWidth: 240,
+    imageGap: 12,
+    maxContentHeight: 120,
     scrollbarWidth: 6,
     scrollbarColor: "#c4a484",
     scrollbarTrackColor: "transparent",
@@ -257,11 +257,11 @@ export const UI_CONFIG_PC = {
   // SUBMIT/CONTINUE BUTTON
   // ==========================================
   actionButton: {
-    scale: 1.2,
-    containerPaddingX: 24,
-    containerPaddingY: 160,
-    buttonWidth: 160,
-    buttonHeight: 45,
+    scale: 1.0,
+    containerPaddingX: 16,
+    containerPaddingY: 80,
+    buttonWidth: 140,
+    buttonHeight: 40,
     disabledOpacity: 0.5,
     activeScale: 0.95,
     transitionDuration: 200,
@@ -271,15 +271,15 @@ export const UI_CONFIG_PC = {
   // RACE TRACK
   // ==========================================
   raceTrack: {
-    scale: 1.2,
-    trackBottomOffset: 15,
-    trackHeight: 220,
+    scale: 1.0,
+    trackBottomOffset: 10,
+    trackHeight: 150,
     startLineLeft: 0,
     finishLineLeft: 85,
-    startLineWidth: 80,
-    finishLineWidth: 70,
-    playerBottom: 80,
-    bot1Bottom: 40,
+    startLineWidth: 60,
+    finishLineWidth: 55,
+    playerBottom: 60,
+    bot1Bottom: 30,
     bot2Bottom: 0,
     bot1LeftOffset: 5,
     bot2LeftOffset: 0,
@@ -290,10 +290,10 @@ export const UI_CONFIG_PC = {
   // MASCOTS
   // ==========================================
   mascots: {
-    scale: 1.2,
-    playerWidth: 95,
-    bot1Width: 95,
-    bot2Width: 95,
+    scale: 1.0,
+    playerWidth: 75,
+    bot1Width: 75,
+    bot2Width: 75,
   },
 
   // ==========================================
