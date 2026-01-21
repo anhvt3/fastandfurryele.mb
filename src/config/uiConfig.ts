@@ -37,7 +37,7 @@ export const UI_CONFIG_MOBILE = {
       "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     textAlign: "justify" as "left" | "center" | "right" | "justify",
     textColor: "#4a2c00",
-    imageMaxWidth: 180,
+    imageMaxWidth: 200,
     imageGap: 10,
     maxContentHeight: 120,
     scrollbarWidth: 4,
