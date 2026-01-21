@@ -175,8 +175,8 @@ export const UI_CONFIG_PC = {
   // SCORE DISPLAY (Top banh chung icons)
   scoreDisplay: {
     scale: 1.0,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
     iconSize: 40,
     iconGap: 12,
   },
