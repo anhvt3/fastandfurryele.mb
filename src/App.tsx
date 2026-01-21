@@ -19,10 +19,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           
           {/* Force mobile version */}
-          <Route path="/mobile" element={<Index forcedDeviceType="mobile" />} />
+          <Route path="/mobile" element={<Index key="mobile" forcedDeviceType="mobile" />} />
           
           {/* Force desktop/PC version */}
-          <Route path="/desktop" element={<Index forcedDeviceType="desktop" />} />
+          <Route path="/desktop" element={<Index key="desktop" forcedDeviceType="desktop" />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

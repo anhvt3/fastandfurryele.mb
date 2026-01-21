@@ -16,7 +16,8 @@ import mobileSubmitButton from "@/assets/submit-button.png";
 import mobileContinueButton from "@/assets/continue-button.png";
 
 // PC assets
-import pcBackground from "@/assets/pc/background.png";
+// NOTE: use a versioned filename to avoid browser caching when assets are replaced
+import pcBackground from "@/assets/pc/background-v2.png";
 import pcMascotRed from "@/assets/pc/mascot-red.png";
 import pcMascotGreen from "@/assets/pc/mascot-green.png";
 import pcMascotBlue from "@/assets/pc/mascot-blue.png";
