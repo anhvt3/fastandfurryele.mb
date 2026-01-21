@@ -111,7 +111,7 @@ const AnswerButton = ({
       style={desktopStyle}
       className={`
         answer-btn rounded-2xl p-3 
-        ${isDesktop ? 'min-h-[4rem]' : 'min-h-[3.75rem]'}
+        ${isDesktop ? 'min-h-[4rem] h-full' : 'min-h-[3.75rem]'}
         flex items-center gap-3
         ${getButtonClass()}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer active:scale-95"}

@@ -117,7 +117,7 @@ const TetQuizGame = () => {
   }
 
   // Apply different max-width based on device type
-  const mainMaxWidth = deviceType === "desktop" ? "max-w-2xl" : "max-w-md";
+  const mainMaxWidth = deviceType === "desktop" ? "max-w-4xl" : "max-w-md";
 
   // Calculate player/bot positions based on correct count
   // Player position = correctCount, bots move randomly (simulated)
@@ -185,7 +185,7 @@ const TetQuizGame = () => {
               {/* Answer Buttons - Map quiz.answers to AnswerButton components */}
               <div
                 className={`w-full px-4 mt-4 ${
-                  deviceType === "desktop" ? "grid grid-cols-2 gap-3" : "flex flex-col gap-2"
+                  deviceType === "desktop" ? "grid grid-cols-2 grid-rows-2 gap-3" : "flex flex-col gap-2"
                 }`}
                 key={currentQuestionIndex}
               >
