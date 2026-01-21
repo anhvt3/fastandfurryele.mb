@@ -1,7 +1,11 @@
 // Game Configuration
-// Set USE_SAMPLE_DATA to true to use hardcoded sample questions
-// Set USE_SAMPLE_DATA to false to load questions from API
+// Query param ?sample=true enables sample data mode
+// Default (no param or sample=false) uses API via postMessage
 
+// Fixed total questions for progress bar display
+export const FIXED_TOTAL_QUESTIONS = 5;
+
+// Legacy export for backward compatibility (deprecated)
 export const USE_SAMPLE_DATA = false;
 
 // API endpoint for questions (used when USE_SAMPLE_DATA is false)
