@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useDeviceType, DeviceType } from '@/hooks/useDeviceType';
 import { getAssets, AssetSet } from '@/config/assets';
 import { getUIConfig, UIConfigType } from '@/config/uiConfig';
@@ -11,8 +11,16 @@ interface DeviceContextType {
 
 const DeviceContext = createContext<DeviceContextType | null>(null);
 
-export const DeviceProvider = ({ children }: { children: ReactNode }) => {
-  const deviceType = useDeviceType();
+interface DeviceProviderProps {
+  children: ReactNode;
+  forcedDeviceType?: DeviceType;
+}
+
+export const DeviceProvider = ({ children, forcedDeviceType }: DeviceProviderProps) => {
+  const autoDeviceType = useDeviceType();
+  
+  // Use forced device type if provided, otherwise use auto-detected
+  const deviceType = forcedDeviceType ?? autoDeviceType;
   const assets = getAssets(deviceType);
   const uiConfig = getUIConfig(deviceType);
 
