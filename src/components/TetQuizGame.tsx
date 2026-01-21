@@ -183,7 +183,14 @@ const TetQuizGame = () => {
               )}
 
               {/* Answer Buttons - Map quiz.answers to AnswerButton components */}
-              <div className="flex flex-col gap-2 w-full px-4 mt-4" key={currentQuestionIndex}>
+              <div 
+                className={`w-full px-4 mt-4 ${
+                  deviceType === 'desktop' 
+                    ? 'grid grid-cols-2 gap-3' 
+                    : 'flex flex-col gap-2'
+                }`} 
+                key={currentQuestionIndex}
+              >
                 {quiz.answers?.map((answer: QuizAnswer, idx: number) => {
                   const isSelected = selectedAnswer?.id === answer.id;
                   
@@ -203,6 +210,8 @@ const TetQuizGame = () => {
                       isDisabled={hasSubmitted || isSubmitting}
                       isAnswered={hasSubmitted}
                       onClick={() => onAnswerSelect(answer)}
+                      backgroundImage={deviceType === 'desktop' ? assets.answerButton : undefined}
+                      isDesktop={deviceType === 'desktop'}
                     />
                   );
                 })}
