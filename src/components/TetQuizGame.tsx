@@ -117,7 +117,7 @@ const TetQuizGame = () => {
   }
 
   // Apply different max-width based on device type
-  const mainMaxWidth = deviceType === "desktop" ? "max-w-4xl" : "max-w-md";
+  const mainMaxWidth = deviceType === "desktop" ? "max-w-2xl" : "max-w-md";
 
   // Calculate player/bot positions based on correct count
   // Player position = correctCount, bots move randomly (simulated)
@@ -137,10 +137,10 @@ const TetQuizGame = () => {
       className="h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col overflow-y-auto"
       style={{ backgroundImage: `url(${assets.background})` }}
     >
-      <div className="w-full flex flex-col pt-8 pb-4 lg:pt-16">
+      <div className="w-full flex flex-col pt-2 pb-4 lg:pt-4">
         {/* Score Display - Progress bar with totalQuestions items */}
         {!isCompleted && (
-          <header className="flex justify-center">
+          <header className="flex justify-center pb-4 lg:pb-6">
             <ScoreDisplay
               score={correctCount}
               total={totalQuestions}
