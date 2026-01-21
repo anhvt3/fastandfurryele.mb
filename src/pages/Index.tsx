@@ -1,10 +1,18 @@
 import TetQuizGame from "@/components/TetQuizGame";
+import { DeviceProvider } from "@/context/DeviceContext";
+import { DeviceType } from "@/hooks/useDeviceType";
 
-const Index = () => {
+interface IndexProps {
+  forcedDeviceType?: DeviceType;
+}
+
+const Index = ({ forcedDeviceType }: IndexProps) => {
   return (
-    <div className="h-full w-full max-w-md mx-auto">
-      <TetQuizGame />
-    </div>
+    <DeviceProvider forcedDeviceType={forcedDeviceType}>
+      <div className="h-full w-full max-w-2xl mx-auto">
+        <TetQuizGame />
+      </div>
+    </DeviceProvider>
   );
 };
 
