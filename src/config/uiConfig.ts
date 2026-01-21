@@ -174,7 +174,7 @@ export const UI_CONFIG_PC = {
   // ==========================================
   // SCORE DISPLAY (Top banh chung icons)
   scoreDisplay: {
-    scale: 1,
+    scale: 1.2,
     paddingTop: 10,
     paddingBottom: 10,
     iconSize: 40,
@@ -273,7 +273,7 @@ export const UI_CONFIG_PC = {
   // RACE TRACK
   // ==========================================
   raceTrack: {
-    scale: 1.0,
+    scale: 1.2,
     trackBottomOffset: 15,
     trackHeight: 220,
     startLineLeft: 0,
