@@ -9,6 +9,8 @@ interface AnswerButtonProps {
   isAnswered: boolean;
   correctIndex?: number; // Optional - only available in sample mode
   onClick: () => void;
+  backgroundImage?: string; // Asset for desktop button background
+  isDesktop?: boolean; // Whether this is desktop mode
 }
 
 const AnswerButton = ({
@@ -20,6 +22,8 @@ const AnswerButton = ({
   isAnswered,
   correctIndex = -1, // Default to -1 (unknown) for API mode
   onClick,
+  backgroundImage,
+  isDesktop = false,
 }: AnswerButtonProps) => {
   /**
    * Button state logic:
@@ -44,7 +48,11 @@ const AnswerButton = ({
       return "answer-btn-default opacity-70";
     }
 
-    // Before submission
+    // Before submission - desktop uses asset background, no default class needed
+    if (isDesktop && backgroundImage) {
+      return isSelected ? "" : "";
+    }
+    
     if (isSelected) {
       return "answer-btn-selected";
     }
@@ -81,12 +89,29 @@ const AnswerButton = ({
     return "rgba(139, 69, 19, 0.2)";
   };
 
+  // Desktop style with asset background
+  const desktopStyle = isDesktop && backgroundImage ? {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat' as const,
+    backgroundPosition: 'center',
+    // Orange outline for selection (pre-submit only)
+    outline: isSelected && !isAnswered ? '2px solid #ff9900ff' : 'none',
+    outlineOffset: '0px',
+    // Override border for answered states
+    ...(isAnswered && isSelected && isCorrect === true && { border: '3px solid #2acb42' }),
+    ...(isAnswered && isSelected && isCorrect === false && { border: '3px solid #ff3b30' }),
+    ...(isAnswered && correctIndex >= 0 && index === correctIndex && !isSelected && { border: '3px solid #2acb42' }),
+  } : {};
+
   return (
     <button
       onClick={onClick}
       disabled={isDisabled}
+      style={desktopStyle}
       className={`
-        answer-btn rounded-2xl p-2.5 min-h-[3.75rem]
+        answer-btn rounded-2xl p-3 
+        ${isDesktop ? 'min-h-[5rem]' : 'min-h-[3.75rem]'}
         flex items-center gap-3
         ${getButtonClass()}
         ${isDisabled ? "cursor-not-allowed" : "cursor-pointer active:scale-95"}
@@ -99,10 +124,10 @@ const AnswerButton = ({
       >
         {labels[index] ?? (index + 1)}
       </span>
-      <span className="answer-text">
+      <span className="answer-text flex-1 min-w-0">
         <HtmlContent 
           html={answer}
-          className="font-semibold text-left leading-tight min-w-0 break-all"
+          className="font-semibold text-left leading-tight break-words"
         />
       </span>
     </button>
