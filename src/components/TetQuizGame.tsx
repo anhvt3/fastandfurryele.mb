@@ -1,6 +1,6 @@
 /**
  * TetQuizGame - Main game component
- * 
+ *
  * Uses useGameQuiz hook following the Complete Quiz Flow Example pattern:
  * - quiz: Current question data
  * - selectedAnswer: Currently selected answer
@@ -56,7 +56,7 @@ const TetQuizGame = () => {
     },
     onAnswerIncorrect: () => {
       playWrongAnswer();
-      console.log('[TetQuizGame] Incorrect answer');
+      console.log("[TetQuizGame] Incorrect answer");
     },
   });
 
@@ -107,8 +107,8 @@ const TetQuizGame = () => {
   // Show loading state while waiting for first question
   if (!quiz) {
     return (
-      <div 
-        className="h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center" 
+      <div
+        className="h-screen w-full bg-cover bg-center bg-no-repeat flex items-center justify-center"
         style={{ backgroundImage: `url(${assets.background})` }}
       >
         <div className="text-foreground font-roboto text-xl">Đang tải câu hỏi...</div>
@@ -117,7 +117,7 @@ const TetQuizGame = () => {
   }
 
   // Apply different max-width based on device type
-  const mainMaxWidth = deviceType === 'desktop' ? 'max-w-2xl' : 'max-w-md';
+  const mainMaxWidth = deviceType === "desktop" ? "max-w-4xl" : "max-w-md";
 
   // Calculate player/bot positions based on correct count
   // Player position = correctCount, bots move randomly (simulated)
@@ -133,18 +133,18 @@ const TetQuizGame = () => {
   };
 
   return (
-    <div 
-      className="h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col overflow-hidden"
+    <div
+      className="h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col overflow-y-auto"
       style={{ backgroundImage: `url(${assets.background})` }}
     >
-      <div className="w-full flex flex-col pt-4 pb-2 lg:pt-6">
+      <div className="w-full flex flex-col pt-8 pb-4 lg:pt-16">
         {/* Score Display - Progress bar with totalQuestions items */}
         {!isCompleted && (
           <header className="flex justify-center pb-4 lg:pb-6">
-            <ScoreDisplay 
-              score={correctCount} 
-              total={totalQuestions} 
-              currentIndex={currentQuestionIndex} 
+            <ScoreDisplay
+              score={correctCount}
+              total={totalQuestions}
+              currentIndex={currentQuestionIndex}
               answerResults={answers}
               banhChungImage={assets.banhChung}
               uiConfig={uiConfig.scoreDisplay}
@@ -156,9 +156,9 @@ const TetQuizGame = () => {
         <main className={`flex-1 flex flex-col px-4 pb-1 ${mainMaxWidth} mx-auto w-full`}>
           {isCompleted ? (
             /* Completion Screen */
-            <WinScreen 
-              score={correctCount} 
-              totalQuestions={totalQuestions} 
+            <WinScreen
+              score={correctCount}
+              totalQuestions={totalQuestions}
               onRestart={onFinish}
               mascotImage={assets.mascotRed}
               uiConfig={uiConfig.winScreen}
@@ -166,8 +166,8 @@ const TetQuizGame = () => {
           ) : (
             <>
               {/* Question Box - Uses quiz.text which may contain HTML/LaTeX */}
-              <QuestionBox 
-                question={quiz.text ?? ''} 
+              <QuestionBox
+                question={quiz.text ?? ""}
                 questionNumber={currentQuestionIndex + 1}
                 type="text"
                 imageUrl={undefined}
@@ -183,35 +183,33 @@ const TetQuizGame = () => {
               )}
 
               {/* Answer Buttons - Map quiz.answers to AnswerButton components */}
-              <div 
+              <div
                 className={`w-full px-4 mt-4 ${
-                  deviceType === 'desktop' 
-                    ? 'grid grid-cols-2 gap-3' 
-                    : 'flex flex-col gap-2'
-                }`} 
+                  deviceType === "desktop" ? "grid grid-cols-2 gap-3" : "flex flex-col gap-2"
+                }`}
                 key={currentQuestionIndex}
               >
                 {quiz.answers?.map((answer: QuizAnswer, idx: number) => {
                   const isSelected = selectedAnswer?.id === answer.id;
-                  
+
                   // Determine if this answer is correct (only show after submission)
                   let isCorrectAnswer: boolean | null = null;
                   if (hasSubmitted && currentResult && isSelected) {
                     isCorrectAnswer = currentResult.isCorrect;
                   }
-                  
+
                   return (
                     <AnswerButton
                       key={answer.id}
-                      answer={answer.content ?? ''}
+                      answer={answer.content ?? ""}
                       index={idx}
                       isSelected={isSelected}
                       isCorrect={isCorrectAnswer}
                       isDisabled={hasSubmitted || isSubmitting}
                       isAnswered={hasSubmitted}
                       onClick={() => onAnswerSelect(answer)}
-                      backgroundImage={deviceType === 'desktop' ? assets.answerButton : undefined}
-                      isDesktop={deviceType === 'desktop'}
+                      backgroundImage={deviceType === "desktop" ? assets.answerButton : undefined}
+                      isDesktop={deviceType === "desktop"}
                     />
                   );
                 })}
