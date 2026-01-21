@@ -33,7 +33,8 @@ export const UI_CONFIG_MOBILE = {
     framePaddingX: 10,
     fontSize: 0.95,
     fontSizeUnit: "rem" as "px" | "rem",
-    fontFamily: "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    fontFamily:
+      "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     textAlign: "justify" as "left" | "center" | "right" | "justify",
     textColor: "#4a2c00",
     imageMaxWidth: 200,
@@ -59,7 +60,7 @@ export const UI_CONFIG_MOBILE = {
     buttonPadding: 8,
     buttonMinHeight: 90,
     buttonBorderRadius: 16,
-    borderWidth: 3,
+    borderWidth: 1,
     fontSize: 16,
     fontFamily: "roboto",
     textAlign: "left" as "left" | "center" | "right",
@@ -173,35 +174,36 @@ export const UI_CONFIG_PC = {
   // ==========================================
   // SCORE DISPLAY (Top banh chung icons)
   scoreDisplay: {
-    scale: 1.0,
-    paddingTop: 12,
-    paddingBottom: 8,
-    iconSize: 40,
-    iconGap: 10,
+    scale: 1.2,
+    paddingTop: 20,
+    paddingBottom: 12,
+    iconSize: 50,
+    iconGap: 12,
   },
 
   // QUESTION BOX
   // ==========================================
   questionBox: {
     scale: 1.0,
-    minHeight: 140,
-    height: 200,
+    minHeight: 180,
+    height: 300,
     useFixedHeight: true,
     containerPaddingX: 16,
     containerPaddingY: 0,
-    marginBottom: 6,
+    marginBottom: 10,
     innerPaddingX: 12,
-    innerPaddingTop: 60,
+    innerPaddingTop: 90,
     innerPaddingBottom: 0,
     framePaddingX: 16,
-    fontSize: 1.0,
+    fontSize: 1.1,
     fontSizeUnit: "rem" as "px" | "rem",
-    fontFamily: "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    fontFamily:
+      "'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     textAlign: "justify" as "left" | "center" | "right" | "justify",
     textColor: "#4a2c00",
-    imageMaxWidth: 240,
-    imageGap: 12,
-    maxContentHeight: 120,
+    imageMaxWidth: 280,
+    imageGap: 14,
+    maxContentHeight: 160,
     scrollbarWidth: 6,
     scrollbarColor: "#c4a484",
     scrollbarTrackColor: "transparent",
@@ -211,8 +213,8 @@ export const UI_CONFIG_PC = {
   // ANSWER BUTTONS
   answerButtons: {
     scale: 1.0,
-    width: 600,
-    height: 300,
+    width: 800,
+    height: 400,
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 20,
@@ -222,13 +224,13 @@ export const UI_CONFIG_PC = {
     buttonPadding: 12,
     buttonMinHeight: 60,
     buttonBorderRadius: 20,
-    borderWidth: 3,
+    borderWidth: 1,
     fontSize: 18,
     fontFamily: "roboto",
     textAlign: "left" as "left" | "center" | "right",
     textColor: "#000000",
     letterCircleSize: 38,
-    letterFontSize: 18,
+    letterFontSize: 16,
     letterGap: 16,
     defaultBackgroundColor: "#ffe6cc",
     defaultBorderColor: "#c9954a",
@@ -257,11 +259,11 @@ export const UI_CONFIG_PC = {
   // SUBMIT/CONTINUE BUTTON
   // ==========================================
   actionButton: {
-    scale: 1.0,
-    containerPaddingX: 16,
-    containerPaddingY: 80,
-    buttonWidth: 140,
-    buttonHeight: 40,
+    scale: 1.2,
+    containerPaddingX: 24,
+    containerPaddingY: 160,
+    buttonWidth: 160,
+    buttonHeight: 45,
     disabledOpacity: 0.5,
     activeScale: 0.95,
     transitionDuration: 200,
@@ -271,15 +273,15 @@ export const UI_CONFIG_PC = {
   // RACE TRACK
   // ==========================================
   raceTrack: {
-    scale: 1.0,
-    trackBottomOffset: 10,
-    trackHeight: 150,
+    scale: 1.2,
+    trackBottomOffset: 15,
+    trackHeight: 220,
     startLineLeft: 0,
     finishLineLeft: 85,
-    startLineWidth: 60,
-    finishLineWidth: 55,
-    playerBottom: 60,
-    bot1Bottom: 30,
+    startLineWidth: 80,
+    finishLineWidth: 70,
+    playerBottom: 80,
+    bot1Bottom: 40,
     bot2Bottom: 0,
     bot1LeftOffset: 5,
     bot2LeftOffset: 0,
@@ -290,10 +292,10 @@ export const UI_CONFIG_PC = {
   // MASCOTS
   // ==========================================
   mascots: {
-    scale: 1.0,
-    playerWidth: 75,
-    bot1Width: 75,
-    bot2Width: 75,
+    scale: 1.2,
+    playerWidth: 95,
+    bot1Width: 95,
+    bot2Width: 95,
   },
 
   // ==========================================
@@ -335,8 +337,8 @@ export const UI_CONFIG_PC = {
 export type UIConfigType = typeof UI_CONFIG_MOBILE;
 
 // Helper function to get config based on device type
-export const getUIConfig = (deviceType: 'mobile' | 'desktop'): UIConfigType => 
-  deviceType === 'mobile' ? UI_CONFIG_MOBILE : UI_CONFIG_PC;
+export const getUIConfig = (deviceType: "mobile" | "desktop"): UIConfigType =>
+  deviceType === "mobile" ? UI_CONFIG_MOBILE : UI_CONFIG_PC;
 
 // Legacy export for backward compatibility
 export const UI_CONFIG = UI_CONFIG_MOBILE;
