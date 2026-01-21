@@ -161,7 +161,14 @@
   .question-text {
     position: relative;
     z-index: 2;
-    font-family: 'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      "Medium SF Compact Rounded",
+      "SF Pro Rounded",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
     color: #4a2c00;
@@ -248,23 +255,23 @@
 
   .answer-btn-default {
     background-color: hsl(var(--answer-default));
-    border: 3px solid hsl(var(--answer-default-border));
+    border: 1px solid hsl(var(--answer-default-border));
   }
 
   .answer-btn-selected {
     background-color: hsl(var(--answer-default));
-    border: 3px solid hsl(var(--answer-selected-border));
+    border: 1px solid hsl(var(--answer-selected-border));
     box-shadow: 0 0 12px hsl(var(--answer-selected-border) / 0.5);
   }
 
   .answer-btn-correct {
     background-color: #cefdd5;
-    border: 3px solid #2acb42;
+    border: 1x solid #2acb42;
   }
 
   .answer-btn-wrong {
     background-color: #ffcfcc;
-    border: 3px solid #ff3b30;
+    border: 1px solid #ff3b30;
   }
 
   .answer-btn:hover:not(:disabled) {
@@ -280,7 +287,14 @@
     display: block;
     position: relative;
     z-index: 2;
-    font-family: 'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      "Medium SF Compact Rounded",
+      "SF Pro Rounded",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
     font-size: 0.85rem;
     font-weight: 600;
     color: #4a2c00;
@@ -296,7 +310,14 @@
   }
 
   .answer-label {
-    font-family: 'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      "Medium SF Compact Rounded",
+      "SF Pro Rounded",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
     font-size: 0.875rem;
     font-weight: 700;
     color: #4a2c00;
@@ -366,7 +387,6 @@
 }
 
 @keyframes incorrect-shake {
-
   0%,
   100% {
     transform: translateX(0);
