@@ -140,7 +140,7 @@ const TetQuizGame = () => {
       <div className="w-full flex flex-col pt-8 pb-4 lg:pt-16">
         {/* Score Display - Progress bar with totalQuestions items */}
         {!isCompleted && (
-          <header className="flex justify-center pb-4 lg:pb-6">
+          <header className="flex justify-center">
             <ScoreDisplay
               score={correctCount}
               total={totalQuestions}

@@ -2,6 +2,8 @@ interface ScoreDisplayUIConfig {
   scale: number;
   iconSize: number;
   iconGap: number;
+  paddingTop: number;
+  paddingBottom: number;
 }
 
 interface ScoreDisplayProps {
@@ -14,14 +16,19 @@ interface ScoreDisplayProps {
 }
 
 const ScoreDisplay = ({ total, currentIndex, answerResults, banhChungImage, uiConfig }: ScoreDisplayProps) => {
-  const { scale, iconSize, iconGap } = uiConfig;
+  const { scale, iconSize, iconGap, paddingTop, paddingBottom } = uiConfig;
 
   // Apply scale to pixel values
   const scaledIconSize = iconSize * scale;
   const scaledIconGap = iconGap * scale;
+  const scaledPaddingTop = paddingTop * scale;
+  const scaledPaddingBottom = paddingBottom * scale;
 
   return (
-    <div className="relative">
+    <div 
+      className="relative"
+      style={{ paddingTop: `${scaledPaddingTop}px`, paddingBottom: `${scaledPaddingBottom}px` }}
+    >
       {/* Định nghĩa animation nhấp nháy vàng */}
       <style>{`
         @keyframes yellow-pulse {
