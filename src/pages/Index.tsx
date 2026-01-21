@@ -8,7 +8,7 @@ interface IndexProps {
 
 const Index = ({ forcedDeviceType }: IndexProps) => {
   return (
-    <DeviceProvider forcedDeviceType={forcedDeviceType}>
+    <DeviceProvider key={forcedDeviceType ?? "auto"} forcedDeviceType={forcedDeviceType}>
       <div className="h-full w-full max-w-2xl mx-auto">
         <TetQuizGame />
       </div>
