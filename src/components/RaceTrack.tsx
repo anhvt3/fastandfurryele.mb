@@ -1,18 +1,30 @@
-import mascotRed from "@/assets/mascot-red.png";
-import mascotGreen from "@/assets/mascot-green.png";
-import mascotBlue from "@/assets/mascot-blue.png";
-import startLineImg from "@/assets/start-line.png";
-import finishLineImg from "@/assets/finish-line.png";
-import { UI_CONFIG } from "@/config/uiConfig";
+import { UIConfigType } from "@/config/uiConfig";
 
 interface RaceTrackProps {
   playerPosition: number;
   bot1Position: number;
   bot2Position: number;
   isJumping: { player: boolean; bot1: boolean; bot2: boolean };
+  mascotRed: string;
+  mascotGreen: string;
+  mascotBlue: string;
+  startLine: string;
+  finishLine: string;
+  uiConfig: UIConfigType;
 }
 
-const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: RaceTrackProps) => {
+const RaceTrack = ({ 
+  playerPosition, 
+  bot1Position, 
+  bot2Position, 
+  isJumping,
+  mascotRed,
+  mascotGreen,
+  mascotBlue,
+  startLine: startLineImg,
+  finishLine: finishLineImg,
+  uiConfig
+}: RaceTrackProps) => {
   const {
     scale: trackScale,
     startLineLeft,
@@ -26,9 +38,9 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
     bot2LeftOffset,
     playerLeftOffset,
     trackHeight,
-  } = UI_CONFIG.raceTrack;
+  } = uiConfig.raceTrack;
 
-  const { scale: mascotScale, playerWidth, bot1Width, bot2Width } = UI_CONFIG.mascots;
+  const { scale: mascotScale, playerWidth, bot1Width, bot2Width } = uiConfig.mascots;
   const {
     scale: labelScale,
     offsetTop,
@@ -36,7 +48,7 @@ const RaceTrack = ({ playerPosition, bot1Position, bot2Position, isJumping }: Ra
     paddingY,
     fontSize: labelFontSize,
     borderRadius: labelBorderRadius,
-  } = UI_CONFIG.playerLabel;
+  } = uiConfig.playerLabel;
 
   // Apply scale to pixel values
   const scaledTrackHeight = trackHeight * trackScale;

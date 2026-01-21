@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import background from "@/assets/background.png";
+import { useDevice } from "@/context/DeviceContext";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
 import AnswerButton from "./AnswerButton";
@@ -12,6 +12,8 @@ import { USE_SAMPLE_DATA } from "@/config/gameConfig";
 import { useGameAudio } from "@/hooks/useGameAudio";
 
 const TetQuizGame = () => {
+  const { assets, uiConfig, deviceType } = useDevice();
+  
   const [questions, setQuestions] = useState<Question[]>(sampleQuestions);
   const [isLoading, setIsLoading] = useState(!USE_SAMPLE_DATA);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -142,29 +144,48 @@ const TetQuizGame = () => {
   // Show loading state while fetching from API
   if (isLoading || !currentQuestion) {
     return (
-      <div className="game-container flex items-center justify-center" style={{ backgroundImage: `url(${background})` }}>
+      <div 
+        className="game-container flex items-center justify-center" 
+        style={{ backgroundImage: `url(${assets.background})` }}
+      >
         <div className="text-foreground font-sf-compact text-xl">Đang tải câu hỏi...</div>
       </div>
     );
   }
 
+  // Apply different max-width based on device type
+  const mainMaxWidth = deviceType === 'desktop' ? 'max-w-2xl' : 'max-w-md';
+
   return (
     <div 
       className="h-screen w-full bg-cover bg-no-repeat flex flex-col overflow-y-auto"
-      style={{ backgroundImage: `url(${background})`, backgroundPosition: "center top" }}
+      style={{ backgroundImage: `url(${assets.background})`, backgroundPosition: "center top" }}
     >
       <div className="w-full flex flex-col pt-8 pb-4 lg:pt-16">
         {/* Score Display */}
         {!gameOver && (
           <header className="flex justify-center pb-4 lg:pb-6">
-            <ScoreDisplay score={score} total={5} currentIndex={currentQuestionIndex} answerResults={answerResults} />
+            <ScoreDisplay 
+              score={score} 
+              total={5} 
+              currentIndex={currentQuestionIndex} 
+              answerResults={answerResults}
+              banhChungImage={assets.banhChung}
+              uiConfig={uiConfig.scoreDisplay}
+            />
           </header>
         )}
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col px-4 pb-1 max-w-md mx-auto w-full">
+        <main className={`flex-1 flex flex-col px-4 pb-1 ${mainMaxWidth} mx-auto w-full`}>
           {gameOver ? (
-            <WinScreen score={score} totalQuestions={questions.length} onRestart={handleRestart} />
+            <WinScreen 
+              score={score} 
+              totalQuestions={questions.length} 
+              onRestart={handleRestart}
+              mascotImage={assets.mascotRed}
+              uiConfig={uiConfig.winScreen}
+            />
           ) : (
             <>
               {/* Question Box */}
@@ -173,6 +194,8 @@ const TetQuizGame = () => {
                 questionNumber={currentQuestionIndex + 1}
                 type={currentQuestion.type}
                 imageUrl={currentQuestion.imageUrl}
+                questionFrame={assets.questionFrame}
+                uiConfig={uiConfig.questionBox}
               />
 
               {/* Answer Buttons */}
@@ -198,6 +221,9 @@ const TetQuizGame = () => {
                   isAnswered={isAnswered}
                   isDisabled={selectedAnswer === null && !isAnswered}
                   onClick={isAnswered ? handleContinue : handleSubmitAnswer}
+                  submitButtonImage={assets.submitButton}
+                  continueButtonImage={assets.continueButton}
+                  uiConfig={uiConfig.actionButton}
                 />
               </div>
 
@@ -208,6 +234,12 @@ const TetQuizGame = () => {
                   bot1Position={bot1Position}
                   bot2Position={bot2Position}
                   isJumping={isJumping}
+                  mascotRed={assets.mascotRed}
+                  mascotGreen={assets.mascotGreen}
+                  mascotBlue={assets.mascotBlue}
+                  startLine={assets.startLine}
+                  finishLine={assets.finishLine}
+                  uiConfig={uiConfig}
                 />
               </div>
             </>

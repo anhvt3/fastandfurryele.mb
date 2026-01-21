@@ -1,13 +1,31 @@
-import mascotRed from "@/assets/mascot-red.png";
-import { UI_CONFIG } from "@/config/uiConfig";
+interface WinScreenUIConfig {
+  scale: number;
+  overlayOpacity: number;
+  cardPadding: number;
+  cardMarginX: number;
+  cardBorderRadius: number;
+  cardBorderWidth: number;
+  mascotWidth: number;
+  mascotMarginBottom: number;
+  titleFontSize: number;
+  titleMarginBottom: number;
+  scoreFontSize: number;
+  scoreMarginBottom: number;
+  buttonPaddingY: number;
+  buttonPaddingX: number;
+  buttonFontSize: number;
+  buttonBorderRadius: number;
+}
 
 interface WinScreenProps {
   score: number;
   totalQuestions: number;
   onRestart: () => void;
+  mascotImage: string;
+  uiConfig: WinScreenUIConfig;
 }
 
-const WinScreen = ({ score, onRestart }: WinScreenProps) => {
+const WinScreen = ({ score, onRestart, mascotImage, uiConfig }: WinScreenProps) => {
   const isWinner = score >= 5;
   const {
     scale,
@@ -26,7 +44,7 @@ const WinScreen = ({ score, onRestart }: WinScreenProps) => {
     buttonPaddingX,
     buttonFontSize,
     buttonBorderRadius,
-  } = UI_CONFIG.winScreen;
+  } = uiConfig;
 
   const scaledCardPadding = cardPadding * scale;
   const scaledCardMarginX = cardMarginX * scale;
@@ -56,7 +74,7 @@ const WinScreen = ({ score, onRestart }: WinScreenProps) => {
         }}
       >
         <img
-          src={mascotRed}
+          src={mascotImage}
           alt="Mascot"
           className={`mx-auto ${isWinner ? "celebrating" : ""}`}
           style={{ width: `${scaledMascotWidth}px`, marginBottom: `${scaledMascotMarginBottom}px` }}

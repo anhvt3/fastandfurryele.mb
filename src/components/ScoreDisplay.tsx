@@ -1,15 +1,20 @@
-import banhChung from "@/assets/banh-chung.png";
-import { UI_CONFIG } from "@/config/uiConfig";
+interface ScoreDisplayUIConfig {
+  scale: number;
+  iconSize: number;
+  iconGap: number;
+}
 
 interface ScoreDisplayProps {
   score: number;
   total: number;
   currentIndex: number;
   answerResults: (boolean | null)[];
+  banhChungImage: string;
+  uiConfig: ScoreDisplayUIConfig;
 }
 
-const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps) => {
-  const { scale, iconSize, iconGap } = UI_CONFIG.scoreDisplay;
+const ScoreDisplay = ({ total, currentIndex, answerResults, banhChungImage, uiConfig }: ScoreDisplayProps) => {
+  const { scale, iconSize, iconGap } = uiConfig;
 
   // Apply scale to pixel values
   const scaledIconSize = iconSize * scale;
@@ -76,7 +81,7 @@ const ScoreDisplay = ({ total, currentIndex, answerResults }: ScoreDisplayProps)
           return (
             <img
               key={index}
-              src={banhChung}
+              src={banhChungImage}
               alt="Bánh chưng"
               className={`transition-all duration-300 ${statusClass}`}
               style={{ width: `${scaledIconSize}px`, height: `${scaledIconSize}px` }}
