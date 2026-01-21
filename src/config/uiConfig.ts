@@ -174,11 +174,11 @@ export const UI_CONFIG_PC = {
   // ==========================================
   // SCORE DISPLAY (Top banh chung icons)
   scoreDisplay: {
-    scale: 1.2,
+    scale: 1.0,
     paddingTop: 10,
     paddingBottom: 10,
     iconSize: 40,
-    iconGap: 15,
+    iconGap: 12,
   },
 
   // QUESTION BOX
