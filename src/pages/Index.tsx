@@ -9,7 +9,12 @@ interface IndexProps {
 const Index = ({ forcedDeviceType }: IndexProps) => {
   return (
     <DeviceProvider key={forcedDeviceType ?? "auto"} forcedDeviceType={forcedDeviceType}>
-      <div className="h-full w-full max-w-2xl mx-auto">
+      {/*
+        IMPORTANT: Do NOT constrain the game container width here.
+        TetQuizGame already handles responsive inner max-width, while the
+        background needs to span the full viewport.
+      */}
+      <div className="h-full w-full">
         <TetQuizGame />
       </div>
     </DeviceProvider>
