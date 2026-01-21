@@ -162,12 +162,25 @@ const TetQuizGame = () => {
   // Apply different max-width based on device type
   const mainMaxWidth = deviceType === 'desktop' ? 'max-w-2xl' : 'max-w-md';
 
-  const backgroundPosition = deviceType === 'desktop' ? 'center center' : 'center top';
+  // Desktop: contain để hiển thị đầy đủ với tỷ lệ 16:9, mobile: cover để full màn hình
+  const backgroundStyles = deviceType === 'desktop' 
+    ? {
+        backgroundImage: `url(${assets.background})`,
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+      }
+    : {
+        backgroundImage: `url(${assets.background})`,
+        backgroundPosition: 'center top',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+      };
 
   return (
     <div 
-      className="h-screen w-full bg-cover bg-no-repeat flex flex-col overflow-y-auto"
-      style={{ backgroundImage: `url(${assets.background})`, backgroundPosition }}
+      className="h-screen w-full flex flex-col overflow-y-auto"
+      style={backgroundStyles}
     >
       <div className="w-full flex flex-col pt-8 pb-4 lg:pt-16">
         {/* Score Display */}
