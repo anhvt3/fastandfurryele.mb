@@ -1,4 +1,3 @@
-import React from 'react';
 import { UIConfigType } from "@/config/uiConfig";
 
 interface RaceTrackProps {
@@ -29,23 +28,9 @@ const RaceTrack = ({
   const { startLineLeft, finishLineLeft } = uiConfig.raceTrack;
   const urlParams = new URLSearchParams(window.location.search);
   const playerName = urlParams.get('name') || 'User';
-
-  // Set player name like dragonboat
-  const setPlayerName = React.useCallback(() => {
-    const playerNameEl = document.getElementById('playerName');
-    if (playerNameEl) {
-      playerNameEl.textContent = playerName;
-    }
-  }, [playerName]);
-
-  // Call setPlayerName on mount
-  React.useEffect(() => {
-    setPlayerName();
-  }, [playerName, setPlayerName]);
-
   const calculatePosition = (progress: number) => {
-    const range = finishLineLeft - (startLineLeft + 5);
-    return (startLineLeft + 5) + (progress / 5) * range;
+    const range = finishLineLeft - (startLineLeft + 12);
+    return (startLineLeft + 7.5) + (progress / 5) * range;
   };
 
   return (
@@ -53,7 +38,7 @@ const RaceTrack = ({
       <div className="race-track">
         {/* Start Line */}
         <div 
-          className="absolute bottom-0 z-50 opacity-80" 
+          className="absolute bottom-0 z-10 opacity-80" 
           style={{ left: `${startLineLeft + 10}%`, width: '8%', transform: 'translateX(50%)' }}
         >
            <img src={startLineImg} alt="Start" className="w-full h-auto" />
@@ -61,7 +46,7 @@ const RaceTrack = ({
 
         {/* Finish Line */}
         <div 
-          className="absolute bottom-0 z-50" 
+          className="absolute bottom-0 z-10" 
           style={{ left: `${finishLineLeft}%`, width: '7%', transform: 'translateX(-50%)' }}
         >
            <img src={finishLineImg} alt="Finish" className="w-full h-auto" />
@@ -72,10 +57,11 @@ const RaceTrack = ({
           className={`player ${isJumping.player && playerPosition < 5 ? "moving" : ""}`}
           style={{
             left: `${calculatePosition(playerPosition) + 6}%`,
-            bottom: "70%",  // Approximate lane position
+            bottom: "9cqw",  // Fixed vertical position
+            zIndex: 101 // Top lane, lowest z-index
           }}
         >
-          <div className="player-name">{playerName}</div>
+          <span className="player-name" id="playerName">{playerName}</span>
           <img src={mascotRed} alt="Player" />
         </div>
 
@@ -84,8 +70,8 @@ const RaceTrack = ({
           className={`player ${isJumping.bot1 && bot1Position < 5 ? "moving" : ""}`}
           style={{
             left: `${calculatePosition(bot1Position) + 3}%`,
-            bottom: "35%", // Approximate lane position
-            zIndex: 101 // Lower z-index than player if needed, or higher?
+            bottom: "5cqw", // Fixed vertical position
+            zIndex: 102
           }}
         >
           <img src={mascotGreen} alt="Bot 1" />
@@ -96,8 +82,8 @@ const RaceTrack = ({
           className={`player ${isJumping.bot2 && bot2Position < 5 ? "moving" : ""}`}
           style={{
             left: `${calculatePosition(bot2Position)}%`,
-            bottom: "0%", // Approximate lane position
-            zIndex: 102
+            bottom: "1cqw", // Fixed vertical position
+            zIndex: 103
           }}
         >
           <img src={mascotBlue} alt="Bot 2" />

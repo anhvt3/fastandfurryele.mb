@@ -109,7 +109,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-fredoka;
+    @apply bg-background text-foreground;
+    font-family: 'Medium SF Compact Rounded', 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
   html,
@@ -206,26 +207,27 @@
 
   .question-container {
     position: relative;
-    width: 100%;
-    margin-left: 0%;
-    margin-right: 0%;
+    width: 120%;
+    margin-left: -10%;
+    margin-right: -10%;
     display: block;
-    background-image: url('/src/assets/pc/question-bg.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    aspect-ratio: 2.4 / 1;
+    border-style: solid;
+    border-color: transparent;
+    border-image-slice: 10% 6% 8% 6% fill;
+    border-width: 10cqw 2.5cqw 2.5cqw 2.5cqw;
+    aspect-ratio: 3 / 1;
     box-sizing: border-box;
-    padding-top: 8cqw;
+    padding-top: 0;
   }
 
   .question-text {
     position: absolute;
-    top: 18cqw;
+    top: 30%;
     bottom: 10%;
-    left: 7%;
-    right: 7%;
+    left: 2%;
+    right: 2%;
     z-index: 2;
-    font-size: 3cqw;
+    font-size: 2.5cqw;
     font-weight: 600;
     color: #000000;
     text-align: justify;
@@ -239,7 +241,6 @@
     padding-right: 2%;
   }
 
-  /* Custom scrollbar for question text matches scale */
   .question-text::-webkit-scrollbar {
     width: 1cqw;
     height: 1cqw;
@@ -257,7 +258,6 @@
 
   .question-text .katex {
     font-size: 3cqw;
-    /* Ensure KaTeX scales */
   }
 
   .question-text p {
@@ -278,9 +278,9 @@
     grid-auto-rows: 1fr;
     row-gap: 2%;
     column-gap: 2%;
-    width: 100%;
-    margin-left: 0%;
-    margin-right: 0%;
+    width: 120%;
+    margin-left: -10%;
+    margin-right: -10%;
     margin-top: 2%;
     container-type: inline-size;
   }
@@ -294,7 +294,7 @@
     gap: 3%;
     padding: 2% 3%;
     box-sizing: border-box;
-    border-radius: 3cqw;
+    border-radius: 2.5cqw;
     background-color: hsl(30 100% 90%);
     border: 0.4cqw solid hsl(30 80% 65%);
     transition: all 0.2s ease;
@@ -305,8 +305,8 @@
   .answer-label {
     position: relative;
     z-index: 2;
-    width: 8cqw;
-    height: 8cqw;
+    width: 7cqw;
+    height: 7cqw;
     border-radius: 50%;
     background-color: rgba(139, 69, 19, 0.2);
     display: flex;
@@ -323,7 +323,7 @@
     display: block;
     position: relative;
     z-index: 2;
-    font-size: 3.5cqw;
+    font-size: 4cqw;
     font-weight: 600;
     color: #000000;
     text-align: justify;

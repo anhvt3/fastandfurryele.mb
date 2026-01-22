@@ -45,7 +45,7 @@ const QuestionBox = ({
   return (
     <div 
       className="question-container" 
-      style={{ backgroundImage: `url(${questionFrame})` }}
+      style={{ borderImageSource: `url(${questionFrame})` }}
     >
       <div className="question-text">
         <HtmlContent html={question} />

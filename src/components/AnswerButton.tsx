@@ -73,7 +73,7 @@ const AnswerButton = ({
         {labels[index] ?? index + 1}
       </div>
       <div className="answer-text">
-        <HtmlContent html={answer} className="font-semibold" />
+        <HtmlContent html={answer} />
       </div>
     </div>
   );
