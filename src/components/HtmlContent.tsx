@@ -61,13 +61,20 @@ const HtmlContent = ({ html, className = "", style }: HtmlContentProps) => {
 
   const modal = modalImage ? createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/80"
-      style={{ zIndex: 99999 }}
+      className="fixed inset-0 flex items-center justify-center"
+      style={{ zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.9)' }}
       onClick={() => setModalImage(null)}
     >
       <button
-        className="absolute top-4 right-4 text-white text-4xl font-bold hover:text-gray-300"
-        style={{ zIndex: 100000 }}
+        className="absolute cursor-pointer text-white font-bold hover:text-[#ff6b6b] transition-colors duration-200"
+        style={{ 
+          zIndex: 10010, 
+          top: '3cqw', 
+          right: '5cqw', 
+          width: '5cqw', 
+          height: '5cqw', 
+          fontSize: '5cqw' 
+        }}
         onClick={() => setModalImage(null)}
       >
         ×
@@ -76,6 +83,10 @@ const HtmlContent = ({ html, className = "", style }: HtmlContentProps) => {
         src={modalImage}
         alt="Zoomed"
         className="max-w-[90vw] max-h-[90vh] object-contain"
+        style={{ 
+          borderRadius: '1cqw', 
+          boxShadow: '0 0.5cqw 3cqw rgba(0, 0, 0, 0.5)' 
+        }}
         onClick={(e) => e.stopPropagation()}
       />
     </div>,

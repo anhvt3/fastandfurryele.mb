@@ -60,11 +60,11 @@ const TetQuizGame = () => {
 
   useEffect(() => {
     if (hasSubmitted) {
-      const botsAvailable = [];
+      const botsAvailable: number[] = [];
       if (bot1PositionRef.current < totalQuestions) botsAvailable.push(1);
       if (bot2PositionRef.current < totalQuestions) botsAvailable.push(2);
 
-      let botToMove = null;
+      let botToMove: number | null = null;
 
       if (!currentResult?.isCorrect) {
         if (botsAvailable.length > 0) {
@@ -122,10 +122,6 @@ const TetQuizGame = () => {
   const onFinish = () => {
     playButtonClick();
     finish();
-    // In sample mode, reload the page to restart
-    if (isSampleMode) {
-      window.location.reload();
-    }
   };
 
   // Show loading state while waiting for first question

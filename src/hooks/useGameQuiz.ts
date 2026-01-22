@@ -171,8 +171,11 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
   };
 
   const handleSampleFinish = () => {
-    // In sample mode, just reset or signal parent if needed
-    console.log('[useGameQuiz] Sample mode finished');
+    if (useSampleData) {
+      window.location.reload();
+    } else if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'FINISH' }, '*');
+    }
   };
 
   if (useSampleData || useApiQuestions) {
