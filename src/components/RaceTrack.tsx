@@ -28,9 +28,16 @@ const RaceTrack = ({
   const { startLineLeft, finishLineLeft } = uiConfig.raceTrack;
   const urlParams = new URLSearchParams(window.location.search);
   const playerName = urlParams.get('name') || 'User';
-  const calculatePosition = (progress: number) => {
-    const range = finishLineLeft - (startLineLeft + 12);
-    return (startLineLeft + 7.5) + (progress / 5) * range;
+
+  const playerOffset = 6;
+  const bot1Offset = 3;
+  const bot2Offset = 0;
+
+  const calculatePosition = (progress: number, offset: number) => {
+    const startPos = startLineLeft + 7.5 + offset;
+    const endPos = finishLineLeft;
+    const range = endPos - startPos;
+    return startPos + (progress / 5) * range;
   };
 
   return (
@@ -56,8 +63,8 @@ const RaceTrack = ({
         <div
           className={`player bottom-[9cqw] ${isJumping.player && playerPosition < 5 ? "moving" : ""}`}
           style={{
-            left: `${calculatePosition(playerPosition) + 6}%`,
-            zIndex: 101 // Top lane, lowest z-index
+            left: `${calculatePosition(playerPosition, playerOffset)}%`,
+            zIndex: 101
           }}
         >
           <span className="player-name" id="playerName">{playerName}</span>
@@ -68,7 +75,7 @@ const RaceTrack = ({
         <div
           className={`player bottom-[5cqw] ${isJumping.bot1 && bot1Position < 5 ? "moving" : ""}`}
           style={{
-            left: `${calculatePosition(bot1Position) + 3}%`,
+            left: `${calculatePosition(bot1Position, bot1Offset)}%`,
             zIndex: 102
           }}
         >
@@ -79,7 +86,7 @@ const RaceTrack = ({
         <div
           className={`player bottom-[1cqw] ${isJumping.bot2 && bot2Position < 5 ? "moving" : ""}`}
           style={{
-            left: `${calculatePosition(bot2Position)}%`,
+            left: `${calculatePosition(bot2Position, bot2Offset)}%`,
             zIndex: 103
           }}
         >
