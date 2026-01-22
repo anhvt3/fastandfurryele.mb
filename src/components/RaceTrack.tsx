@@ -38,26 +38,25 @@ const RaceTrack = ({
       <div className="race-track">
         {/* Start Line */}
         <div 
-          className="absolute bottom-0 z-10 opacity-80" 
-          style={{ left: `${startLineLeft + 10}%`, width: '8%', transform: 'translateX(50%)' }}
+          className="absolute bottom-0 z-10 opacity-80 w-[8%] translate-x-[50%]" 
+          style={{ left: `${startLineLeft + 10}%` }}
         >
            <img src={startLineImg} alt="Start" className="w-full h-auto" />
         </div>
 
         {/* Finish Line */}
         <div 
-          className="absolute bottom-0 z-10" 
-          style={{ left: `${finishLineLeft}%`, width: '7%', transform: 'translateX(-50%)' }}
+          className="absolute bottom-0 z-10 w-[7%] -translate-x-[50%]" 
+          style={{ left: `${finishLineLeft}%` }}
         >
            <img src={finishLineImg} alt="Finish" className="w-full h-auto" />
         </div>
 
         {/* Player */}
         <div
-          className={`player ${isJumping.player && playerPosition < 5 ? "moving" : ""}`}
+          className={`player bottom-[9cqw] ${isJumping.player && playerPosition < 5 ? "moving" : ""}`}
           style={{
             left: `${calculatePosition(playerPosition) + 6}%`,
-            bottom: "9cqw",  // Fixed vertical position
             zIndex: 101 // Top lane, lowest z-index
           }}
         >
@@ -67,10 +66,9 @@ const RaceTrack = ({
 
         {/* Bot 1 */}
         <div
-          className={`player ${isJumping.bot1 && bot1Position < 5 ? "moving" : ""}`}
+          className={`player bottom-[5cqw] ${isJumping.bot1 && bot1Position < 5 ? "moving" : ""}`}
           style={{
             left: `${calculatePosition(bot1Position) + 3}%`,
-            bottom: "5cqw", // Fixed vertical position
             zIndex: 102
           }}
         >
@@ -79,10 +77,9 @@ const RaceTrack = ({
 
         {/* Bot 2 */}
         <div
-          className={`player ${isJumping.bot2 && bot2Position < 5 ? "moving" : ""}`}
+          className={`player bottom-[1cqw] ${isJumping.bot2 && bot2Position < 5 ? "moving" : ""}`}
           style={{
             left: `${calculatePosition(bot2Position)}%`,
-            bottom: "1cqw", // Fixed vertical position
             zIndex: 103
           }}
         >

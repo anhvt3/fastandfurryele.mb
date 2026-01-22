@@ -30,6 +30,7 @@ interface QuestionBoxProps {
   questionNumber: number;
   type?: "text" | "image" | "latex";
   imageUrl?: string;
+  audioUrl?: string; // Added optional audioUrl
   questionFrame: string;
   uiConfig: QuestionBoxUIConfig;
 }
@@ -37,6 +38,7 @@ interface QuestionBoxProps {
 const QuestionBox = ({ 
   question, 
   imageUrl,
+  audioUrl,
   questionFrame,
   uiConfig 
 }: QuestionBoxProps) => {
@@ -56,6 +58,12 @@ const QuestionBox = ({
           />
         )}
       </div>
+
+      {audioUrl && (
+        <div className="audio-control mt-2 mb-[1cqw] w-full flex justify-center relative z-10">
+           <audio src={audioUrl} controls className="max-w-full" />
+        </div>
+      )}
     </div>
   );
 };

@@ -7,7 +7,6 @@
 
 @layer base {
   :root {
-    /* Tet Festival Color Palette */
     --background: 45 100% 96%;
     --foreground: 20 60% 20%;
 
@@ -17,15 +16,12 @@
     --popover: 45 80% 94%;
     --popover-foreground: 20 60% 20%;
 
-    /* Tet Red - Primary */
     --primary: 8 70% 52%;
     --primary-foreground: 45 100% 96%;
 
-    /* Cream/Gold - Secondary */
     --secondary: 45 80% 90%;
     --secondary-foreground: 20 60% 20%;
 
-    /* Bánh Chưng Green */
     --accent: 110 45% 50%;
     --accent-foreground: 45 100% 96%;
 
@@ -40,7 +36,6 @@
     --ring: 8 70% 52%;
     --radius: 2cqw;
 
-    /* Custom Tet Colors */
     --tet-red: 8 70% 52%;
     --tet-gold: 45 90% 60%;
     --tet-cream: 45 80% 92%;
@@ -48,17 +43,14 @@
     --tet-orange: 25 90% 55%;
     --tet-brown: 25 40% 35%;
 
-    /* Answer States */
     --answer-default: 30 100% 90%;
     --answer-default-border: 30 80% 65%;
     --answer-selected-border: 36 100% 50%;
-    /* Orange #ff9900 */
     --answer-correct: 130 90% 90%;
     --answer-correct-border: 130 70% 48%;
     --answer-wrong: 0 100% 90%;
     --answer-wrong-border: 0 100% 60%;
 
-    /* Shadows */
     --shadow-soft: 0 0.5cqw 2cqw -0.5cqw hsl(25 40% 30% / 0.3);
     --shadow-button: 0 0.5cqw 0 hsl(8 70% 35%);
 
@@ -138,7 +130,6 @@
 }
 
 @layer components {
-
 
   .game-header {
     display: flex;
@@ -339,7 +330,6 @@
     word-break: break-all;
   }
 
-  /* Answer Functionality States */
   .answer-container:hover:not(.correct):not(.wrong) {
     transform: scale(1.01);
     filter: brightness(1.05);
@@ -361,7 +351,6 @@
     pointer-events: none;
   }
 
-  /* Only color label green if correct */
   .answer-container.correct .answer-label {
     background-color: #C8F7C5;
     color: #2acb42;
@@ -378,7 +367,6 @@
     opacity: 1;
   }
 
-  /* Only color label red if wrong and selected */
   .answer-container.wrong.selected .answer-label {
     background-color: #FADBD8;
     color: #ff3b30;
@@ -611,7 +599,6 @@
     to {
       opacity: 1;
     }
-
   }
 }
 
@@ -620,7 +607,6 @@
     font-family: "Fredoka", sans-serif;
   }
 
-  /* Custom scrollbar for question box */
   .custom-scrollbar::-webkit-scrollbar {
     width: 0.8cqw;
     height: 0.8cqw;
@@ -721,4 +707,234 @@
 .katex-display {
   position: relative;
   z-index: 1 !important;
+}
+
+/* ========== RESPONSIVE VISIBILITY ========== */
+.mb-only {
+  display: none !important;
+}
+
+.pc-only {
+  display: block;
+}
+
+/* ========== MOBILE STYLES (via JS class) ========== */
+body.is-mobile .mb-only {
+  display: block !important;
+}
+
+body.is-mobile .pc-only {
+  display: none !important;
+}
+
+body.is-mobile {
+  background-color: #8b0000;
+}
+
+body.is-mobile .game-container {
+  background-image: url("/src/assets/mb/background.png") !important;
+  background-size: 100% 100%;
+}
+
+body.is-mobile .game-header {
+  padding: 1% 2%;
+}
+
+body.is-mobile .game-main {
+  padding: 5% 8%;
+  padding-bottom: 35%;
+  overflow: visible;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  z-index: 20;
+}
+
+body.is-mobile .question-section {
+  max-width: 100%;
+  margin-top: -5%;
+}
+
+body.is-mobile .score-container {
+  gap: 3cqw;
+}
+
+body.is-mobile .score-item {
+  width: 8cqw;
+}
+
+body.is-mobile .question-container {
+  background-image: url("/src/assets/mb/question-frame.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 0;
+  min-height: 55cqw;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  border: none;
+  border-image: none;
+  aspect-ratio: unset;
+  position: relative;
+  display: block;
+}
+
+body.is-mobile .question-text {
+  position: absolute;
+  top: 30%;
+  left: 8%;
+  width: 84%;
+  height: 60%;
+  font-size: 3.2cqw;
+  padding: 0;
+  padding-right: 2%;
+  margin: 0;
+  color: #4a2c00;
+  text-align: justify;
+  text-align-last: left;
+  overflow-y: auto;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+body.is-mobile .answers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqw;
+  width: 100%;
+  margin-top: 2cqw;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0% 6%;
+}
+
+body.is-mobile .answer-container {
+  min-height: 10%;
+  display: flex;
+  align-items: center;
+  gap: 3%;
+  background-color: hsl(30 100% 90%);
+  border: 0.8cqw solid hsl(30 80% 65%);
+  border-radius: 3cqw;
+  padding: 2% 3%;
+  container-type: inline-size;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+body.is-mobile .answer-container:active {
+  transform: none;
+  box-shadow: none;
+}
+
+body.is-mobile .answer-label {
+  width: 6.5cqw;
+  height: 6.5cqw;
+  font-size: 3.2cqw;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+body.is-mobile .answer-text {
+  font-size: 3cqw;
+  color: #4a2c00;
+  text-align: justify;
+  text-align-last: left;
+}
+
+body.is-mobile .answer-container.selected {
+  border: 0.8cqw solid hsl(210 100% 50%);
+  box-shadow: 0 0 2cqw hsl(210 100% 50% / 0.5);
+}
+
+body.is-mobile .answer-container.correct {
+  border: 0.8cqw solid #2acb42;
+  background-color: #cefdd5;
+}
+
+body.is-mobile .answer-container.wrong.selected {
+  border: 0.8cqw solid #ff3b30;
+  background-color: #ffcfcc;
+}
+
+body.is-mobile .submit-btn {
+  margin-top: 4%;
+  padding: 1cqw;
+  font-size: 0;
+  line-height: 0;
+  background: transparent;
+  border: none;
+}
+
+body.is-mobile .submit-btn img {
+  width: 18cqw;
+  height: auto;
+}
+
+body.is-mobile .race-section {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  height: 25%;
+  padding: 0 4%;
+  display: flex;
+  align-items: center;
+  container-type: inline-size;
+  pointer-events: none;
+}
+
+body.is-mobile .race-track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+body.is-mobile .player {
+  width: 18cqw;
+  margin-left: -10cqw;
+  transition: left 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+body.is-mobile .race-track>div:nth-child(1) {
+  width: 22cqw;
+  bottom: 8cqw;
+  transform: translateX(0);
+}
+
+body.is-mobile .race-track>div:nth-child(2) {
+  width: 14cqw;
+  bottom: 8cqw;
+}
+
+body.is-mobile .race-track>div:nth-child(3) {
+  bottom: 24cqw;
+  margin-left: -4cqw;
+}
+
+body.is-mobile .race-track>div:nth-child(4) {
+  bottom: 16cqw;
+  margin-left: -7cqw;
+}
+
+body.is-mobile .race-track>div:nth-child(5) {
+  bottom: 8cqw;
+}
+
+body.is-mobile .player-name {
+  position: absolute;
+  top: -15cqw;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10cqw;
+  padding: 2.5cqw 5cqw;
+  border-radius: 4cqw;
+  background-color: hsl(30 100% 90%);
+  border: 0.75cqw solid hsl(30 80% 65%);
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: 0 0.5cqw 1cqw rgba(0, 0, 0, 0.2);
 }

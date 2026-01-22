@@ -16,8 +16,8 @@ import { useGameAPI } from 'usegamigameapi';
 import { useState, useEffect, useMemo } from 'react';
 import { sampleQuestions } from '@/data/questions';
 import { FIXED_TOTAL_QUESTIONS } from '@/config/gameConfig';
+import { fetchQuestions, Question } from '@/services/questionApi';
 
-// Types matching the library's expected format
 export interface QuizAnswer {
   id: number;
   content: string;
@@ -40,11 +40,22 @@ interface UseGameQuizOptions {
   onAnswerIncorrect?: () => void;
 }
 
-// Check if sample mode is enabled via query string
 function isSampleMode(): boolean {
   if (typeof window === 'undefined') return false;
   const params = new URLSearchParams(window.location.search);
   return params.get('sample') === 'true';
+}
+
+function getLearningObjectCode(): string | null {
+  if (typeof window === 'undefined') return null;
+  const params = new URLSearchParams(window.location.search);
+  return params.get('learning_object_code');
+}
+
+function getPlayerName(): string {
+  if (typeof window === 'undefined') return 'User';
+  const params = new URLSearchParams(window.location.search);
+  return params.get('name') || 'User';
 }
 
 // Convert sample questions to quiz format
@@ -60,8 +71,12 @@ function convertSampleToQuiz(question: typeof sampleQuestions[0]): Quiz {
 
 export function useGameQuiz(options: UseGameQuizOptions = {}) {
   const useSampleData = isSampleMode();
-  
-  // Sample data mode state
+  const learningObjectCode = getLearningObjectCode();
+  const useApiQuestions = !useSampleData && !!learningObjectCode;
+
+  const [apiQuestions, setApiQuestions] = useState<Question[]>([]);
+  const [apiLoading, setApiLoading] = useState(false);
+
   const [sampleQuestionIndex, setSampleQuestionIndex] = useState(0);
   const [sampleSelectedAnswer, setSampleSelectedAnswer] = useState<QuizAnswer | null>(null);
   const [sampleAnswers, setSampleAnswers] = useState<(boolean | null)[]>(
@@ -72,18 +87,41 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
   const [sampleIsCompleted, setSampleIsCompleted] = useState(false);
   const [sampleCorrectCount, setSampleCorrectCount] = useState(0);
 
-  // API mode - use the actual hook
+  useEffect(() => {
+    if (useApiQuestions) {
+      setApiLoading(true);
+      fetchQuestions()
+        .then(questions => {
+          setApiQuestions(questions.slice(0, FIXED_TOTAL_QUESTIONS));
+          setApiLoading(false);
+        })
+        .catch(() => {
+          setApiLoading(false);
+        });
+    }
+  }, [useApiQuestions]);
+
   const apiHook = useGameAPI({
     onAnswerCorrect: options.onAnswerCorrect,
     onAnswerIncorrect: options.onAnswerIncorrect,
   });
 
-  // Sample mode handlers
+  const currentQuestions = useApiQuestions ? apiQuestions : sampleQuestions;
+
   const sampleQuiz = useMemo(() => {
-    if (!useSampleData) return null;
-    const question = sampleQuestions[sampleQuestionIndex];
-    return question ? convertSampleToQuiz(question) : null;
-  }, [useSampleData, sampleQuestionIndex]);
+    if (!useSampleData && !useApiQuestions) return null;
+    if (apiLoading) return null;
+    const question = currentQuestions[sampleQuestionIndex];
+    if (!question) return null;
+    return {
+      text: question.question,
+      audioUrl: (question as any).audioUrl,
+      answers: question.answers.map((answer: string, idx: number) => ({
+        id: idx,
+        content: answer,
+      })),
+    };
+  }, [useSampleData, useApiQuestions, sampleQuestionIndex, currentQuestions, apiLoading]);
 
   const handleSampleAnswerSelect = (answer: QuizAnswer) => {
     if (sampleHasSubmitted) return;
@@ -92,16 +130,16 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
 
   const handleSampleUpdateAnswer = () => {
     if (!sampleSelectedAnswer || sampleHasSubmitted) return;
-    
-    const currentQuestion = sampleQuestions[sampleQuestionIndex];
+
+    const currentQuestion = currentQuestions[sampleQuestionIndex];
     const isCorrect = sampleSelectedAnswer.id === currentQuestion.correctIndex;
     const isLastQuestion = sampleQuestionIndex >= FIXED_TOTAL_QUESTIONS - 1;
-    
+
     // Update answers array
     const newAnswers = [...sampleAnswers];
     newAnswers[sampleQuestionIndex] = isCorrect;
     setSampleAnswers(newAnswers);
-    
+
     // Update correct count
     if (isCorrect) {
       setSampleCorrectCount(prev => prev + 1);
@@ -109,19 +147,19 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     } else {
       options.onAnswerIncorrect?.();
     }
-    
+
     // Set result
     setSampleCurrentResult({
       isCorrect,
       isLastQuestion,
     });
-    
+
     setSampleHasSubmitted(true);
   };
 
   const handleSampleContinue = () => {
     const isLastQuestion = sampleQuestionIndex >= FIXED_TOTAL_QUESTIONS - 1;
-    
+
     if (isLastQuestion) {
       setSampleIsCompleted(true);
     } else {
@@ -137,29 +175,25 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     console.log('[useGameQuiz] Sample mode finished');
   };
 
-  // Return unified interface
-  if (useSampleData) {
+  if (useSampleData || useApiQuestions) {
     return {
-      // State
       quiz: sampleQuiz,
       selectedAnswer: sampleSelectedAnswer,
       currentResult: sampleCurrentResult,
       answers: sampleAnswers,
       correctCount: sampleCorrectCount,
       currentQuestionIndex: sampleQuestionIndex,
-      isSubmitting: false,
+      isSubmitting: apiLoading,
       hasSubmitted: sampleHasSubmitted,
       isCompleted: sampleIsCompleted,
       totalQuestions: FIXED_TOTAL_QUESTIONS,
-      
-      // Methods
       handleAnswerSelect: handleSampleAnswerSelect,
       updateAnswer: handleSampleUpdateAnswer,
       handleContinue: handleSampleContinue,
       finish: handleSampleFinish,
-      
-      // Meta
-      isSampleMode: true,
+      isSampleMode: useSampleData,
+      isApiMode: useApiQuestions,
+      playerName: getPlayerName(),
     };
   }
 
@@ -176,14 +210,15 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     hasSubmitted: apiHook.hasSubmitted ?? false,
     isCompleted: apiHook.isCompleted ?? false,
     totalQuestions: FIXED_TOTAL_QUESTIONS,
-    
+
     // Methods from API hook
     handleAnswerSelect: apiHook.handleAnswerSelect,
     updateAnswer: apiHook.updateAnswer,
     handleContinue: apiHook.handleContinue,
     finish: apiHook.finish,
-    
-    // Meta
+
     isSampleMode: false,
+    isApiMode: false,
+    playerName: getPlayerName(),
   };
 }

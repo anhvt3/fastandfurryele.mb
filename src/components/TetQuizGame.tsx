@@ -168,7 +168,7 @@ const TetQuizGame = () => {
         )}
 
         <main 
-          className={`flex-1 flex flex-col px-[2%] pb-[0.5cqw] ${mainMaxWidth} mx-auto`}
+          className={`game-main flex-1 flex flex-col px-[2%] pb-[0.5cqw] ${mainMaxWidth} mx-auto`}
           style={{ containerType: 'inline-size' }}
         >
           {isCompleted ? (
@@ -178,21 +178,16 @@ const TetQuizGame = () => {
               mascotImage={assets.mascotRed}
             />
           ) : (
-            <>
+            <div className="question-section">
               <QuestionBox
                 question={quiz.text ?? ""}
                 questionNumber={currentQuestionIndex + 1}
                 type="text"
                 imageUrl={undefined}
+                audioUrl={quiz.audioUrl}
                 questionFrame={assets.questionFrame}
                 uiConfig={uiConfig.questionBox}
               />
-
-              {quiz.audioUrl && (
-                <div className="flex justify-center mb-[1cqw]">
-                  <audio src={quiz.audioUrl} controls className="max-w-full" />
-                </div>
-              )}
 
               <div
                 className="answers-grid"
@@ -221,7 +216,7 @@ const TetQuizGame = () => {
                 })}
               </div>
 
-              <div className="flex justify-center mt-0">
+              <div className="flex justify-center mt-0 w-full">
                 <SubmitButton
                   isAnswered={hasSubmitted}
                   isDisabled={(!selectedAnswer && !hasSubmitted) || isSubmitting}
@@ -231,13 +226,12 @@ const TetQuizGame = () => {
                   uiConfig={uiConfig.actionButton}
                 />
               </div>
-
               {hasSubmitted && currentResult?.explanation && (
                 <div className="mt-[1cqw] px-[1cqw] py-[0.5cqw] bg-background/80 rounded-[1cqw] text-center">
                   <p className="text-[1.5cqw] text-foreground/70">{currentResult.explanation}</p>
                 </div>
               )}
-            </>
+            </div>
           )}
         </main>
         

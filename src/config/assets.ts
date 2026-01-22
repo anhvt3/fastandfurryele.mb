@@ -3,17 +3,17 @@
 // ==========================================
 
 // Mobile assets (current/default)
-import mobileBackground from "@/assets/background.png";
-import mobileMascotRed from "@/assets/mascot-red.png";
-import mobileMascotGreen from "@/assets/mascot-green.png";
-import mobileMascotBlue from "@/assets/mascot-blue.png";
-import mobileQuestionFrame from "@/assets/question-frame.png";
-import mobileAnswerButton from "@/assets/answer-button.png";
-import mobileStartLine from "@/assets/start-line.png";
-import mobileFinishLine from "@/assets/finish-line.png";
-import mobileBanhChung from "@/assets/banh-chung.png";
-import mobileSubmitButton from "@/assets/submit-button.png";
-import mobileContinueButton from "@/assets/continue-button.png";
+import mobileBackground from "@/assets/mb/background.png";
+import mobileMascotRed from "@/assets/mb/mascot-red.png";
+import mobileMascotGreen from "@/assets/mb/mascot-green.png";
+import mobileMascotBlue from "@/assets/mb/mascot-blue.png";
+import mobileQuestionFrame from "@/assets/mb/question-frame.png";
+import mobileAnswerButton from "@/assets/mb/answer-button.png";
+import mobileStartLine from "@/assets/mb/start-line.png";
+import mobileFinishLine from "@/assets/mb/finish-line.png";
+import mobileBanhChung from "@/assets/mb/banh-chung.png";
+import mobileSubmitButton from "@/assets/mb/submit-button.png";
+import mobileContinueButton from "@/assets/mb/continue-button.png";
 
 // PC assets
 // NOTE: use a versioned filename to avoid browser caching when assets are replaced

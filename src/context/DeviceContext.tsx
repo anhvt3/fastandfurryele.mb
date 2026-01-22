@@ -24,6 +24,10 @@ export const DeviceProvider = ({ children, forcedDeviceType }: DeviceProviderPro
   const assets = getAssets(deviceType);
   const uiConfig = getUIConfig(deviceType);
 
+  useEffect(() => {
+    document.body.classList.toggle('is-mobile', deviceType === 'mobile');
+  }, [deviceType]);
+
   return (
     <DeviceContext.Provider value={{ deviceType, assets, uiConfig }}>
       {children}
