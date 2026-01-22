@@ -117,9 +117,9 @@ export const UI_CONFIG_MOBILE = {
     playerBottom: 60,
     bot1Bottom: 30,
     bot2Bottom: 0,
-    bot1LeftOffset: 5,
+    playerLeftOffset: 6,
+    bot1LeftOffset: 3,
     bot2LeftOffset: 0,
-    playerLeftOffset: 10,
   },
 
   // ==========================================
@@ -283,9 +283,9 @@ export const UI_CONFIG_PC = {
     playerBottom: 80,
     bot1Bottom: 40,
     bot2Bottom: 0,
-    bot1LeftOffset: 5,
+    playerLeftOffset: 6,
+    bot1LeftOffset: 3,
     bot2LeftOffset: 0,
-    playerLeftOffset: 10,
   },
 
   // ==========================================

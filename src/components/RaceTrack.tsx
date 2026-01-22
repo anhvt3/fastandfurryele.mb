@@ -29,15 +29,23 @@ const RaceTrack = ({
   const urlParams = new URLSearchParams(window.location.search);
   const playerName = urlParams.get('name') || 'User';
 
-  const playerOffset = 6;
-  const bot1Offset = 3;
-  const bot2Offset = 0;
+  const playerOffset = uiConfig.raceTrack.playerLeftOffset ?? 6;
+  const bot1Offset = uiConfig.raceTrack.bot1LeftOffset ?? 3;
+  const bot2Offset = uiConfig.raceTrack.bot2LeftOffset ?? 0;
+
+  const start = startLineLeft + 7.5;
+  const end = finishLineLeft;
+  const step = (end - start) / 5;
+  const maxOffset = Math.max(playerOffset, bot1Offset, bot2Offset);
 
   const calculatePosition = (progress: number, offset: number) => {
-    const startPos = startLineLeft + 7.5 + offset;
-    const endPos = finishLineLeft;
-    const range = endPos - startPos;
-    return startPos + (progress / 5) * range;
+    if (progress === 0) {
+      return start + offset;
+    }
+    if (progress === 5) {
+      return end + (maxOffset - offset);
+    }
+    return start + step * progress;
   };
 
   return (
@@ -61,7 +69,7 @@ const RaceTrack = ({
 
         {/* Player */}
         <div
-          className={`player bottom-[9cqw] ${isJumping.player && playerPosition < 5 ? "moving" : ""}`}
+          className="player bottom-[9cqw]"
           style={{
             left: `${calculatePosition(playerPosition, playerOffset)}%`,
             zIndex: 101
@@ -73,7 +81,7 @@ const RaceTrack = ({
 
         {/* Bot 1 */}
         <div
-          className={`player bottom-[5cqw] ${isJumping.bot1 && bot1Position < 5 ? "moving" : ""}`}
+          className="player bottom-[5cqw]"
           style={{
             left: `${calculatePosition(bot1Position, bot1Offset)}%`,
             zIndex: 102
@@ -84,7 +92,7 @@ const RaceTrack = ({
 
         {/* Bot 2 */}
         <div
-          className={`player bottom-[1cqw] ${isJumping.bot2 && bot2Position < 5 ? "moving" : ""}`}
+          className="player bottom-[1cqw]"
           style={{
             left: `${calculatePosition(bot2Position, bot2Offset)}%`,
             zIndex: 103

@@ -459,10 +459,6 @@
     display: block;
   }
 
-  .player.moving {
-    animation: playerPaddling 0.3s ease-in-out 3;
-  }
-
   @keyframes playerRocking {
 
     0%,
