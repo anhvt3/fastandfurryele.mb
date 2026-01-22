@@ -10,16 +10,6 @@ import { useGameQuiz, QuizAnswer } from "@/hooks/useGameQuiz";
 import { useGameAudio } from "@/hooks/useGameAudio";
 
 const TetQuizGame = () => {
-  const [bot1Position, setBot1Position] = useState(0);
-  const [bot2Position, setBot2Position] = useState(0);
-  const bot1PositionRef = useRef(bot1Position);
-  const bot2PositionRef = useRef(bot2Position);
-
-  useEffect(() => {
-    bot1PositionRef.current = bot1Position;
-    bot2PositionRef.current = bot2Position;
-  }, [bot1Position, bot2Position]);
-  
   const { assets, uiConfig, deviceType } = useDevice();
   const { playButtonClick, playCorrectAnswer, playWrongAnswer, playFinishGame } = useGameAudio();
 
@@ -51,15 +41,35 @@ const TetQuizGame = () => {
     },
   });
 
+  const [bot1Position, setBot1Position] = useState(0);
+  const [bot2Position, setBot2Position] = useState(0);
+  const bot1PositionRef = useRef(bot1Position);
+  const bot2PositionRef = useRef(bot2Position);
+
+  useEffect(() => {
+    bot1PositionRef.current = bot1Position;
+    bot2PositionRef.current = bot2Position;
+  }, [bot1Position, bot2Position]);
+
+  const [movedBotThisTurn, setMovedBotThisTurn] = useState<number | null>(null);
+  const lastProcessedIndex = useRef<number>(-1);
+
+  useEffect(() => {
+    if (!hasSubmitted) {
+      setMovedBotThisTurn(null);
+    }
+  }, [hasSubmitted]);
+
   useEffect(() => {
     if (currentQuestionIndex === 0) {
       setBot1Position(0);
       setBot2Position(0);
+      lastProcessedIndex.current = -1;
     }
   }, [currentQuestionIndex]);
 
   useEffect(() => {
-    if (hasSubmitted) {
+    if (hasSubmitted && lastProcessedIndex.current !== currentQuestionIndex) {
       const botsAvailable: number[] = [];
       if (bot1PositionRef.current < totalQuestions) botsAvailable.push(1);
       if (bot2PositionRef.current < totalQuestions) botsAvailable.push(2);
@@ -81,8 +91,11 @@ const TetQuizGame = () => {
       } else if (botToMove === 2) {
         setBot2Position(prev => Math.min(prev + 1, totalQuestions));
       }
+
+      setMovedBotThisTurn(botToMove);
+      lastProcessedIndex.current = currentQuestionIndex;
     }
-  }, [hasSubmitted, currentResult, totalQuestions]);
+  }, [hasSubmitted, currentResult, totalQuestions, currentQuestionIndex]);
 
   // Debug: verify which device + background is actually being used
   useEffect(() => {
@@ -142,8 +155,8 @@ const TetQuizGame = () => {
 
   const isJumping = {
     player: hasSubmitted && currentResult?.isCorrect === true,
-    bot1: hasSubmitted && currentResult?.isCorrect === true,
-    bot2: hasSubmitted && currentResult?.isCorrect === true,
+    bot1: hasSubmitted && movedBotThisTurn === 1,
+    bot2: hasSubmitted && movedBotThisTurn === 2,
   };
 
   return (
