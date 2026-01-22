@@ -1,23 +1,4 @@
-/**
- * TetQuizGame - Main game component
- *
- * Uses useGameQuiz hook following the Complete Quiz Flow Example pattern:
- * - quiz: Current question data
- * - selectedAnswer: Currently selected answer
- * - currentResult: Result after submission (isCorrect, isLastQuestion)
- * - answers: Array of results (true/false/null)
- * - correctCount: Number of correct answers
- * - currentQuestionIndex: Current question index
- * - isSubmitting: Whether answer is being submitted
- * - hasSubmitted: Whether current question has been answered
- * - isCompleted: Whether quiz is finished
- * - handleAnswerSelect: Select an answer
- * - updateAnswer: Submit the selected answer
- * - handleContinue: Move to next question
- * - finish: Signal quiz completion
- */
-
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDevice } from "@/context/DeviceContext";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
@@ -29,6 +10,16 @@ import { useGameQuiz, QuizAnswer } from "@/hooks/useGameQuiz";
 import { useGameAudio } from "@/hooks/useGameAudio";
 
 const TetQuizGame = () => {
+  const [bot1Position, setBot1Position] = useState(0);
+  const [bot2Position, setBot2Position] = useState(0);
+  const bot1PositionRef = useRef(bot1Position);
+  const bot2PositionRef = useRef(bot2Position);
+
+  useEffect(() => {
+    bot1PositionRef.current = bot1Position;
+    bot2PositionRef.current = bot2Position;
+  }, [bot1Position, bot2Position]);
+  
   const { assets, uiConfig, deviceType } = useDevice();
   const { playButtonClick, playCorrectAnswer, playWrongAnswer, playFinishGame } = useGameAudio();
 
@@ -59,6 +50,39 @@ const TetQuizGame = () => {
       console.log("[TetQuizGame] Incorrect answer");
     },
   });
+
+  useEffect(() => {
+    if (currentQuestionIndex === 0) {
+      setBot1Position(0);
+      setBot2Position(0);
+    }
+  }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    if (hasSubmitted) {
+      const botsAvailable = [];
+      if (bot1PositionRef.current < totalQuestions) botsAvailable.push(1);
+      if (bot2PositionRef.current < totalQuestions) botsAvailable.push(2);
+
+      let botToMove = null;
+
+      if (!currentResult?.isCorrect) {
+        if (botsAvailable.length > 0) {
+          botToMove = botsAvailable[Math.floor(Math.random() * botsAvailable.length)];
+        }
+      } else {
+        if (botsAvailable.length > 0 && Math.random() < 0.6) {
+          botToMove = botsAvailable[Math.floor(Math.random() * botsAvailable.length)];
+        }
+      }
+
+      if (botToMove === 1) {
+        setBot1Position(prev => Math.min(prev + 1, totalQuestions));
+      } else if (botToMove === 2) {
+        setBot2Position(prev => Math.min(prev + 1, totalQuestions));
+      }
+    }
+  }, [hasSubmitted, currentResult, totalQuestions]);
 
   // Debug: verify which device + background is actually being used
   useEffect(() => {
@@ -116,56 +140,45 @@ const TetQuizGame = () => {
     );
   }
 
-  // Apply different max-width based on device type
-  const mainMaxWidth = deviceType === "desktop" ? "max-w-4xl" : "max-w-md";
+  const mainMaxWidth = "w-[45%]";
 
-  // Calculate player/bot positions based on correct count
-  // Player position = correctCount, bots move randomly (simulated)
   const playerPosition = correctCount;
-  const bot1Position = Math.min(Math.floor(currentQuestionIndex * 0.6), totalQuestions);
-  const bot2Position = Math.min(Math.floor(currentQuestionIndex * 0.4), totalQuestions);
 
-  // Determine if mascots should jump (only when answer is just submitted and correct)
   const isJumping = {
     player: hasSubmitted && currentResult?.isCorrect === true,
-    bot1: false,
-    bot2: false,
+    bot1: hasSubmitted && currentResult?.isCorrect === true,
+    bot2: hasSubmitted && currentResult?.isCorrect === true,
   };
 
   return (
     <div
-      className="h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col overflow-y-auto"
-      style={{ backgroundImage: `url(${assets.background})` }}
+      className="game-container flex flex-col"
     >
-      <div className="w-full flex flex-col pt-2 pb-4 lg:pt-4">
-        {/* Score Display - Progress bar with totalQuestions items */}
+      <div className="w-full flex flex-col pt-[1cqw] pb-[1cqw]">
         {!isCompleted && (
-          <header className="flex justify-center pb-4 lg:pb-6">
+          <header className="game-header">
             <ScoreDisplay
               score={correctCount}
               total={totalQuestions}
               currentIndex={currentQuestionIndex}
               answerResults={answers}
               banhChungImage={assets.banhChung}
-              uiConfig={uiConfig.scoreDisplay}
             />
           </header>
         )}
 
-        {/* Main Content */}
-        <main className={`flex-1 flex flex-col px-4 pb-1 ${mainMaxWidth} mx-auto w-full`}>
+        <main 
+          className={`flex-1 flex flex-col px-[2%] pb-[0.5cqw] ${mainMaxWidth} mx-auto`}
+          style={{ containerType: 'inline-size' }}
+        >
           {isCompleted ? (
-            /* Completion Screen */
             <WinScreen
               score={correctCount}
-              totalQuestions={totalQuestions}
               onRestart={onFinish}
               mascotImage={assets.mascotRed}
-              uiConfig={uiConfig.winScreen}
             />
           ) : (
             <>
-              {/* Question Box - Uses quiz.text which may contain HTML/LaTeX */}
               <QuestionBox
                 question={quiz.text ?? ""}
                 questionNumber={currentQuestionIndex + 1}
@@ -175,24 +188,19 @@ const TetQuizGame = () => {
                 uiConfig={uiConfig.questionBox}
               />
 
-              {/* Audio player if question has audio */}
               {quiz.audioUrl && (
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-[1cqw]">
                   <audio src={quiz.audioUrl} controls className="max-w-full" />
                 </div>
               )}
 
-              {/* Answer Buttons - Map quiz.answers to AnswerButton components */}
               <div
-                className={`w-full px-4 mt-4 ${
-                  deviceType === "desktop" ? "grid grid-cols-2 grid-rows-2 gap-3" : "flex flex-col gap-2"
-                }`}
+                className="answers-grid"
                 key={currentQuestionIndex}
               >
                 {quiz.answers?.map((answer: QuizAnswer, idx: number) => {
                   const isSelected = selectedAnswer?.id === answer.id;
 
-                  // Determine if this answer is correct (only show after submission)
                   let isCorrectAnswer: boolean | null = null;
                   if (hasSubmitted && currentResult && isSelected) {
                     isCorrectAnswer = currentResult.isCorrect;
@@ -208,15 +216,12 @@ const TetQuizGame = () => {
                       isDisabled={hasSubmitted || isSubmitting}
                       isAnswered={hasSubmitted}
                       onClick={() => onAnswerSelect(answer)}
-                      backgroundImage={deviceType === "desktop" ? assets.answerButton : undefined}
-                      isDesktop={deviceType === "desktop"}
                     />
                   );
                 })}
               </div>
 
-              {/* Submit/Continue Button */}
-              <div className="flex justify-center mt-6">
+              <div className="flex justify-center mt-0">
                 <SubmitButton
                   isAnswered={hasSubmitted}
                   isDisabled={(!selectedAnswer && !hasSubmitted) || isSubmitting}
@@ -227,31 +232,30 @@ const TetQuizGame = () => {
                 />
               </div>
 
-              {/* Result display (optional - explanation) */}
               {hasSubmitted && currentResult?.explanation && (
-                <div className="mt-4 px-4 py-2 bg-background/80 rounded-lg text-center">
-                  <p className="text-sm text-foreground/70">{currentResult.explanation}</p>
+                <div className="mt-[1cqw] px-[1cqw] py-[0.5cqw] bg-background/80 rounded-[1cqw] text-center">
+                  <p className="text-[1.5cqw] text-foreground/70">{currentResult.explanation}</p>
                 </div>
               )}
-
-              {/* Race Track */}
-              <div className="mt-2">
-                <RaceTrack
-                  playerPosition={playerPosition}
-                  bot1Position={bot1Position}
-                  bot2Position={bot2Position}
-                  isJumping={isJumping}
-                  mascotRed={assets.mascotRed}
-                  mascotGreen={assets.mascotGreen}
-                  mascotBlue={assets.mascotBlue}
-                  startLine={assets.startLine}
-                  finishLine={assets.finishLine}
-                  uiConfig={uiConfig}
-                />
-              </div>
             </>
           )}
         </main>
+        
+        {/* Race Track Component - Fixed Position */}
+        {!isCompleted && (
+          <RaceTrack
+            playerPosition={playerPosition}
+            bot1Position={bot1Position}
+            bot2Position={bot2Position}
+            isJumping={isJumping}
+            mascotRed={assets.mascotRed}
+            mascotGreen={assets.mascotGreen}
+            mascotBlue={assets.mascotBlue}
+            startLine={assets.startLine}
+            finishLine={assets.finishLine}
+            uiConfig={uiConfig}
+          />
+        )}
       </div>
     </div>
   );

@@ -40,26 +40,19 @@ const QuestionBox = ({
   questionFrame,
   uiConfig 
 }: QuestionBoxProps) => {
-  const { scale } = uiConfig;
-  
-  // Apply scale to values that need it
-  const scaledMarginBottom = uiConfig.marginBottom * scale;
+
 
   return (
     <div 
-      className="relative w-full px-4" 
-      style={{ marginBottom: `${scaledMarginBottom * 0.0625}rem`, marginTop: '-0.5rem' }}
+      className="question-container" 
+      style={{ backgroundImage: `url(${questionFrame})` }}
     >
-      <div 
-        className="question-container" 
-        style={{ backgroundImage: `url(${questionFrame})` }}
-      >
-        <HtmlContent html={question} className="question-text" />
+      <div className="question-text">
+        <HtmlContent html={question} />
         {imageUrl && (
           <img 
             src={imageUrl} 
-            alt="Question image" 
-            className="max-w-full max-h-[150px] object-contain mx-auto mt-2"
+            alt="Question" 
           />
         )}
       </div>
