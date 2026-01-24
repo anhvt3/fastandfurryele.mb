@@ -225,6 +225,7 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
                       isCorrect={isCorrectAnswer}
                       isDisabled={hasSubmitted || isSubmitting}
                       isAnswered={hasSubmitted}
+                      correctIndex={quiz.correctIndex}
                       onClick={() => onAnswerSelect(answer)}
                     />
                   );
