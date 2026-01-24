@@ -1,22 +1,9 @@
-/**
- * useGameQuiz - Wrapper hook for usegamigameapi library
- * 
- * Implements the Complete Quiz Flow Example from the library documentation.
- * Supports both API mode (via postMessage) and sample data mode (via ?sample=true query).
- * 
- * Architecture:
- * - SHOW_LO5: Request question from parent
- * - RETURN_LO5: Receive question data
- * - UPDATE_ANSWER: Submit answer
- * - RETURN_UPDATE_ANSWER: Receive result
- * - FINISH: Signal completion
- */
-
-import { useGameAPI } from 'usegamigameapi';
-import { useState, useEffect, useMemo } from 'react';
-import { sampleQuestions } from '@/data/questions';
-import { FIXED_TOTAL_QUESTIONS } from '@/config/gameConfig';
-import { fetchQuestions, Question } from '@/services/questionApi';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useCallback, useMemo } from "react";
+import { useGameAPI } from "usegamigameapi";
+import { useGameAudio } from "@/hooks/useGameAudio";
+import { sampleQuestions } from "@/data/questions";
+import { FIXED_TOTAL_QUESTIONS } from "@/config/gameConfig";
 
 export interface QuizAnswer {
   id: number;
@@ -27,6 +14,7 @@ export interface Quiz {
   text: string;
   audioUrl?: string;
   answers: QuizAnswer[];
+  correctIndex?: number;
 }
 
 export interface QuizResult {
@@ -38,190 +26,258 @@ export interface QuizResult {
 interface UseGameQuizOptions {
   onAnswerCorrect?: (data: { currentQuestionIndex: number }) => void;
   onAnswerIncorrect?: () => void;
-}
-
-function isSampleMode(): boolean {
-  if (typeof window === 'undefined') return false;
-  const params = new URLSearchParams(window.location.search);
-  return params.get('sample') === 'true';
-}
-
-function getLearningObjectCode(): string | null {
-  if (typeof window === 'undefined') return null;
-  const params = new URLSearchParams(window.location.search);
-  return params.get('learning_object_code');
-}
-
-function getPlayerName(): string {
-  if (typeof window === 'undefined') return 'User';
-  const params = new URLSearchParams(window.location.search);
-  return params.get('name') || 'User';
-}
-
-// Convert sample questions to quiz format
-function convertSampleToQuiz(question: typeof sampleQuestions[0]): Quiz {
-  return {
-    text: question.question,
-    answers: question.answers.map((answer, idx) => ({
-      id: idx,
-      content: answer,
-    })),
-  };
+  customQuestions?: any[] | null;
 }
 
 export function useGameQuiz(options: UseGameQuizOptions = {}) {
-  const useSampleData = isSampleMode();
-  const learningObjectCode = getLearningObjectCode();
-  const useApiQuestions = !useSampleData && !!learningObjectCode;
+  const { onAnswerCorrect, onAnswerIncorrect, customQuestions } = options;
+  const { playButtonClick, playCorrectAnswer, playWrongAnswer, playFinishGame } = useGameAudio();
 
-  const [apiQuestions, setApiQuestions] = useState<Question[]>([]);
-  const [apiLoading, setApiLoading] = useState(false);
+  // --- UI/Animation State ---
+  // (FastAndFurry handles UI state mostly in component, but we track flow here)
 
-  const [sampleQuestionIndex, setSampleQuestionIndex] = useState(0);
-  const [sampleSelectedAnswer, setSampleSelectedAnswer] = useState<QuizAnswer | null>(null);
-  const [sampleAnswers, setSampleAnswers] = useState<(boolean | null)[]>(
-    Array(FIXED_TOTAL_QUESTIONS).fill(null)
-  );
-  const [sampleHasSubmitted, setSampleHasSubmitted] = useState(false);
-  const [sampleCurrentResult, setSampleCurrentResult] = useState<QuizResult | null>(null);
-  const [sampleIsCompleted, setSampleIsCompleted] = useState(false);
-  const [sampleCorrectCount, setSampleCorrectCount] = useState(0);
+  // --- Strategy Determination ---
+  const isSampleMode = useMemo(() => {
+    // Priority 1: Custom questions passed in (from URL loading in Index.tsx)
+    if (customQuestions && customQuestions.length > 0) return true;
 
-  useEffect(() => {
-    if (useApiQuestions) {
-      setApiLoading(true);
-      fetchQuestions()
-        .then(questions => {
-          setApiQuestions(questions.slice(0, FIXED_TOTAL_QUESTIONS));
-          setApiLoading(false);
-        })
-        .catch(() => {
-          setApiLoading(false);
-        });
+    // Priority 2: Query param ?sample=true
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('sample') === 'true';
     }
-  }, [useApiQuestions]);
 
-  const apiHook = useGameAPI({
-    onAnswerCorrect: options.onAnswerCorrect,
-    onAnswerIncorrect: options.onAnswerIncorrect,
+    return false;
+  }, [customQuestions]);
+
+  // --- Real API Hook ---
+  const apiGame = useGameAPI({
+    onAnswerCorrect: (data) => {
+      onAnswerCorrect?.(data);
+    },
+    onAnswerIncorrect: () => {
+      onAnswerIncorrect?.();
+    }
   });
 
-  const currentQuestions = useApiQuestions ? apiQuestions : sampleQuestions;
+  // --- Sample Mode Simulation State ---
+  const [sampleIndex, setSampleIndex] = useState(0);
+  const [sampleSelectedAnswer, setSampleSelectedAnswer] = useState<QuizAnswer | null>(null);
+  const [sampleAnswers, setSampleAnswers] = useState<(boolean | null)[]>([]);
+  const [sampleHasSubmitted, setSampleHasSubmitted] = useState(false);
+  const [sampleIsCompleted, setSampleIsCompleted] = useState(false);
+  const [sampleCurrentResult, setSampleCurrentResult] = useState<{ isCorrect: boolean; correctAnswerId?: number } | null>(null);
+  const [sampleCorrectCount, setSampleCorrectCount] = useState(0);
 
-  const sampleQuiz = useMemo(() => {
-    if (!useSampleData && !useApiQuestions) return null;
-    if (apiLoading) return null;
-    const question = currentQuestions[sampleQuestionIndex];
-    if (!question) return null;
-    return {
-      text: question.question,
-      audioUrl: (question as any).audioUrl,
-      answers: question.answers.map((answer: string, idx: number) => ({
-        id: idx,
-        content: answer,
-      })),
-    };
-  }, [useSampleData, useApiQuestions, sampleQuestionIndex, currentQuestions, apiLoading]);
-
-  const handleSampleAnswerSelect = (answer: QuizAnswer) => {
-    if (sampleHasSubmitted) return;
-    setSampleSelectedAnswer(answer);
-  };
-
-  const handleSampleUpdateAnswer = () => {
-    if (!sampleSelectedAnswer || sampleHasSubmitted) return;
-
-    const currentQuestion = currentQuestions[sampleQuestionIndex];
-    const isCorrect = sampleSelectedAnswer.id === currentQuestion.correctIndex;
-    const isLastQuestion = sampleQuestionIndex >= FIXED_TOTAL_QUESTIONS - 1;
-
-    // Update answers array
-    const newAnswers = [...sampleAnswers];
-    newAnswers[sampleQuestionIndex] = isCorrect;
-    setSampleAnswers(newAnswers);
-
-    // Update correct count
-    if (isCorrect) {
-      setSampleCorrectCount(prev => prev + 1);
-      options.onAnswerCorrect?.({ currentQuestionIndex: sampleQuestionIndex });
-    } else {
-      options.onAnswerIncorrect?.();
+  // --- Effective Data Selector ---
+  const effectiveQuestionsRaw = useMemo(() => {
+    if (isSampleMode) {
+      if (customQuestions && customQuestions.length > 0) return customQuestions;
+      // Convert sampleQuestions (if they are different format) or use as is
+      // sampleQuestions in fastandfurry seems to be local data
+      // We might need to map them to Expected structure if customQuestions uses different one
+      return sampleQuestions.map((q, idx) => ({
+        id: idx + 1,
+        text: q.question,
+        answers: q.answers.map((ans, aIdx) => ({ id: aIdx + 1, content: ans })),
+        correctIndex: q.correctIndex ?? 0, // Ensure sampleQuestions has this
+        audioUrl: (q as any).audioUrl
+      }));
     }
+    return apiGame.quiz ? [apiGame.quiz] : [];
+  }, [isSampleMode, customQuestions, apiGame.quiz]);
 
-    // Set result
-    setSampleCurrentResult({
-      isCorrect,
-      isLastQuestion,
+  const rawCurrentQuestion = useMemo(() => {
+    if (isSampleMode) {
+      return effectiveQuestionsRaw[sampleIndex];
+    }
+    return apiGame.quiz;
+  }, [isSampleMode, effectiveQuestionsRaw, sampleIndex, apiGame.quiz]);
+
+  // --- Derived State for UI ---
+
+  // 1. Current Question Data
+  const currentQuestion = useMemo(() => {
+    if (!rawCurrentQuestion) return null;
+
+    const quizText = rawCurrentQuestion.text || rawCurrentQuestion.content || rawCurrentQuestion.question || '';
+    const quizAudioUrl = rawCurrentQuestion.audioUrl || rawCurrentQuestion.audio_url || rawCurrentQuestion.imageUrl;
+
+    // Normalize answers
+    const rawAnswers = rawCurrentQuestion.answers || rawCurrentQuestion.quiz_possible_options || [];
+    const normalizedAnswers = rawAnswers.map((a: any, idx: number) => {
+      if (typeof a === 'string') return { id: idx + 1, content: a };
+      return {
+        id: a.id || idx + 1,
+        content: a.content || a.text || a.option_value || ''
+      };
     });
 
-    setSampleHasSubmitted(true);
-  };
+    // Determine Correct Index for UI highlighting
+    let correctIdx = -1;
 
-  const handleSampleContinue = () => {
-    const isLastQuestion = sampleQuestionIndex >= FIXED_TOTAL_QUESTIONS - 1;
+    const relevantResult = isSampleMode ? sampleCurrentResult : apiGame.currentResult;
+    const selectedObj = isSampleMode ? sampleSelectedAnswer : apiGame.selectedAnswer;
 
-    if (isLastQuestion) {
-      setSampleIsCompleted(true);
-    } else {
-      setSampleQuestionIndex(prev => prev + 1);
-      setSampleSelectedAnswer(null);
-      setSampleHasSubmitted(false);
-      setSampleCurrentResult(null);
+    // Logic 1: If result confirms correct, user's selection IS correct
+    if (relevantResult?.isCorrect && selectedObj) {
+      correctIdx = normalizedAnswers.findIndex((a: any) =>
+        String(a.id) === String(selectedObj.id) ||
+        a.content === selectedObj.content
+      );
     }
-  };
 
-  const handleSampleFinish = () => {
-    if (useSampleData) {
-      window.location.reload();
-    } else if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ type: 'FINISH' }, '*');
+    // Logic 2: explicit Correct ID
+    if (correctIdx === -1) {
+      let targetCorrectId: any = undefined;
+
+      if (relevantResult?.correctAnswerId) {
+        targetCorrectId = relevantResult.correctAnswerId;
+      } else if (rawCurrentQuestion.correctAnswerId !== undefined) {
+        targetCorrectId = rawCurrentQuestion.correctAnswerId;
+      } else if (rawCurrentQuestion.correctIndex !== undefined) {
+        targetCorrectId = rawCurrentQuestion.correctIndex;
+      }
+
+      if (targetCorrectId !== undefined) {
+        correctIdx = normalizedAnswers.findIndex((a: any) =>
+          String(a.id) === String(targetCorrectId) ||
+          a.content === targetCorrectId
+        );
+
+        if (correctIdx === -1 && typeof targetCorrectId === 'number' && targetCorrectId < normalizedAnswers.length) {
+          correctIdx = targetCorrectId;
+        }
+      }
     }
-  };
 
-  if (useSampleData || useApiQuestions) {
+    // REMOVED: Fallback to 0.
+
     return {
-      quiz: sampleQuiz,
-      selectedAnswer: sampleSelectedAnswer,
-      currentResult: sampleCurrentResult,
-      answers: sampleAnswers,
-      correctCount: sampleCorrectCount,
-      currentQuestionIndex: sampleQuestionIndex,
-      isSubmitting: apiLoading,
-      hasSubmitted: sampleHasSubmitted,
-      isCompleted: sampleIsCompleted,
-      totalQuestions: FIXED_TOTAL_QUESTIONS,
-      handleAnswerSelect: handleSampleAnswerSelect,
-      updateAnswer: handleSampleUpdateAnswer,
-      handleContinue: handleSampleContinue,
-      finish: handleSampleFinish,
-      isSampleMode: useSampleData,
-      isApiMode: useApiQuestions,
-      playerName: getPlayerName(),
+      text: quizText,
+      audioUrl: quizAudioUrl,
+      answers: normalizedAnswers,
+      correctIndex: correctIdx,
+      _raw: rawCurrentQuestion
     };
-  }
+  }, [rawCurrentQuestion, isSampleMode, sampleCurrentResult, apiGame.currentResult, sampleSelectedAnswer, apiGame.selectedAnswer]);
 
-  // API mode - return hook values with totalQuestions
+
+  // 2. Status Flags
+  const isLoading = isSampleMode ? !rawCurrentQuestion : (!apiGame.quiz && !apiGame.isCompleted);
+  const isAnswered = isSampleMode ? sampleHasSubmitted : apiGame.hasSubmitted;
+  const isCompleted = isSampleMode ? sampleIsCompleted : apiGame.isCompleted;
+  // const currentIdx = isSampleMode ? sampleIndex : apiGame.currentQuestionIndex; 
+  // ApiGame.currentQuestionIndex might be 0 initially
+
+  // 3. Selected Answer Object (TetQuizGame expects object)
+  const selectedAnswerObj = isSampleMode ? sampleSelectedAnswer : apiGame.selectedAnswer;
+
+  // 4. Answers History
+  // TetQuizGame uses 'answers' array of booleans/nulls
+  // apiGame.answers is exactly that.
+  const history = isSampleMode ? sampleAnswers : (apiGame.answers ?? []);
+
+  // 5. Correct Count
+  const correctCount = isSampleMode ? sampleCorrectCount : (apiGame.correctCount ?? 0);
+
+
+  // --- Actions ---
+
+  const handleAnswerSelect = useCallback((answer: QuizAnswer) => {
+    if (isAnswered) return;
+
+    // playButtonClick(); // handled in component
+
+    if (isSampleMode) {
+      setSampleSelectedAnswer(answer);
+    } else {
+      // Need to ensure answer passed to API has correct structure if simple string
+      // But here answer is QuizAnswer { id, content }
+      apiGame.handleAnswerSelect(answer);
+    }
+  }, [isAnswered, isSampleMode, apiGame]);
+
+  const updateAnswer = useCallback(() => {
+    if (isSampleMode) {
+      if (!sampleSelectedAnswer || !currentQuestion) return;
+
+      // Sample Logic
+      const correctId = currentQuestion._raw.correctAnswerId || currentQuestion._raw.correctIndex;
+      // Flexible compare
+      let isCorrect = String(sampleSelectedAnswer.id) === String(correctId);
+
+      // If correctId is index-based (integer) and sample answer IDs are 1-based, handle mismatch?
+      // Our normalization made IDs.
+      // Let's rely on correctIndex from currentQuestion if available
+      if (currentQuestion.correctIndex !== -1) {
+        const selectedIdx = currentQuestion.answers.findIndex((a: any) => a.id === sampleSelectedAnswer.id);
+        isCorrect = selectedIdx === currentQuestion.correctIndex;
+      }
+
+      const nextAnswers = [...sampleAnswers];
+      nextAnswers[sampleIndex] = isCorrect;
+      setSampleAnswers(nextAnswers);
+
+      setSampleCurrentResult({ isCorrect, correctAnswerId: correctId });
+      setSampleHasSubmitted(true);
+
+      if (isCorrect) {
+        setSampleCorrectCount(prev => prev + 1);
+        options.onAnswerCorrect?.({ currentQuestionIndex: sampleIndex });
+      } else {
+        options.onAnswerIncorrect?.();
+      }
+
+    } else {
+      apiGame.updateAnswer();
+    }
+  }, [isSampleMode, sampleSelectedAnswer, currentQuestion, sampleIndex, sampleAnswers, apiGame, options]);
+
+  const handleContinue = useCallback(() => {
+    if (isSampleMode) {
+      const nextIdx = sampleIndex + 1;
+      if (nextIdx >= FIXED_TOTAL_QUESTIONS) {
+        setSampleIsCompleted(true);
+      } else {
+        setSampleIndex(nextIdx);
+        setSampleSelectedAnswer(null);
+        setSampleHasSubmitted(false);
+        setSampleCurrentResult(null);
+      }
+    } else {
+      apiGame.handleContinue();
+    }
+  }, [isSampleMode, sampleIndex, apiGame]);
+
+  const finish = useCallback(() => {
+    if (isSampleMode) {
+      window.location.reload();
+    } else {
+      apiGame.finish();
+    }
+  }, [isSampleMode, apiGame]);
+
+  // Return structure matching what TetQuizGame expects
   return {
-    // State from API hook
-    quiz: apiHook.quiz as Quiz | null,
-    selectedAnswer: apiHook.selectedAnswer as QuizAnswer | null,
-    currentResult: apiHook.currentResult as QuizResult | null,
-    answers: apiHook.answers ?? Array(FIXED_TOTAL_QUESTIONS).fill(null),
-    correctCount: apiHook.correctCount ?? 0,
-    currentQuestionIndex: apiHook.currentQuestionIndex ?? 0,
-    isSubmitting: apiHook.isSubmitting ?? false,
-    hasSubmitted: apiHook.hasSubmitted ?? false,
-    isCompleted: apiHook.isCompleted ?? false,
+    quiz: currentQuestion, // { text, answers, audioUrl }
+    selectedAnswer: selectedAnswerObj,
+    currentResult: isSampleMode ? sampleCurrentResult : apiGame.currentResult,
+    answers: history,
+    correctCount,
+    currentQuestionIndex: isSampleMode ? sampleIndex : (apiGame.currentQuestionIndex || 0),
+    isSubmitting: isLoading, // Re-map? isLoading implies fetching. isSubmitting implies posting.
+    // apiGame.isSubmitting exists? Yes. Use that.
+    isSubmittingPost: apiGame.isSubmitting, // differentiate
+    hasSubmitted: isAnswered,
+    isCompleted,
     totalQuestions: FIXED_TOTAL_QUESTIONS,
 
-    // Methods from API hook
-    handleAnswerSelect: apiHook.handleAnswerSelect,
-    updateAnswer: apiHook.updateAnswer,
-    handleContinue: apiHook.handleContinue,
-    finish: apiHook.finish,
+    handleAnswerSelect,
+    updateAnswer,
+    handleContinue,
+    finish,
 
-    isSampleMode: false,
-    isApiMode: false,
-    playerName: getPlayerName(),
+    isSampleMode
   };
 }

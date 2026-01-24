@@ -9,7 +9,12 @@ import WinScreen from "./WinScreen";
 import { useGameQuiz, QuizAnswer } from "@/hooks/useGameQuiz";
 import { useGameAudio } from "@/hooks/useGameAudio";
 
-const TetQuizGame = () => {
+interface TetQuizGameProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customQuestions?: any[] | null;
+}
+
+const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
   const { assets, uiConfig, deviceType } = useDevice();
   const { playButtonClick, playCorrectAnswer, playWrongAnswer, playFinishGame } = useGameAudio();
 
@@ -39,6 +44,7 @@ const TetQuizGame = () => {
       playWrongAnswer();
       console.log("[TetQuizGame] Incorrect answer");
     },
+    customQuestions
   });
 
   const [bot1Position, setBot1Position] = useState(0);
