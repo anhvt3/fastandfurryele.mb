@@ -52,9 +52,8 @@ const WinScreen = ({ score, onRestart, mascotImage, continueButton }: Omit<WinSc
         <button
           onClick={onRestart}
           className="restart-btn"
-          style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
         >
-          <img src={continueButton} alt="Tiếp tục" style={{ height: '8cqw' }} />
+          <img src={continueButton} alt="Tiếp tục" />
         </button>
       </div>
     </div>

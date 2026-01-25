@@ -127,16 +127,22 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
       );
     }
 
-    // Logic 2: explicit Correct ID
+    // Logic 2: explicit index first
+    if (correctIdx === -1) {
+      const rawCorrectIndex = rawCurrentQuestion.correctIndex;
+      if (typeof rawCorrectIndex === 'number' && rawCorrectIndex >= 0 && rawCorrectIndex < normalizedAnswers.length) {
+        correctIdx = rawCorrectIndex;
+      }
+    }
+
+    // Logic 3: explicit Correct ID
     if (correctIdx === -1) {
       let targetCorrectId: any = undefined;
 
-      if (relevantResult?.correctAnswerId) {
+      if (relevantResult?.correctAnswerId !== undefined) {
         targetCorrectId = relevantResult.correctAnswerId;
       } else if (rawCurrentQuestion.correctAnswerId !== undefined) {
         targetCorrectId = rawCurrentQuestion.correctAnswerId;
-      } else if (rawCurrentQuestion.correctIndex !== undefined) {
-        targetCorrectId = rawCurrentQuestion.correctIndex;
       }
 
       if (targetCorrectId !== undefined) {
@@ -144,10 +150,6 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
           String(a.id) === String(targetCorrectId) ||
           a.content === targetCorrectId
         );
-
-        if (correctIdx === -1 && typeof targetCorrectId === 'number' && targetCorrectId < normalizedAnswers.length) {
-          correctIdx = targetCorrectId;
-        }
       }
     }
 
@@ -202,24 +204,25 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     if (isSampleMode) {
       if (!sampleSelectedAnswer || !currentQuestion) return;
 
-      // Sample Logic
-      const correctId = currentQuestion._raw.correctAnswerId || currentQuestion._raw.correctIndex;
-      // Flexible compare
-      let isCorrect = String(sampleSelectedAnswer.id) === String(correctId);
+      const rawCorrectIndex = currentQuestion._raw.correctIndex;
+      const rawCorrectAnswerId = currentQuestion._raw.correctAnswerId;
+      let isCorrect = false;
 
-      // If correctId is index-based (integer) and sample answer IDs are 1-based, handle mismatch?
-      // Our normalization made IDs.
-      // Let's rely on correctIndex from currentQuestion if available
-      if (currentQuestion.correctIndex !== -1) {
+      if (typeof rawCorrectIndex === 'number') {
         const selectedIdx = currentQuestion.answers.findIndex((a: any) => a.id === sampleSelectedAnswer.id);
-        isCorrect = selectedIdx === currentQuestion.correctIndex;
+        isCorrect = selectedIdx === rawCorrectIndex;
+      } else if (rawCorrectAnswerId !== undefined) {
+        isCorrect = String(sampleSelectedAnswer.id) === String(rawCorrectAnswerId);
       }
 
       const nextAnswers = [...sampleAnswers];
       nextAnswers[sampleIndex] = isCorrect;
       setSampleAnswers(nextAnswers);
 
-      setSampleCurrentResult({ isCorrect, correctAnswerId: correctId });
+      setSampleCurrentResult({
+        isCorrect,
+        correctAnswerId: rawCorrectAnswerId !== undefined ? rawCorrectAnswerId : undefined
+      });
       setSampleHasSubmitted(true);
 
       if (isCorrect) {
