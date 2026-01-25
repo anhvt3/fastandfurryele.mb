@@ -22,10 +22,11 @@ interface WinScreenProps {
   totalQuestions: number;
   onRestart: () => void;
   mascotImage: string;
+  continueButton: string;
   uiConfig: WinScreenUIConfig;
 }
 
-const WinScreen = ({ score, onRestart, mascotImage }: Omit<WinScreenProps, 'totalQuestions' | 'uiConfig'>) => {
+const WinScreen = ({ score, onRestart, mascotImage, continueButton }: Omit<WinScreenProps, 'totalQuestions' | 'uiConfig'>) => {
   const isWinner = score >= 5;
 
   return (
@@ -39,20 +40,21 @@ const WinScreen = ({ score, onRestart, mascotImage }: Omit<WinScreenProps, 'tota
         />
 
         <h2>
-          {isWinner ? "🎉 VỀ ĐÍCH!" : "HOÀN THÀNH"}
+          {isWinner ? "VỀ ĐÍCH!" : "HOÀN THÀNH"}
         </h2>
 
         <p>
-          {isWinner 
-            ? "Chúc mừng! Bạn đã về đích!" 
+          {isWinner
+            ? "Chúc mừng! Bạn đã về đích!"
             : `${score}/5 câu đúng`}
         </p>
 
         <button
           onClick={onRestart}
           className="restart-btn"
+          style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
         >
-          Tiếp tục
+          <img src={continueButton} alt="Tiếp tục" style={{ height: '8cqw' }} />
         </button>
       </div>
     </div>

@@ -191,6 +191,7 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
               score={correctCount}
               onRestart={onFinish}
               mascotImage={assets.mascotRed}
+              continueButton={assets.continueButton}
             />
           ) : (
             <div className="question-section">
