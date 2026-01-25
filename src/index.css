@@ -786,7 +786,7 @@ body.is-mobile .question-text {
   padding: 0;
   padding-right: 2%;
   margin: 0;
-  color: #4a2c00;
+  color: #000000;
   text-align: justify;
   text-align-last: left;
   overflow-y: auto;
@@ -836,7 +836,7 @@ body.is-mobile .answer-label {
 
 body.is-mobile .answer-text {
   font-size: 3cqw;
-  color: #4a2c00;
+  color: #000000;
   text-align: justify;
   text-align-last: left;
 }
@@ -952,4 +952,11 @@ body.is-mobile .player-name {
 .answer-text img:hover {
   transform: scale(1.02);
   box-shadow: 0 0.5cqw 2cqw rgba(0, 0, 0, 0.2);
+}
+
+/* Force inherit font-size to override inline styles from API data */
+.question-text * {
+  font-size: inherit !important;
+  line-height: inherit !important;
+  box-sizing: border-box;
 }
