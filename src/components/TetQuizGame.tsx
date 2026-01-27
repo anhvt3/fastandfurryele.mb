@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDevice } from "@/context/DeviceContext";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
@@ -166,7 +166,7 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
     bot2: hasSubmitted && movedBotThisTurn === 2,
   };
 
-  const playerName = useMemo(() => {
+  const playerName = (() => {
     if (typeof username === 'string' && username.trim()) return username.trim();
 
     if (typeof window !== 'undefined') {
@@ -176,7 +176,7 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
     }
 
     return 'User';
-  }, [username]);
+  })();
 
   return (
     <div
