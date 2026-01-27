@@ -5,6 +5,7 @@ interface RaceTrackProps {
   bot1Position: number;
   bot2Position: number;
   isJumping: { player: boolean; bot1: boolean; bot2: boolean };
+  playerName: string;
   mascotRed: string;
   mascotGreen: string;
   mascotBlue: string;
@@ -18,6 +19,7 @@ const RaceTrack = ({
   bot1Position, 
   bot2Position, 
   isJumping,
+  playerName,
   mascotRed,
   mascotGreen,
   mascotBlue,
@@ -26,8 +28,6 @@ const RaceTrack = ({
   uiConfig
 }: RaceTrackProps) => {
   const { startLineLeft, finishLineLeft } = uiConfig.raceTrack;
-  const urlParams = new URLSearchParams(window.location.search);
-  const playerName = urlParams.get('name') || 'User';
 
   const playerOffset = uiConfig.raceTrack.playerLeftOffset ?? 6;
   const bot1Offset = uiConfig.raceTrack.bot1LeftOffset ?? 3;

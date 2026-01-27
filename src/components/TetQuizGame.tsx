@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDevice } from "@/context/DeviceContext";
 import ScoreDisplay from "./ScoreDisplay";
 import QuestionBox from "./QuestionBox";
@@ -35,6 +35,7 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
     handleContinue,
     finish,
     isSampleMode,
+    username,
   } = useGameQuiz({
     onAnswerCorrect: ({ currentQuestionIndex }) => {
       playCorrectAnswer();
@@ -165,6 +166,18 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
     bot2: hasSubmitted && movedBotThisTurn === 2,
   };
 
+  const playerName = useMemo(() => {
+    if (typeof username === 'string' && username.trim()) return username.trim();
+
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramName = urlParams.get('name');
+      if (paramName && paramName.trim()) return paramName.trim();
+    }
+
+    return 'User';
+  }, [username]);
+
   return (
     <div
       className="game-container flex flex-col"
@@ -259,6 +272,7 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
             bot1Position={bot1Position}
             bot2Position={bot2Position}
             isJumping={isJumping}
+            playerName={playerName}
             mascotRed={assets.mascotRed}
             mascotGreen={assets.mascotGreen}
             mascotBlue={assets.mascotBlue}

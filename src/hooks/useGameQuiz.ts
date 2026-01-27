@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useGameAPI } from "usegamigameapi";
 import { useGameAudio } from "@/hooks/useGameAudio";
 import { sampleQuestions } from "@/data/questions";
@@ -68,6 +68,23 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
   const [sampleIsCompleted, setSampleIsCompleted] = useState(false);
   const [sampleCurrentResult, setSampleCurrentResult] = useState<{ isCorrect: boolean; correctAnswerId?: number } | null>(null);
   const [sampleCorrectCount, setSampleCorrectCount] = useState(0);
+  const [iframeUsername, setIframeUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      const data = event?.data;
+      if (!data || data.type !== 'INIT') return;
+      const rawUsername = data?.payload?.username;
+      if (typeof rawUsername === 'string' && rawUsername.trim()) {
+        setIframeUsername(rawUsername.trim());
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   // --- Effective Data Selector ---
   const effectiveQuestionsRaw = useMemo(() => {
@@ -275,6 +292,7 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     hasSubmitted: isAnswered,
     isCompleted,
     totalQuestions: FIXED_TOTAL_QUESTIONS,
+    username: (apiGame as { username?: string | null }).username ?? iframeUsername,
 
     handleAnswerSelect,
     updateAnswer,
