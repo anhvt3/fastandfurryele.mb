@@ -411,6 +411,11 @@
     cursor: not-allowed;
   }
 
+  .game-main {
+    position: relative;
+    z-index: 30;
+  }
+
   .race-section {
     position: fixed;
     bottom: 0;
