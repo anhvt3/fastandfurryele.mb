@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useCallback, useMemo, useEffect } from "react";
-import { useGameAPI } from "usegamigameapi";
+import { useGameAPIEnhanced } from "@/hooks/useGameAPIEnhanced";
 import { useGameAudio } from "@/hooks/useGameAudio";
 import { sampleQuestions } from "@/data/questions";
 import { FIXED_TOTAL_QUESTIONS } from "@/config/gameConfig";
@@ -47,7 +47,7 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
   }, []);
 
   // --- Real API Hook ---
-  const apiGame = useGameAPI({
+  const apiGame = useGameAPIEnhanced({
     onAnswerCorrect: (data) => {
       onAnswerCorrect?.(data);
     },
