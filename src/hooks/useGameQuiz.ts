@@ -38,17 +38,13 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
 
   // --- Strategy Determination ---
   const isSampleMode = useMemo(() => {
-    // Priority 1: Custom questions passed in (from URL loading in Index.tsx)
-    if (customQuestions && customQuestions.length > 0) return true;
-
-    // Priority 2: Query param ?sample=true
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get('sample') === 'true';
     }
 
     return false;
-  }, [customQuestions]);
+  }, []);
 
   // --- Real API Hook ---
   const apiGame = useGameAPI({
@@ -69,11 +65,13 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
   const [sampleCurrentResult, setSampleCurrentResult] = useState<{ isCorrect: boolean; correctAnswerId?: number } | null>(null);
   const [sampleCorrectCount, setSampleCorrectCount] = useState(0);
   const [iframeUsername, setIframeUsername] = useState<string | null>(null);
+  const [hasApiInit, setHasApiInit] = useState(false);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       const data = event?.data;
       if (!data || data.type !== 'INIT') return;
+      setHasApiInit(true);
       const rawUsername = data?.payload?.username;
       if (typeof rawUsername === 'string' && rawUsername.trim()) {
         setIframeUsername(rawUsername.trim());
@@ -87,29 +85,30 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
   }, []);
 
   // --- Effective Data Selector ---
+  const hasCustomQuestions = !!(customQuestions && customQuestions.length > 0);
+  const shouldUseCustomQuestions = !isSampleMode && !hasApiInit && hasCustomQuestions && !apiGame.quiz;
+  const isLocalMode = isSampleMode || shouldUseCustomQuestions;
+
   const effectiveQuestionsRaw = useMemo(() => {
     if (isSampleMode) {
-      if (customQuestions && customQuestions.length > 0) return customQuestions;
-      // Convert sampleQuestions (if they are different format) or use as is
-      // sampleQuestions in fastandfurry seems to be local data
-      // We might need to map them to Expected structure if customQuestions uses different one
       return sampleQuestions.map((q, idx) => ({
         id: idx + 1,
         text: q.question,
         answers: q.answers.map((ans, aIdx) => ({ id: aIdx + 1, content: ans })),
-        correctIndex: q.correctIndex ?? 0, // Ensure sampleQuestions has this
+        correctIndex: q.correctIndex ?? 0,
         audioUrl: (q as any).audioUrl
       }));
     }
+    if (shouldUseCustomQuestions) return customQuestions ?? [];
     return apiGame.quiz ? [apiGame.quiz] : [];
-  }, [isSampleMode, customQuestions, apiGame.quiz]);
+  }, [isSampleMode, shouldUseCustomQuestions, customQuestions, apiGame.quiz]);
 
   const rawCurrentQuestion = useMemo(() => {
-    if (isSampleMode) {
+    if (isLocalMode) {
       return effectiveQuestionsRaw[sampleIndex];
     }
     return apiGame.quiz;
-  }, [isSampleMode, effectiveQuestionsRaw, sampleIndex, apiGame.quiz]);
+  }, [isLocalMode, effectiveQuestionsRaw, sampleIndex, apiGame.quiz]);
 
   // --- Derived State for UI ---
 
@@ -133,8 +132,8 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     // Determine Correct Index for UI highlighting
     let correctIdx = -1;
 
-    const relevantResult = isSampleMode ? sampleCurrentResult : apiGame.currentResult;
-    const selectedObj = isSampleMode ? sampleSelectedAnswer : apiGame.selectedAnswer;
+    const relevantResult = isLocalMode ? sampleCurrentResult : apiGame.currentResult;
+    const selectedObj = isLocalMode ? sampleSelectedAnswer : apiGame.selectedAnswer;
 
     // Logic 1: If result confirms correct, user's selection IS correct
     if (relevantResult?.isCorrect && selectedObj) {
@@ -179,26 +178,26 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
       correctIndex: correctIdx,
       _raw: rawCurrentQuestion
     };
-  }, [rawCurrentQuestion, isSampleMode, sampleCurrentResult, apiGame.currentResult, sampleSelectedAnswer, apiGame.selectedAnswer]);
+  }, [rawCurrentQuestion, isLocalMode, sampleCurrentResult, apiGame.currentResult, sampleSelectedAnswer, apiGame.selectedAnswer]);
 
 
   // 2. Status Flags
-  const isLoading = isSampleMode ? !rawCurrentQuestion : (!apiGame.quiz && !apiGame.isCompleted);
-  const isAnswered = isSampleMode ? sampleHasSubmitted : apiGame.hasSubmitted;
-  const isCompleted = isSampleMode ? sampleIsCompleted : apiGame.isCompleted;
+  const isLoading = isLocalMode ? !rawCurrentQuestion : (!apiGame.quiz && !apiGame.isCompleted);
+  const isAnswered = isLocalMode ? sampleHasSubmitted : apiGame.hasSubmitted;
+  const isCompleted = isLocalMode ? sampleIsCompleted : apiGame.isCompleted;
   // const currentIdx = isSampleMode ? sampleIndex : apiGame.currentQuestionIndex; 
   // ApiGame.currentQuestionIndex might be 0 initially
 
   // 3. Selected Answer Object (TetQuizGame expects object)
-  const selectedAnswerObj = isSampleMode ? sampleSelectedAnswer : apiGame.selectedAnswer;
+  const selectedAnswerObj = isLocalMode ? sampleSelectedAnswer : apiGame.selectedAnswer;
 
   // 4. Answers History
   // TetQuizGame uses 'answers' array of booleans/nulls
   // apiGame.answers is exactly that.
-  const history = isSampleMode ? sampleAnswers : (apiGame.answers ?? []);
+  const history = isLocalMode ? sampleAnswers : (apiGame.answers ?? []);
 
   // 5. Correct Count
-  const correctCount = isSampleMode ? sampleCorrectCount : (apiGame.correctCount ?? 0);
+  const correctCount = isLocalMode ? sampleCorrectCount : (apiGame.correctCount ?? 0);
 
 
   // --- Actions ---
@@ -208,17 +207,17 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
 
     // playButtonClick(); // handled in component
 
-    if (isSampleMode) {
+    if (isLocalMode) {
       setSampleSelectedAnswer(answer);
     } else {
       // Need to ensure answer passed to API has correct structure if simple string
       // But here answer is QuizAnswer { id, content }
       apiGame.handleAnswerSelect(answer);
     }
-  }, [isAnswered, isSampleMode, apiGame]);
+  }, [isAnswered, isLocalMode, apiGame]);
 
   const updateAnswer = useCallback(() => {
-    if (isSampleMode) {
+    if (isLocalMode) {
       if (!sampleSelectedAnswer || !currentQuestion) return;
 
       const rawCorrectIndex = currentQuestion._raw.correctIndex;
@@ -252,10 +251,10 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     } else {
       apiGame.updateAnswer();
     }
-  }, [isSampleMode, sampleSelectedAnswer, currentQuestion, sampleIndex, sampleAnswers, apiGame, options]);
+  }, [isLocalMode, sampleSelectedAnswer, currentQuestion, sampleIndex, sampleAnswers, apiGame, options]);
 
   const handleContinue = useCallback(() => {
-    if (isSampleMode) {
+    if (isLocalMode) {
       const nextIdx = sampleIndex + 1;
       if (nextIdx >= FIXED_TOTAL_QUESTIONS) {
         setSampleIsCompleted(true);
@@ -268,24 +267,24 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     } else {
       apiGame.handleContinue();
     }
-  }, [isSampleMode, sampleIndex, apiGame]);
+  }, [isLocalMode, sampleIndex, apiGame]);
 
   const finish = useCallback(() => {
-    if (isSampleMode) {
+    if (isLocalMode) {
       window.location.reload();
     } else {
       apiGame.finish();
     }
-  }, [isSampleMode, apiGame]);
+  }, [isLocalMode, apiGame]);
 
   // Return structure matching what TetQuizGame expects
   return {
     quiz: currentQuestion, // { text, answers, audioUrl }
     selectedAnswer: selectedAnswerObj,
-    currentResult: isSampleMode ? sampleCurrentResult : apiGame.currentResult,
+    currentResult: isLocalMode ? sampleCurrentResult : apiGame.currentResult,
     answers: history,
     correctCount,
-    currentQuestionIndex: isSampleMode ? sampleIndex : (apiGame.currentQuestionIndex || 0),
+    currentQuestionIndex: isLocalMode ? sampleIndex : (apiGame.currentQuestionIndex || 0),
     isSubmitting: isLoading, // Re-map? isLoading implies fetching. isSubmitting implies posting.
     // apiGame.isSubmitting exists? Yes. Use that.
     isSubmittingPost: apiGame.isSubmitting, // differentiate
