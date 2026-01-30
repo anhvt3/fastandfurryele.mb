@@ -127,6 +127,16 @@ export function useGameAPIEnhanced({ onAnswerCorrect, onAnswerIncorrect }: UseGa
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       const { type, payload } = event.data || {};
+      if (type === ACTIONS.FINISH) {
+        setIsCompleted(true);
+        setIsSubmitting(false);
+        isSubmittingRef.current = false;
+        setHasSubmitted(true);
+        hasSubmittedRef.current = true;
+        awaitingQuestionRef.current = false;
+        pendingExternalAdvanceRef.current = false;
+        return;
+      }
       if (type === ACTIONS.RETURN_LO5) {
         const signature = buildQuestionSignature(payload);
         const isNewQuestion = signature !== lastQuestionSignatureRef.current;
