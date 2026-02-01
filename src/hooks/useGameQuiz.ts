@@ -270,12 +270,18 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
   }, [isLocalMode, sampleIndex, apiGame]);
 
   const finish = useCallback(() => {
-    if (isLocalMode) {
-      window.location.reload();
-    } else {
-      apiGame.finish();
-    }
-  }, [isLocalMode, apiGame]);
+    apiGame.finish();
+  }, [apiGame]);
+
+  const restart = useCallback(() => {
+    setSampleIndex(0);
+    setSampleSelectedAnswer(null);
+    setSampleAnswers([]);
+    setSampleHasSubmitted(false);
+    setSampleIsCompleted(false);
+    setSampleCurrentResult(null);
+    setSampleCorrectCount(0);
+  }, []);
 
   // Return structure matching what TetQuizGame expects
   return {
@@ -297,6 +303,7 @@ export function useGameQuiz(options: UseGameQuizOptions = {}) {
     updateAnswer,
     handleContinue,
     finish,
+    restart,
 
     isSampleMode
   };

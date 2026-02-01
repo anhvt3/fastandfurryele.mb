@@ -34,6 +34,7 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
     updateAnswer,
     handleContinue,
     finish,
+    restart,
     isSampleMode,
     username,
   } = useGameQuiz({
@@ -141,6 +142,13 @@ const TetQuizGame = ({ customQuestions }: TetQuizGameProps) => {
   // Handle finish/restart
   const onFinish = () => {
     playButtonClick();
+    if (isSampleMode) {
+      setBot1Position(0);
+      setBot2Position(0);
+      lastProcessedIndex.current = -1;
+      restart();
+      return;
+    }
     finish();
   };
 
